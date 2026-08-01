@@ -1,0 +1,1039 @@
+{% doc %}
+  @prompt
+    Un bloque de Especificaciones técnicas, que muestre todos los metacampos del producto y me de la posibilidad de ocultar lo que no quiero que se muestren. , Quiero que se muestren todos los metacampos de productos actuales de mi tienda shopify, No quiero que se cambie ningún nombre. , Quiero que se muestren todos los metacampos de productos. Cada una de las definiciones existentes. con el "Nombre de la definición" tal como figuran. con la posibilidad de mostrar y ocultar a cada una.  , Actualmente dentro de: Definiciones de metacampo de producto, existen 11 Definiciones distintas, quiero que muestres absolutamente todas las definiciones existentes dentro de "Definiciones de metacampo de producto", los mismos que están dentro de "Metacampos del producto" cuando edito un producto. 
+    
+    , 1. La sección tiene que utilizar las tipografías seleccionadas dentro de la configuración del tema y cambiar automáticamente si estas se modifican para titulos y cuerpos. 
+    2. La sección debe ajustarse en tamaño según los metacamos a mostrar seleccionados.
+    3. Agregar una división en el medio como si fuese un cuadro "Especificaciones técnicas" y otro cuadro a la derecha "¿Por qué elegir a Comprabox?" con items con íconos de checklist para agregar items (Hasta 7 items) a la derecha de este mismo cuadro se podrá agregar una imagen, sobre la imagen un texto modificable tipo título y texto debajo tipo cuerpo con un botón debajo configurable con url. 
+    4. Todo este cambio deberá respetar al máximo la configuración del tema Dawn utilizado actualmente, seguir con la misma estética. , Conservar toda la estructura y funcionamiento actuales.
+    1. Agregar a las especificaciones técnicas las definiciones de tipo entero , decimal y metaobjeto.
+    2. Eliminar de "metacampos a mostrar" los metacampos que no existen "Dimensiones, Color, Garantía, Marca, Origen"
+    3. La imagen que se agregue a "Llamada a la acción" se utilizará como fondo del cuadro "¿Por qué elegir a Comprabox", Conservar toda la estructura y funcionamiento actuales.
+    1. Agregar a las Metacampos a mostrar los metacampos de productos de tipo entero , decimal y metaobjeto.
+    2. Eliminar de "metacampos a mostrar" los metacampos que no existen (Dimensiones, Color, Garantía, Marca, Origen) NO INVENTES METACAMPOS QUE NO EXISTEN DENTRO DE METACAMPOS DE PRODUCTOS.
+    3. La imagen que se agregue a "Llamada a la acción" se utilizará como fondo del cuadro "¿Por qué elegir a Comprabox", 1. La imagen que se agregue a "Llamada a la acción" se utilizará como fondo del cuadro "¿Por qué elegir a Comprabox" Y TODOS LOS TEXTOS DEBERÁN ESTAR ALINEADOS A LA IZQUEIRDA. 
+    2. En metacampos a mostrar se deberán ver todos los metacampos relacionados con el producto. Veo que inventas metacampos que no existen, quiero que podamos trabajar con todos los que existen dentro del producto que son hoy:
+    Capacidad - Texto de una sola línea
+    Material - Texto de una sola línea
+    Aislamiento - Texto de una sola línea
+    Conservación - Texto de una sola línea
+    Tipo de tapa - Texto de una sola línea
+    Peso - Texto de una sola línea
+    Unidades por caja - Entero
+    Precio USD - Decimal
+    Cargo medio bulto - Decimal
+    Cargo 6 unidades - Decimal
+    Colores disponibles - Metaobjeto
+    , Perfecto! ahora:
+    1. Ajustar la proporción de los cuadros, "Especificaciones técnicas" deberá ocupar el 30% del ancho disponible, y el cuadro "¿Por qué elegir a Comprabox?" deberá ocupar el 70% del ancho disponible restante. 
+    2. La versión responsiva para móviles, deberá ubicar los cuadros apilados, empezando por "Especificaciones técnicas" abajo "¿Por qué elegir a Comprabox?" y abajo la imagen con los textos. 
+    3. Dentro del sector "Descubre más" agregaremos la opción de adjuntar un ícono encima. , 1. Modificar el sector "Descubre más": pasará a ser un recuadro dentro del recuadro "¿Por qué elegir a Comprabox?"
+    2. Modificar de tal manera que la imagen seleccionada sirva de fondo para este nuevo recuadro "Descubre más"
+    3. El recuadro "¿Por qué elegir a Comprabox?" destinará el 40% de su espacio al sector "Descubre más", 1. Modificar el sector "Descubre más": pasará a ser un recuadro dentro del recuadro "¿Por qué elegir a Comprabox?"
+    2. Modificar de tal manera que la imagen seleccionada sirva de fondo para este nuevo recuadro "Descubre más"
+    3. El nuevo recuadro ocupará el 40% de espacio horizontalmente dentro del cuadro "¿Por qué elegir a Comprabox?" debe quedar un espacio grande para la imagen, y que deberá tener margenes de 18px del lado derecho y superior. 
+    si es muy complicado, prueba hacer un cuadro "Especificaciones técnicas" con el 30% de espacio horizontal disponible, un cuadro "¿Por qué elegir a Comprabox?" con el 30% de espacio horizontal disponible y este nuevo cuadro "Descubre más" con el 40% de espacio horizontal restante. 
+    y apilar los cuadros en la versión para dispositivos móviles.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-product-info-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .ai-product-info-container-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 30% 30% 40%;
+    gap: {{ settings.spacing_grid_horizontal }}px;
+  }
+
+  .ai-product-info-box-{{ ai_gen_id }} {
+    background-color: {{ block.settings.box_background }};
+    border: {{ block.settings.box_border_thickness }}px solid {{ block.settings.box_border_color }};
+    border-radius: {{ settings.media_radius }}px;
+    padding: {{ block.settings.box_padding }}px;
+  }
+
+  .ai-product-info-title-{{ ai_gen_id }} {
+    font-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+    font-weight: {{ settings.type_header_font.weight }};
+    font-size: calc({{ block.settings.title_size }}px * {{ settings.heading_scale }} / 100);
+    color: {{ block.settings.text_color }};
+    margin: 0 0 {{ block.settings.title_spacing }}px 0;
+    line-height: 1.3;
+    text-align: left;
+  }
+
+  .ai-product-info-specs-list-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .ai-product-info-specs-row-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: {{ block.settings.label_width }}% 1fr;
+    gap: {{ block.settings.column_spacing }}px;
+    padding: {{ block.settings.row_padding }}px 0;
+    border-bottom: {{ block.settings.divider_thickness }}px solid {{ block.settings.divider_color }};
+  }
+
+  .ai-product-info-specs-row-{{ ai_gen_id }}:last-child {
+    border-bottom: none;
+  }
+
+  .ai-product-info-label-{{ ai_gen_id }} {
+    font-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    font-weight: {{ settings.type_body_font.weight }};
+    font-size: calc({{ block.settings.label_size }}px * {{ settings.body_scale }} / 100);
+    color: {{ block.settings.label_color }};
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .ai-product-info-value-{{ ai_gen_id }} {
+    font-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    font-weight: {{ settings.type_body_font.weight }};
+    font-size: calc({{ block.settings.value_size }}px * {{ settings.body_scale }} / 100);
+    color: {{ block.settings.text_color }};
+    text-align: left;
+  }
+
+  .ai-product-info-checklist-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.checklist_spacing }}px;
+  }
+
+  .ai-product-info-checklist-item-{{ ai_gen_id }} {
+    display: flex;
+    align-items: flex-start;
+    gap: {{ block.settings.icon_spacing }}px;
+  }
+
+  .ai-product-info-checklist-icon-{{ ai_gen_id }} {
+    flex-shrink: 0;
+    width: {{ block.settings.icon_size }}px;
+    height: {{ block.settings.icon_size }}px;
+    color: {{ block.settings.icon_color }};
+    margin-top: 2px;
+  }
+
+  .ai-product-info-checklist-text-{{ ai_gen_id }} {
+    font-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    font-weight: {{ settings.type_body_font.weight }};
+    font-size: calc({{ block.settings.checklist_text_size }}px * {{ settings.body_scale }} / 100);
+    color: {{ block.settings.text_color }};
+    line-height: 1.5;
+    text-align: left;
+  }
+
+  .ai-product-info-cta-box-{{ ai_gen_id }} {
+    border-radius: {{ settings.media_radius }}px;
+    padding: {{ block.settings.cta_box_padding }}px;
+    {% if block.settings.cta_image %}
+      background-image: url('{{ block.settings.cta_image | image_url: width: 1000 }}');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+    {% else %}
+      background-color: {{ block.settings.cta_box_background }};
+    {% endif %}
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .ai-product-info-cta-box-{{ ai_gen_id }}::before {
+    {% if block.settings.cta_image %}
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, {{ block.settings.overlay_opacity }});
+      border-radius: {{ settings.media_radius }}px;
+      pointer-events: none;
+    {% endif %}
+  }
+
+  .ai-product-info-cta-section-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.cta_spacing }}px;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+    margin-top: 18px;
+    margin-right: 18px;
+  }
+
+  .ai-product-info-cta-icon-{{ ai_gen_id }} {
+    width: {{ block.settings.cta_icon_size }}px;
+    height: {{ block.settings.cta_icon_size }}px;
+    flex-shrink: 0;
+  }
+
+  .ai-product-info-cta-icon-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .ai-product-info-cta-title-{{ ai_gen_id }} {
+    font-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+    font-weight: {{ settings.type_header_font.weight }};
+    font-size: calc({{ block.settings.cta_title_size }}px * {{ settings.heading_scale }} / 100);
+    color: {{ block.settings.text_color }};
+    margin: 0;
+    line-height: 1.3;
+    text-align: left;
+  }
+
+  .ai-product-info-cta-text-{{ ai_gen_id }} {
+    font-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    font-weight: {{ settings.type_body_font.weight }};
+    font-size: calc({{ block.settings.cta_text_size }}px * {{ settings.body_scale }} / 100);
+    color: {{ block.settings.text_color }};
+    line-height: 1.6;
+    text-align: left;
+  }
+
+  .ai-product-info-cta-button-{{ ai_gen_id }} {
+    display: inline-block;
+    padding: {{ block.settings.button_padding_vertical }}px {{ block.settings.button_padding_horizontal }}px;
+    background-color: {{ block.settings.button_background }};
+    color: {{ block.settings.button_text_color }};
+    text-decoration: none;
+    border-radius: {{ settings.buttons_radius }}px;
+    border: {{ settings.buttons_border_thickness }}px solid {{ block.settings.button_background }};
+    font-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    font-weight: {{ settings.type_body_font.weight }};
+    font-size: calc({{ block.settings.button_text_size }}px * {{ settings.body_scale }} / 100);
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .ai-product-info-cta-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_background }};
+    border-color: {{ block.settings.button_hover_background }};
+    color: {{ block.settings.button_hover_text_color }};
+  }
+
+  .ai-product-info-empty-{{ ai_gen_id }} {
+    padding: 40px 20px;
+    text-align: center;
+    color: #999;
+    font-size: 14px;
+    font-style: italic;
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-product-info-container-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+    }
+
+    .ai-product-info-specs-row-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+
+    .ai-product-info-box-{{ ai_gen_id }}:nth-child(1) {
+      order: 1;
+    }
+
+    .ai-product-info-box-{{ ai_gen_id }}:nth-child(2) {
+      order: 2;
+    }
+
+    .ai-product-info-cta-box-{{ ai_gen_id }} {
+      order: 3;
+    }
+
+    .ai-product-info-cta-section-{{ ai_gen_id }} {
+      margin-top: 0;
+      margin-right: 0;
+    }
+  }
+{% endstyle %}
+
+<product-info-block-{{ ai_gen_id }}
+  class="ai-product-info-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-product-info-container-{{ ai_gen_id }}">
+    <div class="ai-product-info-box-{{ ai_gen_id }}">
+      {% if block.settings.specs_title != blank %}
+        <h3 class="ai-product-info-title-{{ ai_gen_id }}">{{ block.settings.specs_title }}</h3>
+      {% endif %}
+
+      {% assign has_visible_metafields = false %}
+
+      <div class="ai-product-info-specs-list-{{ ai_gen_id }}">
+        {% if block.settings.show_capacidad and product.metafields.custom.capacidad != blank %}
+          {% assign has_visible_metafields = true %}
+          <div class="ai-product-info-specs-row-{{ ai_gen_id }}">
+            <div class="ai-product-info-label-{{ ai_gen_id }}">Capacidad</div>
+            <div class="ai-product-info-value-{{ ai_gen_id }}">{{ product.metafields.custom.capacidad }}</div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.show_material and product.metafields.custom.material != blank %}
+          {% assign has_visible_metafields = true %}
+          <div class="ai-product-info-specs-row-{{ ai_gen_id }}">
+            <div class="ai-product-info-label-{{ ai_gen_id }}">Material</div>
+            <div class="ai-product-info-value-{{ ai_gen_id }}">{{ product.metafields.custom.material }}</div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.show_aislamiento and product.metafields.custom.aislamiento != blank %}
+          {% assign has_visible_metafields = true %}
+          <div class="ai-product-info-specs-row-{{ ai_gen_id }}">
+            <div class="ai-product-info-label-{{ ai_gen_id }}">Aislamiento</div>
+            <div class="ai-product-info-value-{{ ai_gen_id }}">{{ product.metafields.custom.aislamiento }}</div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.show_conservacion and product.metafields.custom.conservacion != blank %}
+          {% assign has_visible_metafields = true %}
+          <div class="ai-product-info-specs-row-{{ ai_gen_id }}">
+            <div class="ai-product-info-label-{{ ai_gen_id }}">Conservación</div>
+            <div class="ai-product-info-value-{{ ai_gen_id }}">{{ product.metafields.custom.conservacion }}</div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.show_tipo_de_tapa and product.metafields.custom.tipo_de_tapa != blank %}
+          {% assign has_visible_metafields = true %}
+          <div class="ai-product-info-specs-row-{{ ai_gen_id }}">
+            <div class="ai-product-info-label-{{ ai_gen_id }}">Tipo de tapa</div>
+            <div class="ai-product-info-value-{{ ai_gen_id }}">{{ product.metafields.custom.tipo_de_tapa }}</div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.show_peso and product.metafields.custom.peso != blank %}
+          {% assign has_visible_metafields = true %}
+          <div class="ai-product-info-specs-row-{{ ai_gen_id }}">
+            <div class="ai-product-info-label-{{ ai_gen_id }}">Peso</div>
+            <div class="ai-product-info-value-{{ ai_gen_id }}">{{ product.metafields.custom.peso }}</div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.show_unidades_por_caja and product.metafields.custom.unidades_por_caja != blank %}
+          {% assign has_visible_metafields = true %}
+          <div class="ai-product-info-specs-row-{{ ai_gen_id }}">
+            <div class="ai-product-info-label-{{ ai_gen_id }}">Unidades por caja</div>
+            <div class="ai-product-info-value-{{ ai_gen_id }}">{{ product.metafields.custom.unidades_por_caja }}</div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.show_precio_usd and product.metafields.custom.precio_usd != blank %}
+          {% assign has_visible_metafields = true %}
+          <div class="ai-product-info-specs-row-{{ ai_gen_id }}">
+            <div class="ai-product-info-label-{{ ai_gen_id }}">Precio USD</div>
+            <div class="ai-product-info-value-{{ ai_gen_id }}">{{ product.metafields.custom.precio_usd }}</div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.show_cargo_medio_bulto and product.metafields.custom.cargo_medio_bulto != blank %}
+          {% assign has_visible_metafields = true %}
+          <div class="ai-product-info-specs-row-{{ ai_gen_id }}">
+            <div class="ai-product-info-label-{{ ai_gen_id }}">Cargo medio bulto</div>
+            <div class="ai-product-info-value-{{ ai_gen_id }}">{{ product.metafields.custom.cargo_medio_bulto }}</div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.show_cargo_6_unidades and product.metafields.custom.cargo_6_unidades != blank %}
+          {% assign has_visible_metafields = true %}
+          <div class="ai-product-info-specs-row-{{ ai_gen_id }}">
+            <div class="ai-product-info-label-{{ ai_gen_id }}">Cargo 6 unidades</div>
+            <div class="ai-product-info-value-{{ ai_gen_id }}">{{ product.metafields.custom.cargo_6_unidades }}</div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.show_colores_disponibles and product.metafields.custom.colores_disponibles.value != blank %}
+          {% assign has_visible_metafields = true %}
+          <div class="ai-product-info-specs-row-{{ ai_gen_id }}">
+            <div class="ai-product-info-label-{{ ai_gen_id }}">Colores disponibles</div>
+            <div class="ai-product-info-value-{{ ai_gen_id }}">
+              {% if product.metafields.custom.colores_disponibles.value.nombre %}
+                {{ product.metafields.custom.colores_disponibles.value.nombre }}
+              {% else %}
+                {{ product.metafields.custom.colores_disponibles.value }}
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      {% unless has_visible_metafields %}
+        <div class="ai-product-info-empty-{{ ai_gen_id }}">
+          No hay especificaciones técnicas disponibles
+        </div>
+      {% endunless %}
+    </div>
+
+    <div class="ai-product-info-box-{{ ai_gen_id }}">
+      {% if block.settings.why_title != blank %}
+        <h3 class="ai-product-info-title-{{ ai_gen_id }}">{{ block.settings.why_title }}</h3>
+      {% endif %}
+
+      <div class="ai-product-info-checklist-{{ ai_gen_id }}">
+        {% if block.settings.show_item_1 and block.settings.item_1_text != blank %}
+          <div class="ai-product-info-checklist-item-{{ ai_gen_id }}">
+            <svg class="ai-product-info-checklist-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <div class="ai-product-info-checklist-text-{{ ai_gen_id }}">{{ block.settings.item_1_text }}</div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.show_item_2 and block.settings.item_2_text != blank %}
+          <div class="ai-product-info-checklist-item-{{ ai_gen_id }}">
+            <svg class="ai-product-info-checklist-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <div class="ai-product-info-checklist-text-{{ ai_gen_id }}">{{ block.settings.item_2_text }}</div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.show_item_3 and block.settings.item_3_text != blank %}
+          <div class="ai-product-info-checklist-item-{{ ai_gen_id }}">
+            <svg class="ai-product-info-checklist-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <div class="ai-product-info-checklist-text-{{ ai_gen_id }}">{{ block.settings.item_3_text }}</div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.show_item_4 and block.settings.item_4_text != blank %}
+          <div class="ai-product-info-checklist-item-{{ ai_gen_id }}">
+            <svg class="ai-product-info-checklist-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <div class="ai-product-info-checklist-text-{{ ai_gen_id }}">{{ block.settings.item_4_text }}</div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.show_item_5 and block.settings.item_5_text != blank %}
+          <div class="ai-product-info-checklist-item-{{ ai_gen_id }}">
+            <svg class="ai-product-info-checklist-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <div class="ai-product-info-checklist-text-{{ ai_gen_id }}">{{ block.settings.item_5_text }}</div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.show_item_6 and block.settings.item_6_text != blank %}
+          <div class="ai-product-info-checklist-item-{{ ai_gen_id }}">
+            <svg class="ai-product-info-checklist-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <div class="ai-product-info-checklist-text-{{ ai_gen_id }}">{{ block.settings.item_6_text }}</div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.show_item_7 and block.settings.item_7_text != blank %}
+          <div class="ai-product-info-checklist-item-{{ ai_gen_id }}">
+            <svg class="ai-product-info-checklist-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <div class="ai-product-info-checklist-text-{{ ai_gen_id }}">{{ block.settings.item_7_text }}</div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="ai-product-info-cta-box-{{ ai_gen_id }}">
+      <div class="ai-product-info-cta-section-{{ ai_gen_id }}">
+        {% if block.settings.cta_icon %}
+          <div class="ai-product-info-cta-icon-{{ ai_gen_id }}">
+            <img
+              src="{{ block.settings.cta_icon | image_url: width: 200 }}"
+              alt="{{ block.settings.cta_icon.alt | escape }}"
+              loading="lazy"
+              width="{{ block.settings.cta_icon_size }}"
+              height="{{ block.settings.cta_icon_size }}"
+            >
+          </div>
+        {% endif %}
+
+        {% if block.settings.cta_title != blank %}
+          <h4 class="ai-product-info-cta-title-{{ ai_gen_id }}">{{ block.settings.cta_title }}</h4>
+        {% endif %}
+
+        {% if block.settings.cta_text != blank %}
+          <div class="ai-product-info-cta-text-{{ ai_gen_id }}">{{ block.settings.cta_text }}</div>
+        {% endif %}
+
+        {% if block.settings.cta_button_text != blank %}
+          <a
+            href="{{ block.settings.cta_button_url }}"
+            class="ai-product-info-cta-button-{{ ai_gen_id }}"
+          >
+            {{ block.settings.cta_button_text }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</product-info-block-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class ProductInfoBlock{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+    }
+
+    customElements.define('product-info-block-{{ ai_gen_id }}', ProductInfoBlock{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Información del producto",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Especificaciones técnicas"
+    },
+    {
+      "type": "text",
+      "id": "specs_title",
+      "label": "Título",
+      "default": "Especificaciones técnicas"
+    },
+    {
+      "type": "header",
+      "content": "Metacampos a mostrar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_capacidad",
+      "label": "Mostrar Capacidad",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_material",
+      "label": "Mostrar Material",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_aislamiento",
+      "label": "Mostrar Aislamiento",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_conservacion",
+      "label": "Mostrar Conservación",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tipo_de_tapa",
+      "label": "Mostrar Tipo de tapa",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_peso",
+      "label": "Mostrar Peso",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_unidades_por_caja",
+      "label": "Mostrar Unidades por caja",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_precio_usd",
+      "label": "Mostrar Precio USD",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cargo_medio_bulto",
+      "label": "Mostrar Cargo medio bulto",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cargo_6_unidades",
+      "label": "Mostrar Cargo 6 unidades",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_colores_disponibles",
+      "label": "Mostrar Colores disponibles",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "¿Por qué elegir a Comprabox?"
+    },
+    {
+      "type": "text",
+      "id": "why_title",
+      "label": "Título",
+      "default": "¿Por qué elegir a Comprabox?"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_item_1",
+      "label": "Mostrar ítem 1",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "item_1_text",
+      "label": "Texto ítem 1",
+      "default": "Calidad garantizada"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_item_2",
+      "label": "Mostrar ítem 2",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "item_2_text",
+      "label": "Texto ítem 2",
+      "default": "Envío rápido y seguro"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_item_3",
+      "label": "Mostrar ítem 3",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "item_3_text",
+      "label": "Texto ítem 3",
+      "default": "Atención personalizada"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_item_4",
+      "label": "Mostrar ítem 4",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "item_4_text",
+      "label": "Texto ítem 4",
+      "default": "Productos duraderos"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_item_5",
+      "label": "Mostrar ítem 5",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "item_5_text",
+      "label": "Texto ítem 5"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_item_6",
+      "label": "Mostrar ítem 6",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "item_6_text",
+      "label": "Texto ítem 6"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_item_7",
+      "label": "Mostrar ítem 7",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "item_7_text",
+      "label": "Texto ítem 7"
+    },
+    {
+      "type": "header",
+      "content": "Descubre más"
+    },
+    {
+      "type": "image_picker",
+      "id": "cta_image",
+      "label": "Imagen de fondo"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Opacidad de la capa blanca",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.8
+    },
+    {
+      "type": "color",
+      "id": "cta_box_background",
+      "label": "Color de fondo (sin imagen)",
+      "default": "#f4f4f4"
+    },
+    {
+      "type": "range",
+      "id": "cta_box_padding",
+      "label": "Relleno del recuadro",
+      "min": 12,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "image_picker",
+      "id": "cta_icon",
+      "label": "Ícono"
+    },
+    {
+      "type": "range",
+      "id": "cta_icon_size",
+      "label": "Tamaño del ícono",
+      "min": 32,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "text",
+      "id": "cta_title",
+      "label": "Título",
+      "default": "Descubre más"
+    },
+    {
+      "type": "textarea",
+      "id": "cta_text",
+      "label": "Texto",
+      "default": "Explora nuestra colección completa de productos"
+    },
+    {
+      "type": "text",
+      "id": "cta_button_text",
+      "label": "Texto del botón",
+      "default": "Ver catálogo"
+    },
+    {
+      "type": "url",
+      "id": "cta_button_url",
+      "label": "URL del botón"
+    },
+    {
+      "type": "header",
+      "content": "Estilo de cajas"
+    },
+    {
+      "type": "color",
+      "id": "box_background",
+      "label": "Fondo",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "box_border_thickness",
+      "label": "Grosor del borde",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "box_border_color",
+      "label": "Color del borde",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "range",
+      "id": "box_padding",
+      "label": "Relleno",
+      "min": 12,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Especificaciones - diseño"
+    },
+    {
+      "type": "range",
+      "id": "row_padding",
+      "label": "Relleno de fila",
+      "min": 4,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "column_spacing",
+      "label": "Espaciado entre columnas",
+      "min": 8,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "label_width",
+      "label": "Ancho de etiqueta",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "divider_thickness",
+      "label": "Grosor del divisor",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Color del divisor",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "header",
+      "content": "Checklist - diseño"
+    },
+    {
+      "type": "range",
+      "id": "checklist_spacing",
+      "label": "Espaciado entre ítems",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Tamaño del ícono",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "icon_spacing",
+      "label": "Espaciado del ícono",
+      "min": 4,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Color del ícono",
+      "default": "#008060"
+    },
+    {
+      "type": "header",
+      "content": "CTA - diseño"
+    },
+    {
+      "type": "range",
+      "id": "cta_spacing",
+      "label": "Espaciado entre elementos",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "label": "Relleno vertical del botón",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal",
+      "label": "Relleno horizontal del botón",
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Fondo del botón",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Color del texto del botón",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Fondo del botón (hover)",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Color del texto del botón (hover)",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Colores"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Texto",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Etiquetas",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Tipografía"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Tamaño del título",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "title_spacing",
+      "label": "Espaciado del título",
+      "min": 8,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "label_size",
+      "label": "Tamaño de etiqueta",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "value_size",
+      "label": "Tamaño de valor",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "checklist_text_size",
+      "label": "Tamaño del texto del checklist",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "cta_title_size",
+      "label": "Tamaño del título CTA",
+      "min": 14,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "cta_text_size",
+      "label": "Tamaño del texto CTA",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_text_size",
+      "label": "Tamaño del texto del botón",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    }
+  ],
+  "presets": [
+    {
+      "name": "Información del producto"
+    }
+  ]
+}
+{% endschema %}

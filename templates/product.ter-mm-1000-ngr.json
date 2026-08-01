@@ -1,0 +1,205 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "price",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "description",
+        "share"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-1",
+        "media_size": "large",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail_slider",
+        "mobile_thumbnails": "hide",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": true,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 12
+      }
+    },
+    "disclosures": {
+      "type": "disclosures",
+      "settings": {
+        "heading": "Divulgaciones",
+        "heading_size": "h2",
+        "open_by_default": false,
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 0
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    },
+    "17855602561535d3c8": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_bfd1cb2_RqdYHT": {
+          "type": "ai_gen_block_bfd1cb2",
+          "name": "Especificaciones técnicas",
+          "settings": {
+            "specs_title": "Especificaciones técnicas",
+            "show_capacidad": true,
+            "show_material": true,
+            "show_aislamiento": true,
+            "show_conservacion": true,
+            "show_tipo_de_tapa": true,
+            "show_peso": true,
+            "show_unidades_por_caja": true,
+            "show_precio_usd": false,
+            "show_cargo_medio_bulto": false,
+            "show_cargo_6_unidades": false,
+            "show_colores_disponibles": false,
+            "why_title": "¿Por qué elegir a Comprabox?",
+            "show_item_1": true,
+            "item_1_text": "Productos premium seleccionados",
+            "show_item_2": true,
+            "item_2_text": "Precios mayoristas competitivos",
+            "show_item_3": true,
+            "item_3_text": "Envíos a todo el país",
+            "show_item_4": true,
+            "item_4_text": "Productos de alta rotación",
+            "show_item_5": true,
+            "item_5_text": "Atención personalizada",
+            "show_item_6": true,
+            "item_6_text": "Stock permanente",
+            "show_item_7": false,
+            "item_7_text": "",
+            "cta_image": "shopify://shop_images/ChatGPT_Image_1_ago_2026_04_04_07.png",
+            "overlay_opacity": 0.3,
+            "cta_box_background": "#f4f4f4",
+            "cta_box_padding": 20,
+            "cta_icon": "shopify://shop_images/add-friend_11331162.png",
+            "cta_icon_size": 48,
+            "cta_title": "¿Sos mayorista?",
+            "cta_text": "Accedé a precios especiales y beneficios exclusivos",
+            "cta_button_text": "Quiero ser mayorista",
+            "cta_button_url": "",
+            "box_background": "#ffffff",
+            "box_border_thickness": 1,
+            "box_border_color": "#e0e0e0",
+            "box_padding": 32,
+            "row_padding": 4,
+            "column_spacing": 36,
+            "label_width": 40,
+            "divider_thickness": 1,
+            "divider_color": "#e0e0e0",
+            "checklist_spacing": 14,
+            "icon_size": 20,
+            "icon_spacing": 14,
+            "icon_color": "#008060",
+            "cta_spacing": 20,
+            "button_padding_vertical": 10,
+            "button_padding_horizontal": 32,
+            "button_background": "#121212",
+            "button_text_color": "#ffffff",
+            "button_hover_background": "#000000",
+            "button_hover_text_color": "#ffffff",
+            "text_color": "#000000",
+            "label_color": "#000000",
+            "title_size": 22,
+            "title_spacing": 24,
+            "label_size": 14,
+            "value_size": 14,
+            "checklist_text_size": 15,
+            "cta_title_size": 24,
+            "cta_text_size": 14,
+            "button_text_size": 14
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_bfd1cb2_RqdYHT"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "disclosures",
+    "related-products",
+    "17855602561535d3c8"
+  ]
+}

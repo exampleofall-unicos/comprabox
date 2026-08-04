@@ -82,6 +82,18 @@
         "padding_bottom": 12
       }
     },
+    "order-calculator": {
+      "type": "order-calculator",
+      "settings": {
+        "eyebrow": "Cotizador mayorista",
+        "heading": "Calculadora de pedidos",
+        "subtitle": "Ahorrá más por cantidad",
+        "fallback_exchange_rate": "1550",
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 24
+      }
+    },
     "disclosures": {
       "type": "disclosures",
       "settings": {
@@ -198,6 +210,7 @@
   },
   "order": [
     "main",
+    "order-calculator",
     "disclosures",
     "related-products",
     "17855602561535d3c8"

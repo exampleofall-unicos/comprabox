@@ -23,10 +23,14 @@ if (!customElements.get('order-calculator')) {
         this.selectedTotalDisplay = this.querySelector('[data-selected-total]');
         this.whatsappLink = this.querySelector('[data-whatsapp-link]');
         this.bandRows = Array.from(this.querySelectorAll('[data-band]'));
+        this.quantityStepButtons = Array.from(this.querySelectorAll('[data-quantity-step]'));
 
         this.quantityInput?.addEventListener('input', this.handleQuantityChange.bind(this));
         this.quantityInput?.addEventListener('change', this.handleQuantityChange.bind(this));
         this.quantityInput?.addEventListener('focus', this.handleQuantityFocus.bind(this));
+        this.quantityStepButtons.forEach((button) => {
+          button.addEventListener('click', this.handleQuantityStep.bind(this));
+        });
 
         this.bindVariantListener();
         this.renderBandPreview();
@@ -119,6 +123,19 @@ if (!customElements.get('order-calculator')) {
         if (String(event.currentTarget.value) === '1') {
           event.currentTarget.select();
         }
+      }
+
+      handleQuantityStep(event) {
+        const direction = event.currentTarget.dataset.quantityStep;
+        const step = direction === 'decrement' ? -1 : 1;
+        const nextValue = Math.min(5000, Math.max(0, this.quantity + step));
+
+        if (this.quantityInput) {
+          this.quantityInput.value = String(nextValue);
+          this.quantityInput.focus();
+        }
+
+        this.render();
       }
 
       get quantity() {

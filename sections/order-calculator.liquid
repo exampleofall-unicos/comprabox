@@ -136,12 +136,33 @@
             {%- assign has_visible_specs = true -%}
             <div class="order-calculator__specs-row">
               <div class="order-calculator__specs-label">Colores disponibles</div>
-              <div class="order-calculator__specs-value">
-                {%- if product.metafields.custom.colores_disponibles.value.nombre -%}
-                  {{ product.metafields.custom.colores_disponibles.value.nombre }}
-                {%- else -%}
-                  {{ product.metafields.custom.colores_disponibles.value }}
-                {%- endif -%}
+              <div class="order-calculator__specs-value order-calculator__specs-value--swatches">
+                <div class="order-calculator__swatches" aria-label="Colores disponibles">
+                  {%- for color_item in product.metafields.custom.colores_disponibles.value -%}
+                    {%- assign color_name = color_item.nombre | default: color_item.title | default: color_item.name | default: color_item.label | default: 'Color' -%}
+                    {%- assign swatch_color = blank -%}
+                    {%- if color_item.swatch and color_item.swatch.color -%}
+                      {%- assign swatch_color = 'rgb(' | append: color_item.swatch.color.rgb | append: ')' -%}
+                    {%- elsif color_item.color and color_item.color.rgb -%}
+                      {%- assign swatch_color = 'rgb(' | append: color_item.color.rgb | append: ')' -%}
+                    {%- elsif color_item.color and color_item.color.hex -%}
+                      {%- assign swatch_color = color_item.color.hex -%}
+                    {%- elsif color_item.color -%}
+                      {%- assign swatch_color = color_item.color -%}
+                    {%- elsif color_item.hex -%}
+                      {%- assign swatch_color = color_item.hex -%}
+                    {%- endif -%}
+
+                    <span
+                      class="order-calculator__swatch{% if swatch_color == blank %} order-calculator__swatch--empty{% endif %}"
+                      {% if swatch_color != blank %}
+                        style="background-color: {{ swatch_color }};"
+                      {% endif %}
+                      title="{{ color_name | escape }}"
+                      aria-label="{{ color_name | escape }}"
+                    ></span>
+                  {%- endfor -%}
+                </div>
               </div>
             </div>
           {%- endif -%}
@@ -210,16 +231,26 @@
           <label class="order-calculator__input-group">
             <span class="order-calculator__input-label">Ingresá la cantidad deseada</span>
             <div class="order-calculator__input-row">
-              <input
-                class="order-calculator__input"
-                type="text"
-                inputmode="numeric"
-                pattern="[0-9]*"
-                value="1"
-                autocomplete="off"
-                aria-label="Cantidad"
-                data-quantity-input
-              >
+              <div class="order-calculator__input-field">
+                <input
+                  class="order-calculator__input"
+                  type="text"
+                  inputmode="numeric"
+                  pattern="[0-9]*"
+                  value="1"
+                  autocomplete="off"
+                  aria-label="Cantidad"
+                  data-quantity-input
+                >
+                <div class="order-calculator__stepper" aria-hidden="false">
+                  <button class="order-calculator__stepper-button" type="button" aria-label="Sumar una unidad" data-quantity-step="increment">
+                    <span aria-hidden="true">▲</span>
+                  </button>
+                  <button class="order-calculator__stepper-button" type="button" aria-label="Restar una unidad" data-quantity-step="decrement">
+                    <span aria-hidden="true">▼</span>
+                  </button>
+                </div>
+              </div>
               <span class="order-calculator__units">unidades</span>
             </div>
           </label>
@@ -325,7 +356,7 @@
       "type": "range",
       "id": "specs_column_gap",
       "min": 0,
-      "max": 48,
+      "max": 150,
       "step": 2,
       "unit": "px",
       "label": "Separación entre columnas",

@@ -237,7 +237,7 @@
                   type="text"
                   inputmode="numeric"
                   pattern="[0-9]*"
-                  value="1"
+                  value="6"
                   autocomplete="off"
                   aria-label="Cantidad"
                   data-quantity-input
@@ -263,14 +263,14 @@
 
         <div class="order-calculator__summary">
           <div class="order-calculator__summary-row order-calculator__summary-row--unit">
-            <span>Precio unitario:</span>
-            <strong data-selected-unit>--</strong>
+            <span class="order-calculator__summary-label">Precio unitario:</span>
+            <strong class="order-calculator__summary-value order-calculator__summary-value--unit" data-selected-unit>--</strong>
           </div>
           <div class="order-calculator__summary-row order-calculator__summary-row--total">
-            <span>Total:</span>
+            <span class="order-calculator__summary-label">Total:</span>
             <strong class="order-calculator__summary-total">
               <span class="order-calculator__summary-total-usd" data-selected-total-usd>--</span>
-              <span class="order-calculator__summary-total-ars" data-selected-total>--</span>
+              <span class="order-calculator__summary-total-value" data-selected-total>--</span>
             </strong>
           </div>
         </div>

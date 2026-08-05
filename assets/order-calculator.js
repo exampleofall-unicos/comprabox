@@ -155,7 +155,7 @@ if (!customElements.get('order-calculator')) {
 
       get quarterMax() {
         const unitsPerBox = Math.max(0, Math.floor(Number(this.config.unitsPerBox) || 0));
-        return Math.max(5, Math.floor(unitsPerBox / 4));
+        return Math.max(6, Math.floor(unitsPerBox / 4));
       }
 
       get halfMax() {
@@ -185,8 +185,8 @@ if (!customElements.get('order-calculator')) {
           },
           {
             key: 'quarter',
-            label: `5 - ${this.quarterMax} unidades`,
-            min: 5,
+            label: `6 - ${this.quarterMax} unidades`,
+            min: 6,
             max: this.quarterMax,
             unitPriceCents: quarterUnitPriceCents,
             unitPriceUsdCents: quarterUnitUsdCents,

@@ -249,6 +249,7 @@ order-calculator {
   align-items: center;
   gap: 0.8rem;
   flex-wrap: wrap;
+  min-height: 4.2rem;
 }
 
 .order-calculator__input-field {
@@ -314,18 +315,21 @@ order-calculator {
 }
 
 .order-calculator__units {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
+  line-height: 1.2;
+  font-weight: 500;
   opacity: 0.75;
 }
 
 .order-calculator__savings {
   justify-self: end;
   min-width: 0;
+  min-height: 4.2rem;
   padding: 0;
   border: 0;
   background: transparent;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: flex-end;
   gap: 0.7rem;
   text-align: right;
@@ -333,11 +337,16 @@ order-calculator {
 
 .order-calculator__savings-label {
   font-size: 1.3rem;
+  line-height: 1.2;
+  font-weight: 500;
   opacity: 0.75;
 }
 
 .order-calculator__savings-value {
-  font-size: 1.6rem;
+  font-size: 1.3rem;
+  line-height: 1.2;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
 }
 
 .order-calculator__summary {
@@ -355,41 +364,51 @@ order-calculator {
   align-items: baseline;
 }
 
-.order-calculator__summary-row span {
+.order-calculator__summary-label {
   font-size: 1.4rem;
+  line-height: 1.2;
+  font-weight: 500;
   opacity: 0.75;
 }
 
-.order-calculator__summary-row strong {
+.order-calculator__summary-value {
   line-height: 1.1;
-}
-
-.order-calculator__summary-row--unit strong {
   font-size: 1.4rem;
   font-weight: 500;
+  font-variant-numeric: tabular-nums;
 }
 
-.order-calculator__summary-row--total strong {
+.order-calculator__summary-value--unit {
+  color: rgba(var(--color-foreground), 0.72);
+}
+
+.order-calculator__summary-total {
   display: flex;
   align-items: baseline;
   justify-content: flex-end;
   gap: 0.75rem;
   flex-wrap: wrap;
-  font-size: 1.7rem;
-  font-weight: 700;
+  line-height: 1.1;
+  text-align: right;
 }
 
 .order-calculator__summary-total-usd {
-  font-size: 1em;
+  font-size: 1.25rem;
+  line-height: 1.2;
   font-weight: 600;
   opacity: 0.82;
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
-.order-calculator__summary-total-ars {
-  white-space: nowrap;
-  font-size: 1em;
+.order-calculator__summary-total-value {
+  font-size: 1.7rem;
+  line-height: 1.1;
   font-weight: 700;
+  letter-spacing: -0.01em;
+  color: rgb(var(--color-foreground));
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
 .order-calculator__actions {
@@ -481,11 +500,15 @@ order-calculator {
     width: 2.4rem;
   }
 
-  .order-calculator__summary-row--unit strong {
+  .order-calculator__summary-value--unit {
     font-size: 1.3rem;
   }
 
-  .order-calculator__summary-row--total strong {
-    font-size: 1.55rem;
+  .order-calculator__summary-total-usd {
+    font-size: 1.1rem;
+  }
+
+  .order-calculator__summary-total-value {
+    font-size: 1.7rem;
   }
 }

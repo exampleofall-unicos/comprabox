@@ -23,118 +23,246 @@
   assign units_per_box = product.metafields.custom.unidades_por_caja.value | default: 0 | plus: 0
 -%}
 
-<order-calculator class="order-calculator color-{{ section.settings.color_scheme }} gradient" data-section-id="{{ section.id }}">
+<order-calculator
+  class="order-calculator color-{{ section.settings.color_scheme }} gradient"
+  data-section-id="{{ section.id }}"
+  style="--order-calculator-specs-column-gap: {{ section.settings.specs_column_gap }}px; --order-calculator-specs-row-gap: {{ section.settings.specs_row_gap }}px;"
+>
   <div class="page-width section-{{ section.id }}-padding">
-    <div class="order-calculator__card">
-      <div class="order-calculator__header">
-        <div>
-          <p class="order-calculator__eyebrow">{{ section.settings.eyebrow | escape }}</p>
-          <h2 class="order-calculator__title">{{ section.settings.heading | escape }}</h2>
-          <p class="order-calculator__subtitle">{{ section.settings.subtitle | escape }}</p>
+    <div class="order-calculator__layout">
+      <aside class="order-calculator__specs-card" aria-label="Especificaciones técnicas">
+        <h3 class="order-calculator__specs-title">Especificaciones técnicas</h3>
+
+        <div class="order-calculator__specs-list">
+          {%- assign has_visible_specs = false -%}
+
+          {%- if section.settings.show_capacidad and product.metafields.custom.capacidad != blank -%}
+            {%- assign has_visible_specs = true -%}
+            <div class="order-calculator__specs-row">
+              <div class="order-calculator__specs-label">Capacidad</div>
+              <div class="order-calculator__specs-value">{{ product.metafields.custom.capacidad }}</div>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.show_material and product.metafields.custom.material != blank -%}
+            {%- assign has_visible_specs = true -%}
+            <div class="order-calculator__specs-row">
+              <div class="order-calculator__specs-label">Material</div>
+              <div class="order-calculator__specs-value">{{ product.metafields.custom.material }}</div>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.show_aislamiento and product.metafields.custom.aislamiento != blank -%}
+            {%- assign has_visible_specs = true -%}
+            <div class="order-calculator__specs-row">
+              <div class="order-calculator__specs-label">Aislamiento</div>
+              <div class="order-calculator__specs-value">{{ product.metafields.custom.aislamiento }}</div>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.show_conservacion and product.metafields.custom.conservacion != blank -%}
+            {%- assign has_visible_specs = true -%}
+            <div class="order-calculator__specs-row">
+              <div class="order-calculator__specs-label">Conservación</div>
+              <div class="order-calculator__specs-value">{{ product.metafields.custom.conservacion }}</div>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.show_tipo_de_tapa and product.metafields.custom.tipo_de_tapa != blank -%}
+            {%- assign has_visible_specs = true -%}
+            <div class="order-calculator__specs-row">
+              <div class="order-calculator__specs-label">Tipo de tapa</div>
+              <div class="order-calculator__specs-value">{{ product.metafields.custom.tipo_de_tapa }}</div>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.show_peso and product.metafields.custom.peso != blank -%}
+            {%- assign has_visible_specs = true -%}
+            <div class="order-calculator__specs-row">
+              <div class="order-calculator__specs-label">Peso</div>
+              <div class="order-calculator__specs-value">{{ product.metafields.custom.peso }}</div>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.show_unidades_por_caja and product.metafields.custom.unidades_por_caja != blank -%}
+            {%- assign has_visible_specs = true -%}
+            <div class="order-calculator__specs-row">
+              <div class="order-calculator__specs-label">Unidades por caja</div>
+              <div class="order-calculator__specs-value">{{ product.metafields.custom.unidades_por_caja }}</div>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.show_precio_usd and product.metafields.custom.precio_usd != blank -%}
+            {%- assign has_visible_specs = true -%}
+            <div class="order-calculator__specs-row">
+              <div class="order-calculator__specs-label">Precio USD</div>
+              <div class="order-calculator__specs-value">{{ product.metafields.custom.precio_usd }}</div>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.show_cargo_medio_bulto and product.metafields.custom.cargo_medio_bulto != blank -%}
+            {%- assign has_visible_specs = true -%}
+            <div class="order-calculator__specs-row">
+              <div class="order-calculator__specs-label">Cargo medio bulto</div>
+              <div class="order-calculator__specs-value">{{ product.metafields.custom.cargo_medio_bulto }}</div>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.show_cargo_6_unidades and product.metafields.custom.cargo_6_unidades != blank -%}
+            {%- assign has_visible_specs = true -%}
+            <div class="order-calculator__specs-row">
+              <div class="order-calculator__specs-label">Cargo 6 unidades</div>
+              <div class="order-calculator__specs-value">{{ product.metafields.custom.cargo_6_unidades }}</div>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.show_cargo_1_2_bulto and product.metafields.custom.cargo_1_2_bulto != blank -%}
+            {%- assign has_visible_specs = true -%}
+            <div class="order-calculator__specs-row">
+              <div class="order-calculator__specs-label">Cargo 1/2 bulto</div>
+              <div class="order-calculator__specs-value">{{ product.metafields.custom.cargo_1_2_bulto }}</div>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.show_cargo_1_4_bulto and product.metafields.custom.cargo_1_4_bulto != blank -%}
+            {%- assign has_visible_specs = true -%}
+            <div class="order-calculator__specs-row">
+              <div class="order-calculator__specs-label">Cargo 1/4 bulto</div>
+              <div class="order-calculator__specs-value">{{ product.metafields.custom.cargo_1_4_bulto }}</div>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.show_colores_disponibles and product.metafields.custom.colores_disponibles.value != blank -%}
+            {%- assign has_visible_specs = true -%}
+            <div class="order-calculator__specs-row">
+              <div class="order-calculator__specs-label">Colores disponibles</div>
+              <div class="order-calculator__specs-value">
+                {%- if product.metafields.custom.colores_disponibles.value.nombre -%}
+                  {{ product.metafields.custom.colores_disponibles.value.nombre }}
+                {%- else -%}
+                  {{ product.metafields.custom.colores_disponibles.value }}
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
         </div>
 
-        <div class="order-calculator__rate">
-          <span class="order-calculator__rate-label">Dólar blue</span>
-          <strong class="order-calculator__rate-value" data-rate-display>--</strong>
-        </div>
-      </div>
+        {%- unless has_visible_specs -%}
+          <p class="order-calculator__specs-empty">No hay especificaciones técnicas disponibles</p>
+        {%- endunless -%}
+      </aside>
 
-      <div class="order-calculator__table-wrap">
-        <table class="order-calculator__table">
-          <caption class="visually-hidden">{{ section.settings.heading | escape }}</caption>
-          <thead>
-            <tr>
-              <th scope="col">Cantidad</th>
-              <th scope="col">Precio unitario</th>
-              <th scope="col">Precio unitario USD</th>
-              <th scope="col">Descuento</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr data-band="retail">
-              <td data-band-label>1 - 5 unidades</td>
-              <td data-band-unit-price>--</td>
-              <td data-band-unit-price-usd>--</td>
-              <td data-band-discount>--</td>
-            </tr>
-            <tr data-band="quarter">
-              <td data-band-label>5 - -- unidades</td>
-              <td data-band-unit-price>--</td>
-              <td data-band-unit-price-usd>--</td>
-              <td data-band-discount>--</td>
-            </tr>
-            <tr data-band="half">
-              <td data-band-label>-- - -- unidades</td>
-              <td data-band-unit-price>--</td>
-              <td data-band-unit-price-usd>--</td>
-              <td data-band-discount>--</td>
-            </tr>
-            <tr data-band="full">
-              <td data-band-label>--+ unidades</td>
-              <td data-band-unit-price>--</td>
-              <td data-band-unit-price-usd>--</td>
-              <td data-band-discount>--</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="order-calculator__controls">
-        <label class="order-calculator__input-group">
-          <span class="order-calculator__input-label">Ingresá la cantidad deseada</span>
-          <div class="order-calculator__input-row">
-            <input
-              class="order-calculator__input"
-              type="number"
-              min="1"
-              step="1"
-              value="1"
-              inputmode="numeric"
-              aria-label="Cantidad"
-              data-quantity-input
-            >
-            <span class="order-calculator__units">unidades</span>
+      <div class="order-calculator__card">
+        <div class="order-calculator__header">
+          <div>
+            <p class="order-calculator__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+            <h2 class="order-calculator__title">{{ section.settings.heading | escape }}</h2>
+            <p class="order-calculator__subtitle">{{ section.settings.subtitle | escape }}</p>
           </div>
-        </label>
 
-        <div class="order-calculator__savings" aria-live="polite">
-          <span class="order-calculator__savings-label">Ahorrás:</span>
-          <strong class="order-calculator__savings-value" data-savings>--</strong>
+          <div class="order-calculator__rate">
+            <span class="order-calculator__rate-label">Dólar blue</span>
+            <strong class="order-calculator__rate-value" data-rate-display>--</strong>
+          </div>
         </div>
-      </div>
 
-      <div class="order-calculator__summary">
-        <div class="order-calculator__summary-row order-calculator__summary-row--unit">
-          <span>Precio unitario:</span>
-          <strong data-selected-unit>--</strong>
+        <div class="order-calculator__table-wrap">
+          <table class="order-calculator__table">
+            <caption class="visually-hidden">{{ section.settings.heading | escape }}</caption>
+            <thead>
+              <tr>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Precio unitario</th>
+                <th scope="col">Precio unitario USD</th>
+                <th scope="col">Descuento</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-band="retail">
+                <td data-band-label>1 - 5 unidades</td>
+                <td data-band-unit-price>--</td>
+                <td data-band-unit-price-usd>--</td>
+                <td data-band-discount>--</td>
+              </tr>
+              <tr data-band="quarter">
+                <td data-band-label>5 - -- unidades</td>
+                <td data-band-unit-price>--</td>
+                <td data-band-unit-price-usd>--</td>
+                <td data-band-discount>--</td>
+              </tr>
+              <tr data-band="half">
+                <td data-band-label>-- - -- unidades</td>
+                <td data-band-unit-price>--</td>
+                <td data-band-unit-price-usd>--</td>
+                <td data-band-discount>--</td>
+              </tr>
+              <tr data-band="full">
+                <td data-band-label>--+ unidades</td>
+                <td data-band-unit-price>--</td>
+                <td data-band-unit-price-usd>--</td>
+                <td data-band-discount>--</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="order-calculator__summary-row order-calculator__summary-row--total">
-          <span>Total:</span>
-          <strong class="order-calculator__summary-total">
-            <span class="order-calculator__summary-total-usd" data-selected-total-usd>--</span>
-            <span class="order-calculator__summary-total-ars" data-selected-total>--</span>
-          </strong>
+
+        <div class="order-calculator__controls">
+          <label class="order-calculator__input-group">
+            <span class="order-calculator__input-label">Ingresá la cantidad deseada</span>
+            <div class="order-calculator__input-row">
+              <input
+                class="order-calculator__input"
+                type="number"
+                min="1"
+                step="1"
+                value="1"
+                inputmode="numeric"
+                aria-label="Cantidad"
+                data-quantity-input
+              >
+              <span class="order-calculator__units">unidades</span>
+            </div>
+          </label>
+
+          <div class="order-calculator__savings" aria-live="polite">
+            <span class="order-calculator__savings-label">Ahorrás:</span>
+            <strong class="order-calculator__savings-value" data-savings>--</strong>
+          </div>
         </div>
-      </div>
 
-      <div class="order-calculator__actions">
-        <a
-          class="button button--primary button--full-width order-calculator__whatsapp"
-          href="#"
-          target="_blank"
-          rel="noopener"
-          data-whatsapp-link
-        >
-          Continuar vía WhatsApp
-        </a>
-      </div>
+        <div class="order-calculator__summary">
+          <div class="order-calculator__summary-row order-calculator__summary-row--unit">
+            <span>Precio unitario:</span>
+            <strong data-selected-unit>--</strong>
+          </div>
+          <div class="order-calculator__summary-row order-calculator__summary-row--total">
+            <span>Total:</span>
+            <strong class="order-calculator__summary-total">
+              <span class="order-calculator__summary-total-usd" data-selected-total-usd>--</span>
+              <span class="order-calculator__summary-total-ars" data-selected-total>--</span>
+            </strong>
+          </div>
+        </div>
 
-      {%- if units_per_box == 0 or price_usd == 0 -%}
-        <p class="order-calculator__warning">
-          Completá los metacampos <code>custom.unidades_por_caja</code>, <code>custom.precio_usd</code>,
-          <code>custom.cargo_1_2_bulto</code> y <code>custom.cargo_1_4_bulto</code> para activar la calculadora.
-        </p>
-      {%- endif -%}
+        <div class="order-calculator__actions">
+          <a
+            class="button button--primary button--full-width order-calculator__whatsapp"
+            href="#"
+            target="_blank"
+            rel="noopener"
+            data-whatsapp-link
+          >
+            Continuar vía WhatsApp
+          </a>
+        </div>
+
+        {%- if units_per_box == 0 or price_usd == 0 -%}
+          <p class="order-calculator__warning">
+            Completá los metacampos <code>custom.unidades_por_caja</code>, <code>custom.precio_usd</code>,
+            <code>custom.cargo_1_2_bulto</code> y <code>custom.cargo_1_4_bulto</code> para activar la calculadora.
+          </p>
+        {%- endif -%}
+      </div>
     </div>
   </div>
 
@@ -188,6 +316,108 @@
       "id": "color_scheme",
       "label": "Esquema de color",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Especificaciones técnicas"
+    },
+    {
+      "type": "range",
+      "id": "specs_column_gap",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Separación entre columnas",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "specs_row_gap",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Separación entre filas",
+      "default": 10
+    },
+    {
+      "type": "checkbox",
+      "id": "show_capacidad",
+      "label": "Mostrar Capacidad",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_material",
+      "label": "Mostrar Material",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_aislamiento",
+      "label": "Mostrar Aislamiento",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_conservacion",
+      "label": "Mostrar Conservación",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tipo_de_tapa",
+      "label": "Mostrar Tipo de tapa",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_peso",
+      "label": "Mostrar Peso",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_unidades_por_caja",
+      "label": "Mostrar Unidades por caja",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_precio_usd",
+      "label": "Mostrar Precio USD",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cargo_medio_bulto",
+      "label": "Mostrar Cargo medio bulto",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cargo_6_unidades",
+      "label": "Mostrar Cargo 6 unidades",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cargo_1_2_bulto",
+      "label": "Mostrar Cargo 1/2 bulto",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cargo_1_4_bulto",
+      "label": "Mostrar Cargo 1/4 bulto",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_colores_disponibles",
+      "label": "Mostrar Colores disponibles",
+      "default": true
     },
     {
       "type": "header",

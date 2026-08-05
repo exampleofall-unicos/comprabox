@@ -26,6 +26,7 @@ if (!customElements.get('order-calculator')) {
 
         this.quantityInput?.addEventListener('input', this.handleQuantityChange.bind(this));
         this.quantityInput?.addEventListener('change', this.handleQuantityChange.bind(this));
+        this.quantityInput?.addEventListener('focus', this.handleQuantityFocus.bind(this));
 
         this.bindVariantListener();
         this.renderBandPreview();
@@ -88,16 +89,47 @@ if (!customElements.get('order-calculator')) {
       }
 
       handleQuantityChange(event) {
-        const nextValue = Math.max(1, Math.floor(Number(event.currentTarget.value) || 1));
-        if (String(nextValue) !== event.currentTarget.value) {
+        const rawValue = String(event.currentTarget.value || '').trim();
+        const normalizedValue = rawValue.replace(/[^\d]/g, '');
+
+        if (!normalizedValue) {
+          if (rawValue !== '') {
+            event.currentTarget.value = '';
+          }
+          this.render();
+          return;
+        }
+
+        const parsedValue = Math.floor(Number(normalizedValue));
+        if (!Number.isFinite(parsedValue)) {
+          event.currentTarget.value = '';
+          this.render();
+          return;
+        }
+
+        const nextValue = Math.min(5000, Math.max(0, parsedValue));
+        if (String(nextValue) !== normalizedValue) {
           event.currentTarget.value = String(nextValue);
         }
 
         this.render();
       }
 
+      handleQuantityFocus(event) {
+        if (String(event.currentTarget.value) === '1') {
+          event.currentTarget.select();
+        }
+      }
+
       get quantity() {
-        return Math.max(1, Math.floor(Number(this.quantityInput?.value) || 1));
+        const value = String(this.quantityInput?.value || '').trim();
+        const normalizedValue = value.replace(/[^\d]/g, '');
+        if (!normalizedValue) return 0;
+
+        const parsedValue = Math.floor(Number(normalizedValue));
+        if (!Number.isFinite(parsedValue)) return 0;
+
+        return Math.min(5000, Math.max(0, parsedValue));
       }
 
       get rateValue() {
@@ -165,6 +197,7 @@ if (!customElements.get('order-calculator')) {
       }
 
       getBandForQuantity(quantity) {
+        if (quantity <= 0) return this.bands[0];
         return this.bands.find((band) => quantity >= band.min && quantity <= band.max) || this.bands[this.bands.length - 1];
       }
 
@@ -273,7 +306,9 @@ if (!customElements.get('order-calculator')) {
 
         if (this.savingsDisplay) {
           this.savingsDisplay.textContent = savingsCents > 0 ? `${this.formatMoney(savingsCents)} (${savingsPercent}%)` : '-';
-        }        if (this.whatsappLink) {
+        }
+
+        if (this.whatsappLink) {
           const productTitle = this.config.productTitle || 'este producto';
           const message = `Hola quisiera avanzar con el pedido de ${quantity} unidades del producto ${productTitle}, mi presupuesto en comprabox.com.ar fue de ${this.formatUsdMoney(selectedTotalUsdCents)}. Muchas gracias!`;
           this.whatsappLink.href = this.getWhatsappUrl(message);
@@ -282,5 +317,4 @@ if (!customElements.get('order-calculator')) {
     }
   );
 }
-// Desktop users go straight to WhatsApp Web to avoid the api.whatsapp redirect error.
-// If WhatsApp Web is unavailable, the mobile fallback still uses wa.me.
+// The link always uses wa.me to avoid the api.whatsapp redirect issue.

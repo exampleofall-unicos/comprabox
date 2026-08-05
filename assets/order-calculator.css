@@ -18,13 +18,14 @@ order-calculator {
   border: 0.1rem solid rgba(var(--color-foreground), 0.08);
   border-radius: 0;
   box-shadow: none;
-  padding: 3rem;
+  padding: 2.7rem 3rem 3rem;
 }
 
 .order-calculator__specs-title {
   margin: 0 0 2rem;
-  font-size: clamp(2rem, 2vw, 2.8rem);
+  font-size: clamp(2rem, 2vw, 2.7rem);
   line-height: 1.1;
+  font-weight: 700;
 }
 
 .order-calculator__specs-list {
@@ -34,7 +35,7 @@ order-calculator {
 
 .order-calculator__specs-row {
   display: grid;
-  grid-template-columns: minmax(0, 0.46fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 0.56fr) minmax(0, 1fr);
   gap: var(--order-calculator-specs-column-gap, 1rem);
   padding: 0 0 0.85rem;
   border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
@@ -65,11 +66,11 @@ order-calculator {
 }
 
 .order-calculator__card {
-  background: transparent;
-  border: 0;
+  background: rgb(var(--color-background));
+  border: 0.1rem solid rgba(var(--color-foreground), 0.08);
   border-radius: 0;
   box-shadow: none;
-  padding: 0;
+  padding: 2.7rem 3rem 3rem;
 }
 
 .order-calculator__header {
@@ -77,7 +78,7 @@ order-calculator {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 1rem;
   align-items: start;
-  margin-bottom: 1.4rem;
+  margin-bottom: 1.2rem;
 }
 
 .order-calculator__eyebrow {
@@ -90,8 +91,9 @@ order-calculator {
 
 .order-calculator__title {
   margin: 0;
-  font-size: clamp(2rem, 2vw, 2.8rem);
+  font-size: clamp(2rem, 2vw, 2.7rem);
   line-height: 1.1;
+  font-weight: 700;
 }
 
 .order-calculator__subtitle {
@@ -179,7 +181,8 @@ order-calculator {
 
 .order-calculator__table thead th:nth-child(4),
 .order-calculator__table tbody td:nth-child(4) {
-  width: 24%;
+  width: 18%;
+  padding-right: 0.8rem;
 }
 
 .order-calculator__table tbody td {
@@ -290,7 +293,8 @@ order-calculator {
 }
 
 .order-calculator__summary-row--unit strong {
-  font-size: clamp(1.45rem, 1.5vw, 1.8rem);
+  font-size: 1.4rem;
+  font-weight: 500;
 }
 
 .order-calculator__summary-row--total strong {
@@ -299,11 +303,12 @@ order-calculator {
   justify-content: flex-end;
   gap: 0.75rem;
   flex-wrap: wrap;
-  font-size: clamp(2.2rem, 2.35vw, 3rem);
+  font-size: clamp(2.4rem, 2.55vw, 3.15rem);
+  font-weight: 700;
 }
 
 .order-calculator__summary-total-usd {
-  font-size: 0.72em;
+  font-size: 0.62em;
   font-weight: 600;
   opacity: 0.82;
   white-space: nowrap;
@@ -311,6 +316,7 @@ order-calculator {
 
 .order-calculator__summary-total-ars {
   white-space: nowrap;
+  font-size: 1em;
 }
 
 .order-calculator__actions {
@@ -378,10 +384,10 @@ order-calculator {
   }
 
   .order-calculator__summary-row--unit strong {
-    font-size: clamp(1.25rem, 5vw, 1.55rem);
+    font-size: 1.3rem;
   }
 
   .order-calculator__summary-row--total strong {
-    font-size: clamp(1.85rem, 7vw, 2.35rem);
+    font-size: clamp(2.1rem, 7vw, 2.65rem);
   }
 }

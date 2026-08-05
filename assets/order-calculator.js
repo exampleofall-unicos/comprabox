@@ -8,7 +8,8 @@ if (!customElements.get('order-calculator')) {
         this.rate = null;
         this.basePriceCents = 0;
         this.unsubscribeVariantChange = null;
-        this.formatter = null;
+        this.arsFormatter = null;
+        this.usdFormatter = null;
       }
 
       connectedCallback() {
@@ -18,7 +19,9 @@ if (!customElements.get('order-calculator')) {
         this.rateDisplay = this.querySelector('[data-rate-display]');
         this.savingsDisplay = this.querySelector('[data-savings]');
         this.selectedUnitDisplay = this.querySelector('[data-selected-unit]');
+        this.selectedTotalUsdDisplay = this.querySelector('[data-selected-total-usd]');
         this.selectedTotalDisplay = this.querySelector('[data-selected-total]');
+        this.whatsappLink = this.querySelector('[data-whatsapp-link]');
         this.bandRows = Array.from(this.querySelectorAll('[data-band]'));
 
         this.quantityInput?.addEventListener('input', this.handleQuantityChange.bind(this));
@@ -62,6 +65,7 @@ if (!customElements.get('order-calculator')) {
       async fetchExchangeRate() {
         const fallbackRate = Number(this.config.fallbackRate) || 0;
         this.rate = fallbackRate;
+        this.renderBandPreview();
         this.render();
 
         try {
@@ -102,54 +106,60 @@ if (!customElements.get('order-calculator')) {
 
       get quarterMax() {
         const unitsPerBox = Math.max(0, Math.floor(Number(this.config.unitsPerBox) || 0));
-        return Math.max(4, Math.floor(unitsPerBox / 4));
+        return Math.max(5, Math.floor(unitsPerBox / 4));
       }
 
       get halfMax() {
-        return Math.max(this.quarterMax + 1, Math.floor((Number(this.config.unitsPerBox) || 0) / 2));
+        const unitsPerBox = Math.max(0, Math.floor(Number(this.config.unitsPerBox) || 0));
+        return Math.max(this.quarterMax + 1, unitsPerBox - 1);
       }
 
       get bands() {
-        const quarterPriceCents = this.usdToCents(Number(this.config.priceUsd) + Number(this.config.cargoQuarterUsd));
-        const halfPriceCents = this.usdToCents(Number(this.config.priceUsd) + Number(this.config.cargoHalfUsd));
-        const fullPriceCents = this.usdToCents(Number(this.config.priceUsd));
+        const unitsPerBox = Math.max(1, Math.floor(Number(this.config.unitsPerBox) || 0));
+        const retailPriceUsdCents = this.centsToUsdCents(this.basePriceCents);
+        const quarterUnitUsdCents = this.usdAmountToCents(Number(this.config.priceUsd) + Number(this.config.cargoQuarterUsd));
+        const halfUnitUsdCents = this.usdAmountToCents(Number(this.config.priceUsd) + Number(this.config.cargoHalfUsd));
+        const fullUnitUsdCents = this.usdAmountToCents(Number(this.config.priceUsd));
+        const quarterUnitPriceCents = this.usdToCents(Number(this.config.priceUsd) + Number(this.config.cargoQuarterUsd));
+        const halfUnitPriceCents = this.usdToCents(Number(this.config.priceUsd) + Number(this.config.cargoHalfUsd));
+        const fullUnitPriceCents = this.usdToCents(Number(this.config.priceUsd));
 
         return [
           {
             key: 'retail',
-            label: '1 - 3 unidades',
+            label: '1 - 5 unidades',
             min: 1,
-            max: 3,
-            representativeQty: 1,
+            max: 5,
             unitPriceCents: this.basePriceCents,
-            discountLabel: '—',
+            unitPriceUsdCents: retailPriceUsdCents,
+            discountLabel: '-',
           },
           {
             key: 'quarter',
-            label: `4 - ${this.quarterMax} unidades`,
-            min: 4,
+            label: `5 - ${this.quarterMax} unidades`,
+            min: 5,
             max: this.quarterMax,
-            representativeQty: this.quarterMax,
-            unitPriceCents: quarterPriceCents,
-            discountLabel: this.discountLabel(quarterPriceCents),
+            unitPriceCents: quarterUnitPriceCents,
+            unitPriceUsdCents: quarterUnitUsdCents,
+            discountLabel: this.discountLabel(quarterUnitPriceCents),
           },
           {
             key: 'half',
             label: `${this.quarterMax + 1} - ${this.halfMax} unidades`,
             min: this.quarterMax + 1,
             max: this.halfMax,
-            representativeQty: this.halfMax,
-            unitPriceCents: halfPriceCents,
-            discountLabel: this.discountLabel(halfPriceCents),
+            unitPriceCents: halfUnitPriceCents,
+            unitPriceUsdCents: halfUnitUsdCents,
+            discountLabel: this.discountLabel(halfUnitPriceCents),
           },
           {
             key: 'full',
-            label: `${this.halfMax + 1}+ unidades`,
-            min: this.halfMax + 1,
+            label: `${unitsPerBox}+ unidades`,
+            min: unitsPerBox,
             max: Infinity,
-            representativeQty: Number(this.config.unitsPerBox) || this.halfMax + 1,
-            unitPriceCents: fullPriceCents,
-            discountLabel: this.discountLabel(fullPriceCents),
+            unitPriceCents: fullUnitPriceCents,
+            unitPriceUsdCents: fullUnitUsdCents,
+            discountLabel: this.discountLabel(fullUnitPriceCents),
           },
         ];
       }
@@ -159,9 +169,13 @@ if (!customElements.get('order-calculator')) {
       }
 
       discountLabel(unitPriceCents) {
-        if (!this.basePriceCents || unitPriceCents >= this.basePriceCents) return '—';
+        if (!this.basePriceCents || unitPriceCents >= this.basePriceCents) return '-';
         const discount = Math.max(0, Math.round((1 - unitPriceCents / this.basePriceCents) * 100));
         return `${discount}% OFF`;
+      }
+
+      usdAmountToCents(usdValue) {
+        return Math.round(Number(usdValue || 0) * 100);
       }
 
       usdToCents(usdValue) {
@@ -169,9 +183,15 @@ if (!customElements.get('order-calculator')) {
         return Math.round(Number(usdValue || 0) * rate * 100);
       }
 
+      centsToUsdCents(arsCents) {
+        const rate = this.rateValue;
+        if (!rate) return 0;
+        return Math.round(Number(arsCents || 0) / rate);
+      }
+
       formatMoney(cents) {
-        if (!this.formatter) {
-          this.formatter = new Intl.NumberFormat('es-AR', {
+        if (!this.arsFormatter) {
+          this.arsFormatter = new Intl.NumberFormat('es-AR', {
             style: 'currency',
             currency: this.config.currencyCode || 'ARS',
             minimumFractionDigits: 2,
@@ -179,23 +199,49 @@ if (!customElements.get('order-calculator')) {
           });
         }
 
-        return this.formatter.format((Number(cents) || 0) / 100);
+        return this.arsFormatter.format((Number(cents) || 0) / 100);
+      }
+
+      formatUsdMoney(cents) {
+        if (!this.usdFormatter) {
+          this.usdFormatter = new Intl.NumberFormat('es-AR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          });
+        }
+
+        return `USD $ ${this.usdFormatter.format((Number(cents) || 0) / 100)}`;
+      }
+
+      getWhatsappPhoneNumber() {
+        return String(this.config.whatsappNumber || '5491157998355').replace(/\D/g, '');
+      }
+
+      getWhatsappUrl(message) {
+        const phoneNumber = this.getWhatsappPhoneNumber();
+        const text = encodeURIComponent(message);
+        const useWeb = typeof window !== 'undefined' && window.matchMedia?.('(min-width: 750px)')?.matches;
+
+        if (useWeb) {
+          return `https://web.whatsapp.com/send?phone=${phoneNumber}&text=${text}`;
+        }
+
+        return `https://wa.me/${phoneNumber}?text=${text}`;
       }
 
       renderBandPreview() {
-        const bands = this.bands;
-        bands.forEach((band) => {
+        this.bands.forEach((band) => {
           const row = this.bandRows.find((item) => item.dataset.band === band.key);
           if (!row) return;
 
           row.querySelector('[data-band-label]').textContent = band.label;
           row.querySelector('[data-band-unit-price]').textContent = this.formatMoney(band.unitPriceCents);
+          row.querySelector('[data-band-unit-price-usd]').textContent = this.formatUsdMoney(band.unitPriceUsdCents);
           row.querySelector('[data-band-discount]').textContent = band.discountLabel;
-          row.querySelector('[data-band-total]').textContent = this.formatMoney(band.unitPriceCents * band.representativeQty);
         });
 
         if (this.rateDisplay) {
-          this.rateDisplay.textContent = this.formatMoney(this.rateValue * 100);
+          this.rateDisplay.textContent = this.formatUsdMoney(this.rateValue * 100);
         }
       }
 
@@ -203,7 +249,9 @@ if (!customElements.get('order-calculator')) {
         const quantity = this.quantity;
         const activeBand = this.getBandForQuantity(quantity);
         const selectedUnitCents = activeBand.unitPriceCents;
+        const selectedUnitUsdCents = activeBand.unitPriceUsdCents;
         const selectedTotalCents = selectedUnitCents * quantity;
+        const selectedTotalUsdCents = selectedUnitUsdCents * quantity;
         const savingsCents = Math.max(0, (this.basePriceCents - selectedUnitCents) * quantity);
         const savingsPercent = this.basePriceCents > 0 ? Math.max(0, Math.round((savingsCents / (this.basePriceCents * quantity)) * 100)) : 0;
 
@@ -215,16 +263,24 @@ if (!customElements.get('order-calculator')) {
           this.selectedUnitDisplay.textContent = this.formatMoney(selectedUnitCents);
         }
 
+        if (this.selectedTotalUsdDisplay) {
+          this.selectedTotalUsdDisplay.textContent = `( ${this.formatUsdMoney(selectedTotalUsdCents)} )`;
+        }
+
         if (this.selectedTotalDisplay) {
           this.selectedTotalDisplay.textContent = this.formatMoney(selectedTotalCents);
         }
 
         if (this.savingsDisplay) {
-          this.savingsDisplay.textContent = savingsCents > 0
-            ? `${this.formatMoney(savingsCents)} (${savingsPercent}%)`
-            : '—';
+          this.savingsDisplay.textContent = savingsCents > 0 ? `${this.formatMoney(savingsCents)} (${savingsPercent}%)` : '-';
+        }        if (this.whatsappLink) {
+          const productTitle = this.config.productTitle || 'este producto';
+          const message = `Hola quisiera avanzar con el pedido de ${quantity} unidades del producto ${productTitle}, mi presupuesto en comprabox.com.ar fue de ${this.formatUsdMoney(selectedTotalUsdCents)}. Muchas gracias!`;
+          this.whatsappLink.href = this.getWhatsappUrl(message);
         }
       }
     }
   );
 }
+// Desktop users go straight to WhatsApp Web to avoid the api.whatsapp redirect error.
+// If WhatsApp Web is unavailable, the mobile fallback still uses wa.me.

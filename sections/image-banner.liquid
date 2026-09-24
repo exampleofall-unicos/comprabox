@@ -24,6 +24,48 @@
 {%- endif -%}
 
 {%- style -%}
+
+  {%- for block in section.blocks -%}
+    {%- if block.type != 'buttons' -%}
+      {%- if block.settings.custom_font_enabled -%}
+        {{ block.settings.custom_font | font_face: font_display: 'swap' }}
+      {%- endif -%}
+      #Banner-{{ section.id }} #BannerText-{{ block.id }} {
+        overflow-wrap: anywhere;
+        {%- if block.settings.text_color != blank %}
+          color: {{ block.settings.text_color }};
+        {%- endif %}
+        {%- if block.settings.custom_font_enabled %}
+          font-family: {{ block.settings.custom_font.family }}, {{ block.settings.custom_font.fallback_families }};
+          font-weight: {{ block.settings.custom_font.weight }};
+          font-style: {{ block.settings.custom_font.style }};
+        {%- endif %}
+        {%- if block.settings.custom_typography %}
+          font-size: {{ block.settings.font_size_mobile }}px;
+          line-height: {{ block.settings.line_height }};
+          letter-spacing: {{ block.settings.letter_spacing }}px;
+          text-transform: {{ block.settings.text_transform }};
+        {%- endif %}
+        {%- if block.settings.custom_spacing %}
+          margin-top: {{ block.settings.spacing_top }}px;
+        {%- endif %}
+      }
+      {%- for index in (1..3) -%}
+        {%- assign color_key = 'highlight_color_' | append: index -%}
+        #Banner-{{ section.id }} #BannerText-{{ block.id }} .banner__highlight--{{ index }} {
+          color: {{ block.settings[color_key] }};
+        }
+      {%- endfor -%}
+      {%- if block.settings.custom_typography %}
+        @media screen and (min-width: 750px) {
+          #Banner-{{ section.id }} #BannerText-{{ block.id }} {
+            font-size: {{ block.settings.font_size_desktop }}px;
+          }
+        }
+      {%- endif %}
+    {%- endif -%}
+  {%- endfor -%}
+
   #Banner-{{ section.id }}::after {
     opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
   }
@@ -118,17 +160,52 @@
   <div class="banner__content banner__content--{{ section.settings.desktop_content_position }} page-width{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
     <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient">
       {%- for block in section.blocks -%}
+        {%- liquid
+          assign banner_text = block.settings.text
+          if block.type == 'heading'
+            assign banner_text = block.settings.heading
+          endif
+        -%}
+        {%- comment -%}
+          Color markers apply to explicit occurrences, including repeated words.
+          Preserve incomplete markers as text instead of generating unclosed spans.
+        {%- endcomment -%}
+        {%- for index in (1..3) -%}
+          {%- assign opening_marker = '[color' | append: index | append: ']' -%}
+          {%- assign closing_marker = '[/color' | append: index | append: ']' -%}
+          {%- assign fragments = banner_text | split: opening_marker -%}
+          {%- capture banner_text -%}
+            {%- for fragment in fragments -%}
+              {%- if forloop.first -%}
+                {{- fragment -}}
+              {%- elsif fragment contains closing_marker -%}
+                {%- assign highlighted_text = fragment | split: closing_marker | first -%}
+                <span class="banner__highlight--{{ index }}">{{ highlighted_text }}</span>
+                {%- assign consumed_text = highlighted_text | append: closing_marker -%}
+                {{- fragment | remove_first: consumed_text -}}
+              {%- else -%}
+                {{- opening_marker -}}{{- fragment -}}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endcapture -%}
+        {%- endfor -%}
+        {%- assign banner_text = banner_text | replace: '[br]', '<br>' -%}
         {%- case block.type -%}
           {%- when 'heading' -%}
             <h2
+              id="BannerText-{{ block.id }}"
               class="banner__heading inline-richtext {{ block.settings.heading_size }}"
               {{ block.shopify_attributes }}
             >
-              {{ block.settings.heading }}
+              {{ banner_text }}
             </h2>
-          {%- when 'text' -%}
-            <div class="banner__text rte {{ block.settings.text_style }}" {{ block.shopify_attributes }}>
-              <p>{{ block.settings.text }}</p>
+          {%- when 'text', 'eyebrow', 'subheading' -%}
+            <div
+              id="BannerText-{{ block.id }}"
+              class="banner__text rte {{ block.settings.text_style }}"
+              {{ block.shopify_attributes }}
+            >
+              <p>{{ banner_text }}</p>
             </div>
           {%- when 'buttons' -%}
             <div
@@ -172,7 +249,10 @@
   "tag": "section",
   "class": "section",
   "disabled_on": {
-    "groups": ["header", "footer"]
+    "groups": [
+      "header",
+      "footer"
+    ]
   },
   "settings": [
     {
@@ -332,7 +412,7 @@
       "id": "stack_images_on_mobile",
       "default": true,
       "label": "t:sections.image-banner.settings.stack_images_on_mobile.label"
-    },    
+    },
     {
       "type": "select",
       "id": "mobile_content_alignment",
@@ -362,9 +442,149 @@
   ],
   "blocks": [
     {
+      "type": "eyebrow",
+      "name": "Texto superior",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "COMPRA DIRECTA · STOCK PERMANENTE"
+        },
+        {
+          "type": "paragraph",
+          "content": "Colorea palabras con [color1]texto[/color1], [color2]texto[/color2] o [color3]texto[/color3]. Puedes repetir cada marca. Usa [br] para un salto de línea."
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Color del texto",
+          "info": "Déjalo vacío para usar el esquema de colores de la sección."
+        },
+        {
+          "type": "color",
+          "id": "highlight_color_1",
+          "label": "Color de resaltado 1",
+          "default": "#FF8000"
+        },
+        {
+          "type": "color",
+          "id": "highlight_color_2",
+          "label": "Color de resaltado 2",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "highlight_color_3",
+          "label": "Color de resaltado 3",
+          "default": "#FFC857"
+        },
+        {
+          "type": "header",
+          "content": "Tipografía"
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_typography",
+          "label": "Personalizar tamaños y espaciado de letras",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "font_size_desktop",
+          "label": "Tamaño en computadora",
+          "min": 10,
+          "max": 160,
+          "step": 2,
+          "unit": "px",
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile",
+          "label": "Tamaño en móvil",
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "line_height",
+          "label": "Altura de línea",
+          "min": 0.8,
+          "max": 2,
+          "step": 0.1,
+          "default": 1.4
+        },
+        {
+          "type": "range",
+          "id": "letter_spacing",
+          "label": "Espaciado entre letras",
+          "min": -2,
+          "max": 10,
+          "step": 0.2,
+          "unit": "px",
+          "default": 1.6
+        },
+        {
+          "type": "select",
+          "id": "text_transform",
+          "label": "Mayúsculas y minúsculas",
+          "options": [
+            {
+              "value": "none",
+              "label": "Tal como se escribió"
+            },
+            {
+              "value": "uppercase",
+              "label": "MAYÚSCULAS"
+            },
+            {
+              "value": "lowercase",
+              "label": "minúsculas"
+            }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_font_enabled",
+          "label": "Usar una fuente diferente",
+          "default": false
+        },
+        {
+          "type": "font_picker",
+          "id": "custom_font",
+          "label": "Fuente y variante",
+          "default": "assistant_n4"
+        },
+        {
+          "type": "header",
+          "content": "Separación del bloque"
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_spacing",
+          "label": "Personalizar margen superior",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "spacing_top",
+          "label": "Margen superior",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "default": 12
+        }
+      ]
+    },
+    {
       "type": "heading",
       "name": "t:sections.image-banner.blocks.heading.name",
-      "limit": 1,
       "settings": [
         {
           "type": "inline_richtext",
@@ -399,13 +619,282 @@
           ],
           "default": "h1",
           "label": "t:sections.all.heading_size.label"
+        },
+        {
+          "type": "paragraph",
+          "content": "Colorea palabras con [color1]texto[/color1], [color2]texto[/color2] o [color3]texto[/color3]. Puedes repetir cada marca. Usa [br] para un salto de línea."
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Color del texto",
+          "info": "Déjalo vacío para usar el esquema de colores de la sección."
+        },
+        {
+          "type": "color",
+          "id": "highlight_color_1",
+          "label": "Color de resaltado 1",
+          "default": "#FF8000"
+        },
+        {
+          "type": "color",
+          "id": "highlight_color_2",
+          "label": "Color de resaltado 2",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "highlight_color_3",
+          "label": "Color de resaltado 3",
+          "default": "#FFC857"
+        },
+        {
+          "type": "header",
+          "content": "Tipografía"
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_typography",
+          "label": "Personalizar tamaños y espaciado de letras",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "font_size_desktop",
+          "label": "Tamaño en computadora",
+          "min": 10,
+          "max": 160,
+          "step": 2,
+          "unit": "px",
+          "default": 48
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile",
+          "label": "Tamaño en móvil",
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 32
+        },
+        {
+          "type": "range",
+          "id": "line_height",
+          "label": "Altura de línea",
+          "min": 0.8,
+          "max": 2,
+          "step": 0.1,
+          "default": 1.1
+        },
+        {
+          "type": "range",
+          "id": "letter_spacing",
+          "label": "Espaciado entre letras",
+          "min": -2,
+          "max": 10,
+          "step": 0.2,
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "select",
+          "id": "text_transform",
+          "label": "Mayúsculas y minúsculas",
+          "options": [
+            {
+              "value": "none",
+              "label": "Tal como se escribió"
+            },
+            {
+              "value": "uppercase",
+              "label": "MAYÚSCULAS"
+            },
+            {
+              "value": "lowercase",
+              "label": "minúsculas"
+            }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_font_enabled",
+          "label": "Usar una fuente diferente",
+          "default": false
+        },
+        {
+          "type": "font_picker",
+          "id": "custom_font",
+          "label": "Fuente y variante",
+          "default": "assistant_n4"
+        },
+        {
+          "type": "header",
+          "content": "Separación del bloque"
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_spacing",
+          "label": "Personalizar margen superior",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "spacing_top",
+          "label": "Margen superior",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "default": 12
+        }
+      ]
+    },
+    {
+      "type": "subheading",
+      "name": "Subtítulo",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "Productos ideales para reventa y personalización."
+        },
+        {
+          "type": "paragraph",
+          "content": "Colorea palabras con [color1]texto[/color1], [color2]texto[/color2] o [color3]texto[/color3]. Puedes repetir cada marca. Usa [br] para un salto de línea."
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Color del texto",
+          "info": "Déjalo vacío para usar el esquema de colores de la sección."
+        },
+        {
+          "type": "color",
+          "id": "highlight_color_1",
+          "label": "Color de resaltado 1",
+          "default": "#FF8000"
+        },
+        {
+          "type": "color",
+          "id": "highlight_color_2",
+          "label": "Color de resaltado 2",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "highlight_color_3",
+          "label": "Color de resaltado 3",
+          "default": "#FFC857"
+        },
+        {
+          "type": "header",
+          "content": "Tipografía"
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_typography",
+          "label": "Personalizar tamaños y espaciado de letras",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "font_size_desktop",
+          "label": "Tamaño en computadora",
+          "min": 10,
+          "max": 160,
+          "step": 2,
+          "unit": "px",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile",
+          "label": "Tamaño en móvil",
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "line_height",
+          "label": "Altura de línea",
+          "min": 0.8,
+          "max": 2,
+          "step": 0.1,
+          "default": 1.4
+        },
+        {
+          "type": "range",
+          "id": "letter_spacing",
+          "label": "Espaciado entre letras",
+          "min": -2,
+          "max": 10,
+          "step": 0.2,
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "select",
+          "id": "text_transform",
+          "label": "Mayúsculas y minúsculas",
+          "options": [
+            {
+              "value": "none",
+              "label": "Tal como se escribió"
+            },
+            {
+              "value": "uppercase",
+              "label": "MAYÚSCULAS"
+            },
+            {
+              "value": "lowercase",
+              "label": "minúsculas"
+            }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_font_enabled",
+          "label": "Usar una fuente diferente",
+          "default": false
+        },
+        {
+          "type": "font_picker",
+          "id": "custom_font",
+          "label": "Fuente y variante",
+          "default": "assistant_n4"
+        },
+        {
+          "type": "header",
+          "content": "Separación del bloque"
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_spacing",
+          "label": "Personalizar margen superior",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "spacing_top",
+          "label": "Margen superior",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "default": 12
         }
       ]
     },
     {
       "type": "text",
       "name": "t:sections.image-banner.blocks.text.name",
-      "limit": 1,
       "settings": [
         {
           "type": "inline_richtext",
@@ -432,6 +921,135 @@
           ],
           "default": "body",
           "label": "t:sections.image-banner.blocks.text.settings.text_style.label"
+        },
+        {
+          "type": "paragraph",
+          "content": "Colorea palabras con [color1]texto[/color1], [color2]texto[/color2] o [color3]texto[/color3]. Puedes repetir cada marca. Usa [br] para un salto de línea."
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Color del texto",
+          "info": "Déjalo vacío para usar el esquema de colores de la sección."
+        },
+        {
+          "type": "color",
+          "id": "highlight_color_1",
+          "label": "Color de resaltado 1",
+          "default": "#FF8000"
+        },
+        {
+          "type": "color",
+          "id": "highlight_color_2",
+          "label": "Color de resaltado 2",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "highlight_color_3",
+          "label": "Color de resaltado 3",
+          "default": "#FFC857"
+        },
+        {
+          "type": "header",
+          "content": "Tipografía"
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_typography",
+          "label": "Personalizar tamaños y espaciado de letras",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "font_size_desktop",
+          "label": "Tamaño en computadora",
+          "min": 10,
+          "max": 160,
+          "step": 2,
+          "unit": "px",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile",
+          "label": "Tamaño en móvil",
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "line_height",
+          "label": "Altura de línea",
+          "min": 0.8,
+          "max": 2,
+          "step": 0.1,
+          "default": 1.4
+        },
+        {
+          "type": "range",
+          "id": "letter_spacing",
+          "label": "Espaciado entre letras",
+          "min": -2,
+          "max": 10,
+          "step": 0.2,
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "select",
+          "id": "text_transform",
+          "label": "Mayúsculas y minúsculas",
+          "options": [
+            {
+              "value": "none",
+              "label": "Tal como se escribió"
+            },
+            {
+              "value": "uppercase",
+              "label": "MAYÚSCULAS"
+            },
+            {
+              "value": "lowercase",
+              "label": "minúsculas"
+            }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_font_enabled",
+          "label": "Usar una fuente diferente",
+          "default": false
+        },
+        {
+          "type": "font_picker",
+          "id": "custom_font",
+          "label": "Fuente y variante",
+          "default": "assistant_n4"
+        },
+        {
+          "type": "header",
+          "content": "Separación del bloque"
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_spacing",
+          "label": "Personalizar margen superior",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "spacing_top",
+          "label": "Margen superior",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "default": 12
         }
       ]
     },
@@ -441,8 +1059,8 @@
       "limit": 1,
       "settings": [
         {
-        "type": "header",
-        "content": "t:sections.image-banner.blocks.buttons.settings.header_1.content"
+          "type": "header",
+          "content": "t:sections.image-banner.blocks.buttons.settings.header_1.content"
         },
         {
           "type": "text",
@@ -463,8 +1081,8 @@
           "label": "t:sections.image-banner.blocks.buttons.settings.button_style_secondary_1.label"
         },
         {
-        "type": "header",
-        "content": "t:sections.image-banner.blocks.buttons.settings.header_2.content"
+          "type": "header",
+          "content": "t:sections.image-banner.blocks.buttons.settings.header_2.content"
         },
         {
           "type": "text",
@@ -491,6 +1109,9 @@
     {
       "name": "t:sections.image-banner.presets.name",
       "blocks": [
+        {
+          "type": "eyebrow"
+        },
         {
           "type": "heading"
         },

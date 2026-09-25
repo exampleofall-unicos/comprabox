@@ -12,59 +12,169 @@
     "image_banner": {
       "type": "image-banner",
       "blocks": {
+        "eyebrow_7XU83N": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "COMPRA DIRECTA · STOCK PERMANENTE",
+            "text_color": "#FFFFFF",
+            "highlight_color_1": "#ff8000",
+            "highlight_color_2": "#ffffff",
+            "highlight_color_3": "#ffc857",
+            "custom_typography": true,
+            "font_size_desktop": 12,
+            "font_size_mobile": 10,
+            "line_height": 1.4,
+            "letter_spacing": 1.6,
+            "text_transform": "none",
+            "custom_font_enabled": false,
+            "custom_font": "archivo_n4",
+            "custom_spacing": false,
+            "spacing_top": 18
+          }
+        },
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
+            "heading": "Termo, botellas y más para [color1]<strong>tu negocio</strong>[/color1]&nbsp;",
+            "heading_size": "h0",
+            "text_color": "#FFFFFF",
+            "highlight_color_1": "#F39200",
+            "highlight_color_2": "#ffffff",
+            "highlight_color_3": "#ffc857",
+            "custom_typography": false,
+            "font_size_desktop": 48,
+            "font_size_mobile": 32,
+            "line_height": 1.1,
+            "letter_spacing": 0,
+            "text_transform": "none",
+            "custom_font_enabled": false,
+            "custom_font": "assistant_n4",
+            "custom_spacing": false,
+            "spacing_top": 12
+          }
+        },
+        "subheading_VPgNhz": {
+          "type": "subheading",
+          "settings": {
+            "text": "Productos ideales para reventa y personalización.",
+            "text_color": "#FFFFFF",
+            "highlight_color_1": "#ff8000",
+            "highlight_color_2": "#ffffff",
+            "highlight_color_3": "#ffc857",
+            "custom_typography": true,
+            "font_size_desktop": 20,
+            "font_size_mobile": 16,
+            "line_height": 1.4,
+            "letter_spacing": 0,
+            "text_transform": "none",
+            "custom_font_enabled": false,
+            "custom_font": "assistant_n4",
+            "custom_spacing": false,
+            "spacing_top": 12
           }
         },
         "button": {
           "type": "buttons",
           "settings": {
-            "button_label_1": "Shop all",
+            "button_label_1": "Ver productos",
             "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
+            "button_style_secondary_1": false,
+            "button_label_2": "Soy mayorista",
             "button_link_2": "",
-            "button_style_secondary_2": false
+            "button_style_secondary_2": true
           }
         }
       },
       "block_order": [
+        "eyebrow_7XU83N",
         "heading",
+        "subheading_VPgNhz",
         "button"
       ],
       "settings": {
         "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
+        "image_height": "medium",
         "image_behavior": "none",
-        "desktop_content_alignment": "center",
+        "desktop_content_position": "bottom-left",
+        "desktop_content_alignment": "left",
+        "show_text_box": false,
         "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
         "stack_images_on_mobile": false,
+        "mobile_content_alignment": "center",
         "show_text_below": false
+      }
+    },
+    "image_categories_6yG4Ab": {
+      "type": "image-categories",
+      "blocks": {
+        "category_6UFwJ9": {
+          "type": "category",
+          "settings": {
+            "title": "Categoría",
+            "link": ""
+          }
+        },
+        "category_iGQrQ6": {
+          "type": "category",
+          "name": "Termos",
+          "settings": {
+            "image": "shopify://shop_images/add-friend_11331162.png",
+            "title": "TERMOS",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "category_6UFwJ9",
+        "category_iGQrQ6"
+      ],
+      "name": "Categorías en imágenes",
+      "settings": {
+        "navigation_label": "Categorías de productosasd",
+        "caption": "",
+        "show_arrows": true,
+        "background": "#242829",
+        "text_color": "#FFFFFF",
+        "accent_color": "#9DD8D8",
+        "hover_color": "#C4EEEE",
+        "hover_background": "#303C3D",
+        "tint_icons": false,
+        "icon_size": 60,
+        "item_width": 100,
+        "gap": 12,
+        "font_size": 13,
+        "icon_size_mobile": 44,
+        "item_width_mobile": 88,
+        "gap_mobile": 8,
+        "font_size_mobile": 11,
+        "use_custom_font": true,
+        "font": "archivo_n5",
+        "text_transform": "none",
+        "letter_spacing": 0.5,
+        "caption_size": 10,
+        "caption_spacing": 3,
+        "caption_gap": 20,
+        "max_width": 1200,
+        "padding_top": 20,
+        "padding_bottom": 20
       }
     },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
+        "collection": "all",
+        "products_to_show": 8,
         "title": "Featured products",
         "heading_size": "h2",
         "description": "",
         "show_description": false,
         "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
         "columns_desktop": 4,
-        "color_scheme": "scheme-1",
+        "enable_desktop_slider": false,
         "full_width": false,
         "show_view_all": true,
         "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
+        "color_scheme": "scheme-1",
         "image_ratio": "adapt",
         "image_shape": "default",
         "show_secondary_image": true,
@@ -72,6 +182,7 @@
         "show_rating": false,
         "quick_add": "none",
         "columns_mobile": "2",
+        "swipe_on_mobile": false,
         "padding_top": 44,
         "padding_bottom": 36
       }
@@ -79,6 +190,7 @@
   },
   "order": [
     "image_banner",
+    "image_categories_6yG4Ab",
     "featured_collection"
   ]
 }

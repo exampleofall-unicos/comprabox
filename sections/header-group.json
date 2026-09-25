@@ -14,16 +14,16 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
-        "announcement-bar-0": {
+        "announcement_DPma9T": {
           "type": "announcement",
           "settings": {
-            "text": "Welcome to our store",
+            "text": "Te damos la bienvenida a nuestra tienda",
             "link": ""
           }
         }
       },
       "block_order": [
-        "announcement-bar-0"
+        "announcement_DPma9T"
       ],
       "settings": {
         "auto_rotate": false,

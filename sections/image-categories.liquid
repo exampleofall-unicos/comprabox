@@ -1,0 +1,424 @@
+{{ 'section-image-categories.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'image-categories.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  {%- if section.settings.use_custom_font -%}
+    {{ section.settings.font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  #ImageCategories-{{ section.id }} {
+    --ic-background: {{ section.settings.background }};
+    --ic-text: {{ section.settings.text_color }};
+    --ic-accent: {{ section.settings.accent_color }};
+    --ic-hover: {{ section.settings.hover_color }};
+    --ic-hover-background: {{ section.settings.hover_background }};
+    --ic-icon: {{ section.settings.icon_size_mobile }}px;
+    --ic-item: {{ section.settings.item_width_mobile }}px;
+    --ic-gap: {{ section.settings.gap_mobile }}px;
+    --ic-label-size: {{ section.settings.font_size_mobile }}px;
+    --ic-tracking: {{ section.settings.letter_spacing }}px;
+    --ic-transform: {{ section.settings.text_transform }};
+    --ic-padding-top: {{ section.settings.padding_top }}px;
+    --ic-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --ic-max-width: {{ section.settings.max_width }}px;
+    --ic-caption-size: {{ section.settings.caption_size }}px;
+    --ic-caption-tracking: {{ section.settings.caption_spacing }}px;
+    --ic-caption-gap: {{ section.settings.caption_gap }}px;
+    {%- if section.settings.use_custom_font %}
+      --ic-font: {{ section.settings.font.family }}, {{ section.settings.font.fallback_families }};
+      --ic-weight: {{ section.settings.font.weight }};
+      --ic-style: {{ section.settings.font.style }};
+    {%- endif %}
+  }
+  @media screen and (min-width: 750px) {
+    #ImageCategories-{{ section.id }} {
+      --ic-icon: {{ section.settings.icon_size }}px;
+      --ic-item: {{ section.settings.item_width }}px;
+      --ic-gap: {{ section.settings.gap }}px;
+      --ic-label-size: {{ section.settings.font_size }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- if section.blocks.size > 0 or request.design_mode -%}
+  <image-categories id="ImageCategories-{{ section.id }}" class="image-categories">
+    <div class="image-categories__inner">
+      {%- if section.blocks.size > 0 -%}
+        <nav aria-label="{{ section.settings.navigation_label | escape }}">
+          <div
+            id="CategoryViewport-{{ section.id }}"
+            class="image-categories__viewport"
+            data-category-viewport
+            tabindex="0"
+            role="region"
+            aria-label="{{ section.settings.navigation_label | escape }}"
+          >
+            <ul class="image-categories__list" role="list">
+              {%- for block in section.blocks -%}
+                {%- liquid
+                  assign category_name = block.settings.title | default: block.settings.image.alt | default: 'Categoría'
+                  assign category_tag = 'span'
+                  if block.settings.link != blank
+                    assign category_tag = 'a'
+                  endif
+                -%}
+                <li class="image-categories__item" {{ block.shopify_attributes }}>
+                  <{{ category_tag }}
+                    class="image-categories__card{% if block.settings.link != blank %} image-categories__card--linked{% endif %}"
+                    {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %}
+                  >
+                    <span class="image-categories__icon{% if section.settings.tint_icons and block.settings.image != blank %} image-categories__icon--tinted{% endif %}"
+                      {% if section.settings.tint_icons and block.settings.image != blank %}
+                        style="--ic-mask: url('{{ block.settings.image | image_url: width: 480 | escape }}');"
+                      {% endif %}
+                      aria-hidden="true"
+                    >
+                      {%- if block.settings.image != blank -%}
+                        {{ block.settings.image | image_url: width: 480 | image_tag: widths: '80, 120, 160, 240, 320, 480', sizes: '(min-width: 750px) 160px, 120px', loading: 'lazy', alt: '', class: 'image-categories__image' }}
+                      {%- else -%}
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                          <rect x="7" y="7" width="34" height="34" rx="5" />
+                          <path d="m8 32 10-10 8 8 6-6 9 9" /><circle cx="30" cy="17" r="3" />
+                        </svg>
+                      {%- endif -%}
+                    </span>
+                    <span class="image-categories__label">{{ category_name | escape }}</span>
+                  </{{ category_tag }}>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+          {%- if section.settings.show_arrows -%}
+            <div class="image-categories__controls" data-category-controls hidden>
+              <button type="button" class="image-categories__arrow" data-category-direction="-1" aria-label="Desplazar categorías a la izquierda" aria-controls="CategoryViewport-{{ section.id }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m14 6-6 6 6 6" /></svg>
+              </button>
+              <button type="button" class="image-categories__arrow" data-category-direction="1" aria-label="Desplazar categorías a la derecha" aria-controls="CategoryViewport-{{ section.id }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m10 6 6 6-6 6" /></svg>
+              </button>
+            </div>
+          {%- endif -%}
+        </nav>
+        {%- if section.settings.caption != blank -%}
+          <p class="image-categories__caption">{{ section.settings.caption | escape }}</p>
+        {%- endif -%}
+      {%- else -%}
+        <p class="image-categories__empty">Agregá tu primera categoría desde «Agregar bloque». Podés incluir hasta 12 categorías con su imagen, nombre y enlace.</p>
+      {%- endif -%}
+    </div>
+  </image-categories>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Categorías en imágenes",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 12,
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Contenido y navegación"
+    },
+    {
+      "type": "text",
+      "id": "navigation_label",
+      "label": "Nombre accesible de la navegación",
+      "default": "Categorías de productos"
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "Leyenda inferior",
+      "default": "FUNCIONALIDAD · DISEÑO · CALIDAD · PERSONALIZACIÓN",
+      "info": "Borrá el texto para ocultar la leyenda."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Mostrar flechas cuando no entren las categorías",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colores"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Fondo",
+      "default": "#242829"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Nombres de categorías",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Iconos teñidos, leyenda y controles",
+      "default": "#9DD8D8"
+    },
+    {
+      "type": "color",
+      "id": "hover_color",
+      "label": "Texto e iconos al pasar el puntero",
+      "default": "#C4EEEE"
+    },
+    {
+      "type": "color",
+      "id": "hover_background",
+      "label": "Fondo al pasar el puntero",
+      "default": "#303C3D"
+    },
+    {
+      "type": "checkbox",
+      "id": "tint_icons",
+      "label": "Aplicar color a los iconos",
+      "default": false,
+      "info": "Ideal para PNG con fondo transparente. Desactivado conserva los colores originales; activado usa la silueta del PNG."
+    },
+    {
+      "type": "header",
+      "content": "Tamaños en computadora"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Tamaño de los iconos",
+      "min": 24,
+      "max": 160,
+      "step": 2,
+      "default": 48,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "item_width",
+      "label": "Ancho de cada categoría",
+      "min": 64,
+      "max": 240,
+      "step": 4,
+      "default": 100,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Distancia entre categorías",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Tamaño de los nombres",
+      "min": 10,
+      "max": 32,
+      "step": 1,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Tamaños en móvil"
+    },
+    {
+      "type": "range",
+      "id": "icon_size_mobile",
+      "label": "Tamaño de los iconos",
+      "min": 24,
+      "max": 120,
+      "step": 2,
+      "default": 44,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "item_width_mobile",
+      "label": "Ancho de cada categoría",
+      "min": 64,
+      "max": 200,
+      "step": 4,
+      "default": 88,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "gap_mobile",
+      "label": "Distancia entre categorías",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "default": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "label": "Tamaño de los nombres",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 11,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Tipografía"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_custom_font",
+      "label": "Usar una fuente personalizada",
+      "default": false
+    },
+    {
+      "type": "font_picker",
+      "id": "font",
+      "label": "Fuente y variante",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "select",
+      "id": "text_transform",
+      "label": "Formato de los nombres",
+      "default": "uppercase",
+      "options": [
+        {
+          "value": "none",
+          "label": "Tal como se escribió"
+        },
+        {
+          "value": "uppercase",
+          "label": "MAYÚSCULAS"
+        },
+        {
+          "value": "lowercase",
+          "label": "minúsculas"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Espaciado entre letras",
+      "min": 0,
+      "max": 4,
+      "step": 0.1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "caption_size",
+      "label": "Tamaño de la leyenda",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 11,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "caption_spacing",
+      "label": "Espaciado de letras en la leyenda",
+      "min": 0,
+      "max": 8,
+      "step": 0.2,
+      "default": 3,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "caption_gap",
+      "label": "Separación de la leyenda",
+      "min": 0,
+      "max": 64,
+      "step": 2,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Distribución y márgenes"
+    },
+    {
+      "type": "paragraph",
+      "content": "Las categorías se centran automáticamente con espacios iguales. Cuando no entran, se pueden desplazar con el dedo, el trackpad, la barra o las flechas. El ancho de cada categoría crece si el icono necesita más espacio."
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Ancho máximo del contenido",
+      "min": 720,
+      "max": 1920,
+      "step": 20,
+      "default": 1200,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Margen interior superior",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Margen interior inferior",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 20,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Categoría",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icono de la categoría",
+          "info": "Usá un PNG con fondo transparente y poco espacio vacío alrededor del icono."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Nombre",
+          "default": "Categoría"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Enlace a la colección",
+          "info": "Seleccioná una colección o pegá su URL."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Categorías en imágenes",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,174 @@
+.image-categories {
+  display: block;
+  background: var(--ic-background);
+  color: var(--ic-text);
+  padding: var(--ic-padding-top) 0 var(--ic-padding-bottom);
+  font-family: var(--ic-font, var(--font-body-family));
+  font-weight: var(--ic-weight, var(--font-body-weight));
+  font-style: var(--ic-style, var(--font-body-style));
+}
+
+.image-categories__inner {
+  max-width: var(--ic-max-width);
+  margin-inline: auto;
+  padding-inline: clamp(12px, 3vw, 40px);
+  min-width: 0;
+}
+
+.image-categories__viewport {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ic-accent) transparent;
+  border-radius: 4px;
+}
+
+/* Center short lists; max-content keeps overflowing items reachable. */
+.image-categories__list {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: var(--ic-gap);
+  width: max-content;
+  min-width: 100%;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  box-sizing: border-box;
+}
+
+.image-categories__item {
+  flex: 0 0 max(var(--ic-item), calc(var(--ic-icon) + 16px));
+  width: max(var(--ic-item), calc(var(--ic-icon) + 16px));
+  scroll-snap-align: center;
+  min-width: 0;
+}
+
+.image-categories__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  height: 100%;
+  min-height: 44px;
+  padding: 8px;
+  border-radius: 8px;
+  color: var(--ic-text);
+  text-decoration: none;
+  text-align: center;
+  box-sizing: border-box;
+  transition: color 180ms ease, background-color 180ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.image-categories__card--linked { cursor: pointer; }
+
+.image-categories__icon {
+  display: block;
+  flex: 0 0 auto;
+  width: var(--ic-icon);
+  height: var(--ic-icon);
+  color: var(--ic-accent);
+  transition: transform 180ms ease, color 180ms ease;
+}
+
+.image-categories__image,
+.image-categories__icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.image-categories__icon--tinted {
+  background-color: currentColor;
+  -webkit-mask: var(--ic-mask) center / contain no-repeat;
+  mask: var(--ic-mask) center / contain no-repeat;
+}
+
+.image-categories__icon--tinted .image-categories__image { opacity: 0; }
+
+.image-categories__label {
+  font-size: var(--ic-label-size);
+  line-height: 1.4;
+  letter-spacing: var(--ic-tracking);
+  text-transform: var(--ic-transform);
+  overflow-wrap: anywhere;
+}
+
+.image-categories__caption {
+  color: var(--ic-accent);
+  margin: var(--ic-caption-gap) 0 0;
+  text-align: center;
+  font-size: var(--ic-caption-size);
+  letter-spacing: var(--ic-caption-tracking);
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.image-categories__controls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.image-categories__controls[hidden] { display: none; }
+
+.image-categories__arrow {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ic-accent);
+  cursor: pointer;
+}
+
+.image-categories__arrow svg { width: 20px; height: 20px; }
+.image-categories__arrow:disabled { opacity: 0.3; cursor: default; }
+
+.image-categories__card--linked:active,
+.image-categories__arrow:active:not(:disabled) {
+  color: var(--ic-hover);
+  background-color: var(--ic-hover-background);
+}
+
+.image-categories__card:focus-visible,
+.image-categories__arrow:focus-visible,
+.image-categories__viewport:focus-visible {
+  outline: 2px solid var(--ic-accent);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+.image-categories__empty {
+  padding: 24px;
+  margin: 0;
+  border: 1px dashed var(--ic-accent);
+  border-radius: 8px;
+  text-align: center;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .image-categories__card--linked:hover,
+  .image-categories__arrow:hover:not(:disabled) {
+    color: var(--ic-hover);
+    background-color: var(--ic-hover-background);
+  }
+  .image-categories__card--linked:hover .image-categories__icon {
+    color: var(--ic-hover);
+    transform: translateY(-3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image-categories__card,
+  .image-categories__icon { transition: none; }
+  .image-categories__card--linked:hover .image-categories__icon { transform: none; }
+}

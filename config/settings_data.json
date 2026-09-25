@@ -9,8 +9,10 @@
  */
 {
   "current": {
-    "logo_width": 90,
-    "type_header_font": "asap_n5",
+    "logo": "shopify://shop_images/Marca_Origial_811b006e-ec46-4769-8761-3a5261e493b1.png",
+    "logo_width": 200,
+    "favicon": "shopify://shop_images/favicon_U.jpg",
+    "type_header_font": "archivo_n6",
     "heading_scale": 100,
     "type_body_font": "roboto_n4",
     "body_scale": 100,
@@ -22,7 +24,7 @@
     "animations_hover_elements": "none",
     "buttons_border_thickness": 1,
     "buttons_border_opacity": 100,
-    "buttons_radius": 0,
+    "buttons_radius": 6,
     "buttons_shadow_opacity": 0,
     "buttons_shadow_horizontal_offset": 0,
     "buttons_shadow_vertical_offset": 4,
@@ -166,10 +168,10 @@
       },
       "scheme-3": {
         "settings": {
-          "background": "#242833",
+          "background": "#FFFFFF",
           "background_gradient": "",
-          "text": "#ffffff",
-          "button": "#ffffff",
+          "text": "#FFFFFF",
+          "button": "#F39200",
           "button_label": "#000000",
           "secondary_button_label": "#ffffff",
           "shadow": "#121212"

@@ -10,7 +10,7 @@
     --ic-text: {{ section.settings.text_color }};
     --ic-accent: {{ section.settings.accent_color }};
     --ic-hover: {{ section.settings.hover_color }};
-    --ic-hover-background: {{ section.settings.hover_background }};
+    --ic-icon-color: {{ section.settings.icon_color }};
     --ic-icon: {{ section.settings.icon_size_mobile }}px;
     --ic-item: {{ section.settings.item_width_mobile }}px;
     --ic-gap: {{ section.settings.gap_mobile }}px;
@@ -66,8 +66,8 @@
                     class="image-categories__card{% if block.settings.link != blank %} image-categories__card--linked{% endif %}"
                     {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %}
                   >
-                    <span class="image-categories__icon{% if section.settings.tint_icons and block.settings.image != blank %} image-categories__icon--tinted{% endif %}"
-                      {% if section.settings.tint_icons and block.settings.image != blank %}
+                    <span class="image-categories__icon{% if block.settings.image != blank %} image-categories__icon--tinted{% endif %}"
+                      {% if block.settings.image != blank %}
                         style="--ic-mask: url('{{ block.settings.image | image_url: width: 480 | escape }}');"
                       {% endif %}
                       aria-hidden="true"
@@ -163,27 +163,21 @@
     {
       "type": "color",
       "id": "accent_color",
-      "label": "Iconos teñidos, leyenda y controles",
+      "label": "Leyenda y controles",
       "default": "#9DD8D8"
     },
     {
       "type": "color",
-      "id": "hover_color",
-      "label": "Texto e iconos al pasar el puntero",
-      "default": "#C4EEEE"
+      "id": "icon_color",
+      "label": "Color de los iconos en reposo",
+      "default": "#FFFFFF",
+      "info": "El color se aplica al contorno del PNG. Usá imágenes con fondo transparente."
     },
     {
       "type": "color",
-      "id": "hover_background",
-      "label": "Fondo al pasar el puntero",
-      "default": "#303C3D"
-    },
-    {
-      "type": "checkbox",
-      "id": "tint_icons",
-      "label": "Aplicar color a los iconos",
-      "default": false,
-      "info": "Ideal para PNG con fondo transparente. Desactivado conserva los colores originales; activado usa la silueta del PNG."
+      "id": "hover_color",
+      "label": "Color del icono y texto al pasar el puntero",
+      "default": "#FF8000"
     },
     {
       "type": "header",

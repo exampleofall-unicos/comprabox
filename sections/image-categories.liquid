@@ -43,7 +43,7 @@
   <image-categories id="ImageCategories-{{ section.id }}" class="image-categories">
     <div class="image-categories__inner">
       {%- if section.blocks.size > 0 -%}
-        <nav aria-label="{{ section.settings.navigation_label | escape }}">
+        <nav class="image-categories__navigation" aria-label="{{ section.settings.navigation_label | escape }}">
           <div
             id="CategoryViewport-{{ section.id }}"
             class="image-categories__viewport"

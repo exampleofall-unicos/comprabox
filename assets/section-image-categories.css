@@ -15,10 +15,20 @@
   min-width: 0;
 }
 
+.image-categories__navigation {
+  position: relative;
+}
+
+/* Reserve both edges while overflowing so arrows never cover a category. */
+.image-categories__navigation--arrows {
+  padding-inline: 44px;
+}
+
 .image-categories__viewport {
   overflow-x: auto;
   overscroll-behavior-x: contain;
-  scroll-snap-type: x proximity;
+  scroll-snap-type: none;
+  scroll-behavior: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--ic-accent) transparent;
   border-radius: 4px;
@@ -41,7 +51,6 @@
 .image-categories__item {
   flex: 0 0 max(var(--ic-item), calc(var(--ic-icon) + 16px));
   width: max(var(--ic-item), calc(var(--ic-icon) + 16px));
-  scroll-snap-align: center;
   min-width: 0;
 }
 
@@ -109,29 +118,45 @@
 }
 
 .image-categories__controls {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 12px;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
-.image-categories__controls[hidden] { display: none; }
+.image-categories__controls[hidden],
+.image-categories__arrow[hidden] { display: none; }
+
+.image-categories__navigation--arrows .image-categories__viewport {
+  scrollbar-width: none;
+}
+
+.image-categories__navigation--arrows .image-categories__viewport::-webkit-scrollbar {
+  display: none;
+}
 
 .image-categories__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   display: grid;
   place-items: center;
   width: 44px;
   height: 44px;
   padding: 10px;
-  border: 1px solid currentColor;
-  border-radius: 50%;
+  border: 0;
+  border-radius: 4px;
   background: transparent;
   color: var(--ic-accent);
   cursor: pointer;
+  pointer-events: auto;
+  opacity: 0.75;
+  transition: color 180ms ease, opacity 180ms ease;
 }
 
-.image-categories__arrow svg { width: 20px; height: 20px; }
-.image-categories__arrow:disabled { opacity: 0.3; cursor: default; }
+.image-categories__arrow[data-category-direction="-1"] { left: 0; }
+.image-categories__arrow[data-category-direction="1"] { right: 0; }
+.image-categories__arrow svg { width: 22px; height: 22px; }
+.image-categories__arrow:focus-visible { opacity: 1; }
 
 .image-categories__card--linked:focus-visible,
 .image-categories__card--linked:focus-visible .image-categories__icon,
@@ -162,6 +187,7 @@
   .image-categories__arrow:hover:not(:disabled) {
     color: var(--ic-hover);
   }
+  .image-categories__arrow:hover { opacity: 1; }
   .image-categories__card--linked:hover .image-categories__icon {
     color: var(--ic-hover);
   }
@@ -169,5 +195,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .image-categories__card,
+  .image-categories__arrow,
   .image-categories__icon { transition: none; }
 }

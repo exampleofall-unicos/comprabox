@@ -16,7 +16,7 @@
           "type": "eyebrow",
           "settings": {
             "text": "COMPRA DIRECTA · STOCK PERMANENTE",
-            "text_color": "#FFFFFF",
+            "text_color": "#ffffff",
             "highlight_color_1": "#ff8000",
             "highlight_color_2": "#ffffff",
             "highlight_color_3": "#ffc857",
@@ -37,8 +37,8 @@
           "settings": {
             "heading": "Termo, botellas y más para [color1]<strong>tu negocio</strong>[/color1]&nbsp;",
             "heading_size": "h0",
-            "text_color": "#FFFFFF",
-            "highlight_color_1": "#F39200",
+            "text_color": "#ffffff",
+            "highlight_color_1": "#f39200",
             "highlight_color_2": "#ffffff",
             "highlight_color_3": "#ffc857",
             "custom_typography": false,
@@ -57,7 +57,7 @@
           "type": "subheading",
           "settings": {
             "text": "Productos ideales para reventa y personalización.",
-            "text_color": "#FFFFFF",
+            "text_color": "#ffffff",
             "highlight_color_1": "#ff8000",
             "highlight_color_2": "#ffffff",
             "highlight_color_3": "#ffc857",
@@ -107,26 +107,88 @@
     "image_categories_6yG4Ab": {
       "type": "image-categories",
       "blocks": {
-        "category_6UFwJ9": {
-          "type": "category",
-          "settings": {
-            "title": "Categoría",
-            "link": ""
-          }
-        },
-        "category_iGQrQ6": {
+        "category_9z6yLg": {
           "type": "category",
           "name": "Termos",
           "settings": {
-            "image": "shopify://shop_images/add-friend_11331162.png",
-            "title": "TERMOS",
-            "link": ""
+            "image": "shopify://shop_images/Termos.png",
+            "title": "Termos",
+            "link": "shopify://collections/all"
+          }
+        },
+        "category_a3gT84": {
+          "type": "category",
+          "name": "Mates",
+          "settings": {
+            "image": "shopify://shop_images/Mates.png",
+            "title": "Mates",
+            "link": "shopify://collections"
+          }
+        },
+        "category_N9j3z6": {
+          "type": "category",
+          "name": "Autocebantes",
+          "settings": {
+            "image": "shopify://shop_images/Autocebantes.png",
+            "title": "Autocebantes",
+            "link": "shopify://collections"
+          }
+        },
+        "category_NECYrp": {
+          "type": "category",
+          "name": "Botellas",
+          "settings": {
+            "image": "shopify://shop_images/Botellas.png",
+            "title": "Botellas",
+            "link": "shopify://collections"
+          }
+        },
+        "category_wgErBx": {
+          "type": "category",
+          "name": "Botellas Deportivas",
+          "settings": {
+            "image": "shopify://shop_images/Botellas_Deportivas.png",
+            "title": "Botellas Deportivas",
+            "link": "shopify://collections"
+          }
+        },
+        "category_gwDRqK": {
+          "type": "category",
+          "name": "Vasos",
+          "settings": {
+            "image": "shopify://shop_images/Vasos_8abc3a2b-f290-48e2-b753-cf523c6d254b.png",
+            "title": "Vasos",
+            "link": "shopify://collections"
+          }
+        },
+        "category_m8zCQi": {
+          "type": "category",
+          "name": "Tazas",
+          "settings": {
+            "image": "shopify://shop_images/Tazas_d3effaa8-fcf2-45e8-8279-17fa7b6e21ea.png",
+            "title": "Tazas",
+            "link": "shopify://collections"
+          }
+        },
+        "category_bKabai": {
+          "type": "category",
+          "name": "Sets",
+          "settings": {
+            "image": "shopify://shop_images/Combos.png",
+            "title": "Sets y Combos",
+            "link": "shopify://collections"
           }
         }
       },
       "block_order": [
-        "category_6UFwJ9",
-        "category_iGQrQ6"
+        "category_9z6yLg",
+        "category_a3gT84",
+        "category_N9j3z6",
+        "category_NECYrp",
+        "category_wgErBx",
+        "category_gwDRqK",
+        "category_m8zCQi",
+        "category_bKabai"
       ],
       "name": "Categorías en imágenes",
       "settings": {
@@ -134,17 +196,16 @@
         "caption": "",
         "show_arrows": true,
         "background": "#242829",
-        "text_color": "#FFFFFF",
-        "accent_color": "#9DD8D8",
-        "hover_color": "#C4EEEE",
-        "hover_background": "#303C3D",
-        "tint_icons": false,
-        "icon_size": 60,
-        "item_width": 100,
-        "gap": 12,
-        "font_size": 13,
-        "icon_size_mobile": 44,
-        "item_width_mobile": 88,
+        "text_color": "#ffffff",
+        "accent_color": "#9dd8d8",
+        "icon_color": "#ffffff",
+        "hover_color": "#f39200",
+        "icon_size": 110,
+        "item_width": 64,
+        "gap": 2,
+        "font_size": 12,
+        "icon_size_mobile": 80,
+        "item_width_mobile": 112,
         "gap_mobile": 8,
         "font_size_mobile": 11,
         "use_custom_font": true,
@@ -155,7 +216,7 @@
         "caption_spacing": 3,
         "caption_gap": 20,
         "max_width": 1200,
-        "padding_top": 20,
+        "padding_top": 10,
         "padding_bottom": 20
       }
     },

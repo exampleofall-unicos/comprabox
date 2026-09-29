@@ -8,6 +8,8 @@ if (!customElements.get('image-categories')) {
       this.viewport = this.querySelector('[data-category-viewport]');
       if (!this.viewport) return;
       this.controls = this.querySelector('[data-category-controls]');
+      this.navigation = this.querySelector('.image-categories__navigation');
+      this.list = this.querySelector('.image-categories__list');
       this.buttons = [...this.querySelectorAll('[data-category-direction]')];
       this.events = new AbortController();
       const options = { signal: this.events.signal };
@@ -36,7 +38,8 @@ if (!customElements.get('image-categories')) {
       }, options);
       this.resizeObserver = new ResizeObserver(() => this.update());
       this.resizeObserver.observe(this.viewport);
-      this.resizeObserver.observe(this.querySelector('.image-categories__list'));
+      this.resizeObserver.observe(this.navigation);
+      this.resizeObserver.observe(this.list);
       this.update();
     }
 
@@ -48,15 +51,24 @@ if (!customElements.get('image-categories')) {
     }
 
     update() {
+      // Measure against the full bar, not the viewport reduced by arrow gutters.
+      // This keeps resizing stable and restores centering when all items fit.
+      const needsArrows = Boolean(this.controls) && this.list.scrollWidth > this.navigation.clientWidth + 2;
+      this.navigation.classList.toggle('image-categories__navigation--arrows', needsArrows);
       const overflowing = this.viewport.scrollWidth > this.viewport.clientWidth + 2;
       if (this.controls) this.controls.hidden = !overflowing;
       this.viewport.tabIndex = overflowing ? 0 : -1;
       const bounds = this.viewport.getBoundingClientRect();
-      const list = this.querySelector('.image-categories__list').getBoundingClientRect();
+      const list = this.list.getBoundingClientRect();
       this.buttons.forEach((button) => {
-        button.disabled = Number(button.dataset.categoryDirection) < 0
+        const atEdge = !overflowing || (Number(button.dataset.categoryDirection) < 0
           ? list.left >= bounds.left - 2
-          : list.right <= bounds.right + 2;
+          : list.right <= bounds.right + 2);
+        if (atEdge && document.activeElement === button) {
+          this.viewport.focus({ preventScroll: true });
+        }
+        button.disabled = atEdge;
+        button.hidden = atEdge;
       });
     }
 

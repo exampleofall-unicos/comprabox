@@ -1,0 +1,15 @@
+{% comment %}Decorative icons; the adjacent benefit text provides the accessible name.{% endcomment %}
+<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  {%- case icon -%}
+    {%- when 'truck' -%}
+      <path d="M5 31V12h24v23H15m14-16h8l6 9v7h-5M5 22H2m3 6H1m28 7h-2" />
+      <circle cx="11" cy="35" r="4" /><circle cx="34" cy="35" r="4" />
+    {%- when 'person' -%}
+      <circle cx="24" cy="13" r="8" /><path d="M7 42v-5c0-8 7-12 17-12s17 4 17 12v5Z" />
+    {%- when 'volume' -%}
+      <path d="m5 19 19 9 19-9v21l-19 5-19-5Zm0 0 9-5m29 5-9-5M24 28v17" />
+      <path d="m15 6 9-4 9 4v13l-9 5-9-5Zm0 0 9 5 9-5M24 11v13" />
+    {%- else -%}
+      <path d="m6 13 18-9 18 9v23l-18 9-18-9Zm0 0 18 10 18-10M24 23v22M15 9l18 10v10" />
+  {%- endcase -%}
+</svg>

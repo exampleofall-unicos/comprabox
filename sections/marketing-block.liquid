@@ -1,0 +1,617 @@
+{{ 'section-marketing-block.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign benefit_blocks = section.blocks | where: 'type', 'benefit'
+  assign copy_count = section.blocks.size | minus: benefit_blocks.size
+  assign desktop_image = section.settings.image | default: section.settings.image_mobile
+  assign mobile_image = section.settings.image_mobile | default: desktop_image
+  assign image_loading = 'lazy'
+  assign image_priority = 'auto'
+  if section.index == 1
+    assign image_loading = 'eager'
+    assign image_priority = 'high'
+  endif
+-%}
+
+{%- style -%}
+  {%- if section.settings.custom_font -%}
+    {{ section.settings.font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  #Marketing-{{ section.id }} {
+    --mk-background: {{ section.settings.background }};
+    --mk-text: {{ section.settings.text_color }};
+    --mk-heading: {{ section.settings.heading_color }};
+    --mk-accent: {{ section.settings.accent_color }};
+    --mk-panel: {{ section.settings.panel_color | color_modify: 'alpha', section.settings.panel_opacity }};
+    --mk-panel-text: {{ section.settings.panel_text_color }};
+    --mk-overlay: {{ section.settings.overlay_color }};
+    --mk-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --mk-width: {{ section.settings.content_width }}px;
+    --mk-panel-width: {{ section.settings.panel_width }}px;
+    --mk-gap: {{ section.settings.column_gap }}px;
+    --mk-radius: {{ section.settings.panel_radius }}px;
+    --mk-icon: {{ section.settings.icon_size }}px;
+    --mk-padding: {{ section.settings.padding_mobile }}px;
+    --mk-height: {{ section.settings.min_height_mobile }}px;
+    --mk-desktop-position: {{ desktop_image.presentation.focal_point | default: '50% 50%' }};
+    --mk-mobile-position: {{ mobile_image.presentation.focal_point | default: '50% 50%' }};
+    {%- if section.settings.custom_font %}
+      --mk-font: {{ section.settings.font.family }}, {{ section.settings.font.fallback_families }};
+      --mk-font-style: {{ section.settings.font.style }};
+      --mk-font-weight: {{ section.settings.font.weight }};
+    {%- endif %}
+  }
+  {%- for block in section.blocks -%}
+    #Marketing-{{ section.id }} #MarketingText-{{ block.id }} {
+      font-size: {{ block.settings.font_size_mobile }}px;
+      {%- if block.settings.text_color != blank %}
+        color: {{ block.settings.text_color }};
+      {%- endif %}
+    }
+    @media screen and (min-width: 750px) {
+      #Marketing-{{ section.id }} #MarketingText-{{ block.id }} {
+        font-size: {{ block.settings.font_size_desktop }}px;
+      }
+    }
+  {%- endfor -%}
+  @media screen and (min-width: 990px) {
+    #Marketing-{{ section.id }} {
+      --mk-padding: {{ section.settings.padding_desktop }}px;
+      --mk-height: {{ section.settings.min_height }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div id="Marketing-{{ section.id }}" class="marketing-block color-{{ section.settings.color_scheme }}">
+  {%- if desktop_image != blank -%}
+    <picture class="marketing-block__media" aria-hidden="true">
+      {%- if mobile_image != blank -%}
+        <source media="(max-width: 989px)" sizes="100vw" srcset="{{ mobile_image | image_url: width: 375 }} 375w, {{ mobile_image | image_url: width: 750 }} 750w, {{ mobile_image | image_url: width: 1100 }} 1100w, {{ mobile_image | image_url: width: 1500 }} 1500w">
+      {%- endif -%}
+      {{ desktop_image | image_url: width: 2400 | image_tag: widths: '750, 1100, 1500, 2000, 2400', sizes: '100vw', loading: image_loading, fetchpriority: image_priority, alt: '' }}
+    </picture>
+  {%- endif -%}
+  <div class="marketing-block__overlay"></div>
+  <div class="marketing-block__layout{% if benefit_blocks.size == 0 or copy_count == 0 %} marketing-block__layout--text-only{% endif %}">
+    {%- if copy_count > 0 -%}
+      <div class="marketing-block__copy">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'eyebrow' -%}
+              <p id="MarketingText-{{ block.id }}" class="marketing-block__eyebrow caption-with-letter-spacing" {{ block.shopify_attributes }}>{{ block.settings.eyebrow | escape }}</p>
+            {%- when 'heading' -%}
+              <h2 id="MarketingText-{{ block.id }}" class="marketing-block__heading inline-richtext" {{ block.shopify_attributes }}>{{ block.settings.heading }}</h2>
+            {%- when 'text' -%}
+              <div id="MarketingText-{{ block.id }}" class="marketing-block__text rte {{ block.settings.text_style }}" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+            {%- when 'button' -%}
+              <div class="marketing-block__button-wrapper" {{ block.shopify_attributes }}>
+                {%- if block.settings.button_label != blank -%}
+                  <a id="MarketingText-{{ block.id }}" class="marketing-block__button button{% if block.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %}" {% if block.settings.button_link != blank %}href="{{ block.settings.button_link }}"{% else %}role="link" aria-disabled="true"{% endif %}>
+                    {{ block.settings.button_label | escape }}
+                  </a>
+                {%- endif -%}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+    {%- if benefit_blocks.size > 0 -%}
+      <ul class="marketing-block__benefits" role="list">
+        {%- for block in benefit_blocks -%}
+          <li class="marketing-block__benefit" {{ block.shopify_attributes }}>
+            <span class="marketing-block__icon{% if block.settings.image != blank and block.settings.tint_icon %} marketing-block__icon--tinted{% endif %}" aria-hidden="true"
+              {% if block.settings.image != blank and block.settings.tint_icon %}style="--mk-mask: url('{{ block.settings.image | image_url: width: 240 | escape }}');"{% endif %}
+            >
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 240 | image_tag: widths: '80, 160, 240', sizes: '80px', loading: 'lazy', alt: '' }}
+              {%- else -%}
+                {% render 'marketing-benefit-icon', icon: block.settings.icon %}
+              {%- endif -%}
+            </span>
+            <div id="MarketingText-{{ block.id }}" class="marketing-block__benefit-text">{{ block.settings.text }}</div>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bloque de Marketing",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 16,
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Fondo para escritorio",
+      "info": "Elegí el punto focal desde el selector de imagen. Se recorta para cubrir toda la sección."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Fondo para móvil",
+      "info": "Se usa debajo de 990 px. Si falta una imagen, se utiliza la disponible en ambos tamaños."
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Color de fondo",
+      "default": "#101C21"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Color del subtítulo",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Color del título",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Color de iconos y texto superior",
+      "default": "#FF8000"
+    },
+    {
+      "type": "color",
+      "id": "panel_color",
+      "label": "Fondo de la tarjeta",
+      "default": "#0B171D"
+    },
+    {
+      "type": "color",
+      "id": "panel_text_color",
+      "label": "Texto de los beneficios",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Color de la capa sobre la imagen",
+      "default": "#071217"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Oscuridad sobre la imagen",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 35,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "panel_opacity",
+      "label": "Opacidad de la tarjeta",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.8
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_font",
+      "label": "Usar fuente personalizada",
+      "default": false
+    },
+    {
+      "type": "font_picker",
+      "id": "font",
+      "label": "Fuente",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Tamaño de los iconos",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "panel_radius",
+      "label": "Redondeado de la tarjeta",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "default": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Ancho máximo del contenido",
+      "min": 800,
+      "max": 1600,
+      "step": 20,
+      "default": 1200,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "panel_width",
+      "label": "Ancho de tarjeta en escritorio",
+      "min": 260,
+      "max": 480,
+      "step": 10,
+      "default": 320,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Separación entre columnas",
+      "min": 24,
+      "max": 160,
+      "step": 4,
+      "default": 120,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "label": "Altura mínima en escritorio",
+      "min": 240,
+      "max": 800,
+      "step": 10,
+      "default": 360,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "min_height_mobile",
+      "label": "Altura mínima en móvil",
+      "min": 0,
+      "max": 800,
+      "step": 20,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_desktop",
+      "label": "Espacio superior e inferior en escritorio",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Espacio superior e inferior en móvil",
+      "min": 16,
+      "max": 100,
+      "step": 4,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-3"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "eyebrow",
+      "name": "Texto superior",
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Texto superior",
+          "default": "PARA MAYORISTAS"
+        },
+        {
+          "type": "range",
+          "id": "font_size_desktop",
+          "label": "Tamaño en escritorio",
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 13
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile",
+          "label": "Tamaño en móvil",
+          "min": 10,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "default": 12
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Color del texto",
+          "info": "Vacío utiliza el color definido en la sección."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "name": "Título",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Título",
+          "default": "Abastecé tu negocio con los mejores productos"
+        },
+        {
+          "type": "range",
+          "id": "font_size_desktop",
+          "label": "Tamaño en escritorio",
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 52
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile",
+          "label": "Tamaño en móvil",
+          "min": 10,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "default": 40
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Color del texto",
+          "info": "Vacío utiliza el color definido en la sección."
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Subtítulo / texto",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Subtítulo",
+          "default": "<p>Trabajamos con emprendedores, revendedores y comercios de todo el país. Stock permanente, precios especiales y envíos seguros.</p>"
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "options": [
+            {
+              "value": "body",
+              "label": "t:sections.image-banner.blocks.text.settings.text_style.options__1.label"
+            },
+            {
+              "value": "subtitle",
+              "label": "t:sections.image-banner.blocks.text.settings.text_style.options__2.label"
+            },
+            {
+              "value": "caption-with-letter-spacing",
+              "label": "t:sections.image-banner.blocks.text.settings.text_style.options__3.label"
+            }
+          ],
+          "default": "body",
+          "label": "t:sections.image-banner.blocks.text.settings.text_style.label"
+        },
+        {
+          "type": "range",
+          "id": "font_size_desktop",
+          "label": "Tamaño en escritorio",
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile",
+          "label": "Tamaño en móvil",
+          "min": 10,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Color del texto",
+          "info": "Vacío utiliza el color definido en la sección."
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Botón",
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Texto del botón",
+          "default": "Quiero ser mayorista"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Enlace del botón"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary",
+          "label": "t:sections.image-banner.blocks.buttons.settings.button_style_secondary_1.label",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "font_size_desktop",
+          "label": "Tamaño en escritorio",
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 15
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile",
+          "label": "Tamaño en móvil",
+          "min": 10,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "default": 15
+        }
+      ]
+    },
+    {
+      "type": "benefit",
+      "name": "Icono con texto",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icono prediseñado",
+          "default": "box",
+          "options": [
+            {
+              "value": "box",
+              "label": "Catálogo / caja"
+            },
+            {
+              "value": "volume",
+              "label": "Precios por volumen"
+            },
+            {
+              "value": "truck",
+              "label": "Envíos"
+            },
+            {
+              "value": "person",
+              "label": "Atención comercial"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icono personalizado",
+          "info": "Opcional. Reemplaza el icono prediseñado. Recomendamos PNG con fondo transparente."
+        },
+        {
+          "type": "checkbox",
+          "id": "tint_icon",
+          "label": "Aplicar el color de la sección al icono",
+          "default": true,
+          "info": "Usa la silueta de la imagen transparente. Desactivá para conservar sus colores originales."
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "Beneficio para tu negocio"
+        },
+        {
+          "type": "range",
+          "id": "font_size_desktop",
+          "label": "Tamaño en escritorio",
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 15
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile",
+          "label": "Tamaño en móvil",
+          "min": 10,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "default": 15
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Color del texto",
+          "info": "Vacío utiliza el color definido en la sección."
+        }
+      ],
+      "limit": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bloque de Marketing",
+      "blocks": [
+        {
+          "type": "eyebrow"
+        },
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "button"
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "box",
+            "text": "Amplio catálogo de productos"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "volume",
+            "text": "Precios por volumen"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "truck",
+            "text": "Envíos a todo el país"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "person",
+            "text": "Atención comercial personalizada"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

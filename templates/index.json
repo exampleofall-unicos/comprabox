@@ -247,11 +247,270 @@
         "padding_top": 44,
         "padding_bottom": 36
       }
+    },
+    "marketing_block_Jx93bt": {
+      "type": "marketing-block",
+      "blocks": {
+        "eyebrow_mRiWCj": {
+          "type": "eyebrow",
+          "settings": {
+            "eyebrow": "PARA MAYORISTAS",
+            "font_size_desktop": 13,
+            "font_size_mobile": 12,
+            "text_color": ""
+          }
+        },
+        "heading_ktmUyg": {
+          "type": "heading",
+          "settings": {
+            "heading": "Abastecé tu negocio con los mejores productos",
+            "font_size_desktop": 52,
+            "font_size_mobile": 40,
+            "text_color": ""
+          }
+        },
+        "text_mnzdw7": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Trabajamos con emprendedores, revendedores y comercios de todo el país. Stock permanente, precios especiales y envíos seguros.</p>",
+            "text_style": "body",
+            "font_size_desktop": 16,
+            "font_size_mobile": 16,
+            "text_color": ""
+          }
+        },
+        "button_tbCbyj": {
+          "type": "button",
+          "settings": {
+            "button_label": "Quiero ser mayorista",
+            "button_link": "",
+            "button_style_secondary": false,
+            "font_size_desktop": 15,
+            "font_size_mobile": 15
+          }
+        },
+        "benefit_x3Lzez": {
+          "type": "benefit",
+          "settings": {
+            "icon": "box",
+            "tint_icon": true,
+            "text": "Amplio catálogo de productos",
+            "font_size_desktop": 15,
+            "font_size_mobile": 15,
+            "text_color": ""
+          }
+        },
+        "benefit_mnL3dw": {
+          "type": "benefit",
+          "settings": {
+            "icon": "volume",
+            "tint_icon": true,
+            "text": "Precios por volumen",
+            "font_size_desktop": 15,
+            "font_size_mobile": 15,
+            "text_color": ""
+          }
+        },
+        "benefit_HchrUg": {
+          "type": "benefit",
+          "settings": {
+            "icon": "truck",
+            "tint_icon": true,
+            "text": "Envíos a todo el país",
+            "font_size_desktop": 15,
+            "font_size_mobile": 15,
+            "text_color": ""
+          }
+        },
+        "benefit_VWKJBp": {
+          "type": "benefit",
+          "settings": {
+            "icon": "person",
+            "tint_icon": true,
+            "text": "Atención comercial personalizada",
+            "font_size_desktop": 15,
+            "font_size_mobile": 15,
+            "text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_mRiWCj",
+        "heading_ktmUyg",
+        "text_mnzdw7",
+        "button_tbCbyj",
+        "benefit_x3Lzez",
+        "benefit_mnL3dw",
+        "benefit_HchrUg",
+        "benefit_VWKJBp"
+      ],
+      "name": "Bloque de Marketing",
+      "settings": {
+        "background": "#101C21",
+        "text_color": "#FFFFFF",
+        "heading_color": "#FFFFFF",
+        "accent_color": "#FF8000",
+        "panel_color": "#0B171D",
+        "panel_text_color": "#FFFFFF",
+        "overlay_color": "#071217",
+        "overlay_opacity": 35,
+        "panel_opacity": 0.8,
+        "custom_font": false,
+        "font": "assistant_n4",
+        "icon_size": 40,
+        "panel_radius": 8,
+        "content_width": 1200,
+        "panel_width": 320,
+        "column_gap": 120,
+        "min_height": 360,
+        "min_height_mobile": 0,
+        "padding_desktop": 40,
+        "padding_mobile": 32,
+        "color_scheme": ""
+      }
+    },
+    "personalization_block_jiaKWj": {
+      "type": "personalization-block",
+      "blocks": {
+        "eyebrow_E9QBig": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "PERSONALIZACIÓN",
+            "font_size_desktop": 12,
+            "font_size_mobile": 11,
+            "text_color": "",
+            "highlight_color_1": "#FF8000",
+            "highlight_color_2": "#111B22",
+            "highlight_color_3": "#59636B"
+          }
+        },
+        "heading_xbByhM": {
+          "type": "heading",
+          "settings": {
+            "heading": "Convertí un producto[br]en algo [color1]único[/color1]",
+            "font_size_desktop": 36,
+            "font_size_mobile": 30,
+            "text_color": "",
+            "highlight_color_1": "#FF8000",
+            "highlight_color_2": "#111B22",
+            "highlight_color_3": "#59636B"
+          }
+        },
+        "text_mxPfWc": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Con nuestro servicio de grabado láser podés personalizar termos, botellas, vasos y más. Ideal para regalos empresariales, eventos, merchandising y tu propio emprendimiento.</p>",
+            "text_style": "body",
+            "font_size_desktop": 16,
+            "font_size_mobile": 16,
+            "text_color": "",
+            "highlight_color_1": "#FF8000",
+            "highlight_color_2": "#111B22",
+            "highlight_color_3": "#59636B"
+          }
+        },
+        "benefit_4JFUp4": {
+          "type": "benefit",
+          "settings": {
+            "tint_icon": true,
+            "text": "Grabado láser de alta precisión",
+            "font_size_desktop": 15,
+            "font_size_mobile": 15,
+            "text_color": "",
+            "highlight_color_1": "#FF8000",
+            "highlight_color_2": "#111B22",
+            "highlight_color_3": "#59636B"
+          }
+        },
+        "benefit_N6pwta": {
+          "type": "benefit",
+          "settings": {
+            "tint_icon": true,
+            "text": "Mínimos y grandes volúmenes",
+            "font_size_desktop": 15,
+            "font_size_mobile": 15,
+            "text_color": "",
+            "highlight_color_1": "#FF8000",
+            "highlight_color_2": "#111B22",
+            "highlight_color_3": "#59636B"
+          }
+        },
+        "benefit_eCQpD9": {
+          "type": "benefit",
+          "settings": {
+            "tint_icon": true,
+            "text": "Diseños personalizados",
+            "font_size_desktop": 15,
+            "font_size_mobile": 15,
+            "text_color": "",
+            "highlight_color_1": "#FF8000",
+            "highlight_color_2": "#111B22",
+            "highlight_color_3": "#59636B"
+          }
+        },
+        "benefit_matP8g": {
+          "type": "benefit",
+          "settings": {
+            "tint_icon": true,
+            "text": "Asesoramiento sin cargo",
+            "font_size_desktop": 15,
+            "font_size_mobile": 15,
+            "text_color": "",
+            "highlight_color_1": "#FF8000",
+            "highlight_color_2": "#111B22",
+            "highlight_color_3": "#59636B"
+          }
+        },
+        "button_jfWcdM": {
+          "type": "button",
+          "settings": {
+            "button_label": "Quiero personalizar",
+            "button_link": "",
+            "button_style_secondary": false,
+            "font_size_desktop": 15,
+            "font_size_mobile": 15,
+            "show_arrow": true
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_E9QBig",
+        "heading_xbByhM",
+        "text_mxPfWc",
+        "benefit_4JFUp4",
+        "benefit_N6pwta",
+        "benefit_eCQpD9",
+        "benefit_matP8g",
+        "button_jfWcdM"
+      ],
+      "name": "Bloque de Personalización",
+      "settings": {
+        "background": "#FFFFFF",
+        "text_color": "#59636B",
+        "heading_color": "#111B22",
+        "accent_color": "#FF8000",
+        "overlay_color": "#FFFFFF",
+        "overlay_opacity": 85,
+        "custom_font": false,
+        "font": "assistant_n4",
+        "icon_size": 20,
+        "content_width": 1200,
+        "min_height": 440,
+        "min_height_mobile": 0,
+        "padding_desktop": 40,
+        "padding_mobile": 32,
+        "color_scheme": "",
+        "overlay_opacity_mobile": 95,
+        "copy_width": 46,
+        "block_gap": 18
+      }
     }
   },
   "order": [
     "image_banner",
     "image_categories_6yG4Ab",
-    "featured_collection"
+    "featured_collection",
+    "marketing_block_Jx93bt",
+    "personalization_block_jiaKWj"
   ]
 }

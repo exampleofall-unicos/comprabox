@@ -1,0 +1,21 @@
+{% comment %}Same explicit color markers as image-banner; incomplete markers remain text.{% endcomment %}
+{%- for index in (1..3) -%}
+  {%- assign opening_marker = '[color' | append: index | append: ']' -%}
+  {%- assign closing_marker = '[/color' | append: index | append: ']' -%}
+  {%- assign fragments = text | split: opening_marker -%}
+  {%- capture text -%}
+    {%- for fragment in fragments -%}
+      {%- if forloop.first -%}
+        {{- fragment -}}
+      {%- elsif fragment contains closing_marker -%}
+        {%- assign highlighted_text = fragment | split: closing_marker | first -%}
+        <span class="personalization-highlight--{{ index }}">{{ highlighted_text }}</span>
+        {%- assign consumed_text = highlighted_text | append: closing_marker -%}
+        {{- fragment | remove_first: consumed_text -}}
+      {%- else -%}
+        {{- opening_marker -}}{{- fragment -}}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+{%- endfor -%}
+{{- text | replace: '[br]', '<br>' -}}

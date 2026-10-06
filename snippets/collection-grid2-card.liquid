@@ -1,0 +1,35 @@
+{%- liquid
+  assign capacity_parts = section.settings.capacity_metafield | strip | split: '.'
+  assign box_parts = section.settings.box_metafield | strip | split: '.'
+  assign usd_parts = section.settings.usd_metafield | strip | split: '.'
+  assign capacity = product.metafields[capacity_parts.first][capacity_parts.last]
+  assign box_units = product.metafields[box_parts.first][box_parts.last]
+  assign usd_price = product.metafields[usd_parts.first][usd_parts.last]
+  assign image_loading = 'lazy'
+  if eager
+    assign image_loading = 'eager'
+  endif
+-%}
+<article class="cg2-card">
+  <a href="{{ product.url }}" class="cg2-card-image" aria-label="{{ product.title | escape }}">
+    {%- if product.featured_image != blank -%}
+      {{ product.featured_image | image_url: width: 900 | image_tag: widths: '180, 300, 450, 600, 900', sizes: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw', loading: image_loading, alt: product.featured_image.alt }}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+    {%- unless product.available -%}<span class="cg2-sold-out">{{ 'products.product.sold_out' | t }}</span>{%- endunless -%}
+  </a>
+  <div class="cg2-card-content">
+    <h3 class="cg2-product-title"><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
+    {%- if capacity != blank -%}<p class="cg2-capacity">{{ capacity | metafield_text | escape }}</p>{%- endif -%}
+    {%- if section.settings.show_price -%}
+      <p class="cg2-price">{% if product.price_varies %}{{ 'products.product.price.from_price_html' | t: price: '' }} {% endif %}{{ product.price | money_with_currency }}</p>
+    {%- endif -%}
+    {%- if box_units != blank or usd_price != blank -%}
+      <dl class="cg2-meta">
+        {%- if box_units != blank -%}<div><dt>Unidades por caja</dt><dd>{{ box_units | metafield_text | escape }}</dd></div>{%- endif -%}
+        {%- if usd_price != blank -%}<div><dt>Precio USD</dt><dd>{{ usd_price | metafield_text | escape }}</dd></div>{%- endif -%}
+      </dl>
+    {%- endif -%}
+  </div>
+</article>

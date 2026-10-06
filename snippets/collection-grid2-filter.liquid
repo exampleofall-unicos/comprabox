@@ -1,0 +1,25 @@
+<details class="cg2-filter" open>
+  <summary>{{ filter.label | escape }}<span aria-hidden="true">⌄</span></summary>
+  {%- case filter.type -%}
+    {%- when 'list', 'boolean' -%}
+      <ul role="list" class="cg2-filter-values">
+        {%- for value in filter.values -%}
+          <li>
+            <label class="cg2-option{% if value.count == 0 and value.active == false %} cg2-option--disabled{% endif %}">
+              <input type="checkbox" name="{{ value.param_name | escape }}" value="{{ value.value | escape }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}>
+              <span>{{ value.label | escape }} <span class="cg2-count">({{ value.count }})</span></span>
+            </label>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- when 'price_range' -%}
+      <div class="cg2-price-range">
+        <label>{{ 'products.facets.from' | t }} ({{ cart.currency.iso_code }})
+          <input type="number" inputmode="decimal" name="{{ filter.min_value.param_name }}" min="0" max="{{ filter.range_max | divided_by: 100.0 }}" step="0.01" {% if filter.min_value.value != nil %}value="{{ filter.min_value.value | divided_by: 100.0 }}"{% endif %} placeholder="0">
+        </label>
+        <label>{{ 'products.facets.to' | t }} ({{ cart.currency.iso_code }})
+          <input type="number" inputmode="decimal" name="{{ filter.max_value.param_name }}" min="0" max="{{ filter.range_max | divided_by: 100.0 }}" step="0.01" {% if filter.max_value.value != nil %}value="{{ filter.max_value.value | divided_by: 100.0 }}"{% endif %} placeholder="{{ filter.range_max | divided_by: 100.0 }}">
+        </label>
+      </div>
+  {%- endcase -%}
+</details>

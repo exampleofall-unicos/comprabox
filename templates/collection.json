@@ -11,10 +11,297 @@
   "sections": {
     "banner": {
       "type": "main-collection-banner",
+      "disabled": true,
       "settings": {
         "show_collection_description": true,
         "show_collection_image": false,
         "color_scheme": "scheme-1"
+      }
+    },
+    "image_banner_GxNniH": {
+      "type": "image-banner",
+      "blocks": {
+        "eyebrow_U9HnmG": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "[color1]<strong>CATÁLOGO MAYORISTA</strong>[/color1]&nbsp;",
+            "text_color": "",
+            "highlight_color_1": "#F39200",
+            "highlight_color_2": "#ffffff",
+            "highlight_color_3": "#ffc857",
+            "custom_typography": true,
+            "font_size_desktop": 12,
+            "font_size_mobile": 10,
+            "line_height": 1.4,
+            "letter_spacing": 1.6,
+            "text_transform": "none",
+            "custom_font_enabled": false,
+            "custom_font": "assistant_n4",
+            "custom_spacing": false,
+            "spacing_top": 12
+          }
+        },
+        "heading_YbHzRq": {
+          "type": "heading",
+          "settings": {
+            "heading": "Envases térmicos [br]de acero inoxidable",
+            "heading_size": "h0",
+            "text_color": "#ffffff",
+            "highlight_color_1": "#f39200",
+            "highlight_color_2": "#ffffff",
+            "highlight_color_3": "#ffc857",
+            "custom_typography": false,
+            "font_size_desktop": 48,
+            "font_size_mobile": 32,
+            "line_height": 1.1,
+            "letter_spacing": 0,
+            "text_transform": "none",
+            "custom_font_enabled": false,
+            "custom_font": "assistant_n4",
+            "custom_spacing": false,
+            "spacing_top": 0
+          }
+        },
+        "subheading_EfnYU3": {
+          "type": "subheading",
+          "settings": {
+            "text": "Gran variedad de termos, mates, botellas, vasos y más. [br]Stock permanente, precios por volumen y envíos a todo el país.",
+            "text_color": "#ffffff",
+            "highlight_color_1": "#ff8000",
+            "highlight_color_2": "#ffffff",
+            "highlight_color_3": "#ffc857",
+            "custom_typography": true,
+            "font_size_desktop": 20,
+            "font_size_mobile": 16,
+            "line_height": 1.4,
+            "letter_spacing": 0,
+            "text_transform": "none",
+            "custom_font_enabled": false,
+            "custom_font": "assistant_n4",
+            "custom_spacing": false,
+            "spacing_top": 12
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_U9HnmG",
+        "heading_YbHzRq",
+        "subheading_EfnYU3"
+      ],
+      "settings": {
+        "image_overlay_opacity": 40,
+        "image_height": "small",
+        "image_behavior": "none",
+        "desktop_content_position": "bottom-left",
+        "desktop_content_alignment": "left",
+        "show_text_box": false,
+        "color_scheme": "scheme-3",
+        "stack_images_on_mobile": false,
+        "mobile_content_alignment": "center",
+        "show_text_below": false
+      }
+    },
+    "newsletter_AMcmTn": {
+      "type": "newsletter",
+      "blocks": {
+        "benefit_aN4qXV": {
+          "type": "benefit",
+          "settings": {
+            "title": "Precios por volumen",
+            "description": "Mejores descuentos",
+            "icon": "truck",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        },
+        "benefit_jt3pjn": {
+          "type": "benefit",
+          "settings": {
+            "title": "Stock permanente",
+            "description": "Productos siempre disponibles",
+            "icon": "truck",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        },
+        "benefit_MwYxdM": {
+          "type": "benefit",
+          "settings": {
+            "title": "Envíos a todo el país",
+            "description": "Rápidos y seguros",
+            "icon": "truck",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        },
+        "benefit_94XKG8": {
+          "type": "benefit",
+          "settings": {
+            "title": "Asesoramiento comercial",
+            "description": "Hablá con un asesor",
+            "icon": "tag",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        }
+      },
+      "block_order": [
+        "benefit_aN4qXV",
+        "benefit_jt3pjn",
+        "benefit_MwYxdM",
+        "benefit_94XKG8"
+      ],
+      "name": "t:sections.newsletter.presets.name",
+      "settings": {
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "upper_background": "#FFFFFF",
+        "upper_text": "#111B22",
+        "muted_text": "#59636B",
+        "lower_background": "#09151B",
+        "lower_text": "#FFFFFF",
+        "accent_color": "#FF8000",
+        "divider_color": "#E5E7EB",
+        "input_background": "#FFFFFF",
+        "input_text": "#343D45",
+        "upper_overlay": 0,
+        "lower_overlay": 30,
+        "icon_size": 40,
+        "mail_icon_size": 28,
+        "content_width": 1200,
+        "bar_padding": 28,
+        "custom_font": false,
+        "font": "assistant_n4"
+      }
+    },
+    "image_categories_xxkHgc": {
+      "type": "image-categories",
+      "blocks": {
+        "category_DhaQpM": {
+          "type": "category",
+          "name": "Termos",
+          "settings": {
+            "image": "shopify://shop_images/Termos.png",
+            "title": "Termos",
+            "link": "shopify://collections/all"
+          }
+        },
+        "category_ctftx3": {
+          "type": "category",
+          "name": "Mates",
+          "settings": {
+            "image": "shopify://shop_images/Mates.png",
+            "title": "Mates",
+            "link": "shopify://collections"
+          }
+        },
+        "category_p9wn94": {
+          "type": "category",
+          "name": "Autocebantes",
+          "settings": {
+            "image": "shopify://shop_images/Autocebantes.png",
+            "title": "Autocebantes",
+            "link": "shopify://collections"
+          }
+        },
+        "category_BFWe4b": {
+          "type": "category",
+          "name": "Botellas",
+          "settings": {
+            "image": "shopify://shop_images/Botellas.png",
+            "title": "Botellas",
+            "link": "shopify://collections"
+          }
+        },
+        "category_bHAWLj": {
+          "type": "category",
+          "name": "Botellas Deportivas",
+          "settings": {
+            "image": "shopify://shop_images/Botellas_Deportivas.png",
+            "title": "Botellas Deportivas",
+            "link": "shopify://collections"
+          }
+        },
+        "category_EpcReL": {
+          "type": "category",
+          "name": "Vasos",
+          "settings": {
+            "image": "shopify://shop_images/Vasos_8abc3a2b-f290-48e2-b753-cf523c6d254b.png",
+            "title": "Vasos",
+            "link": "shopify://collections"
+          }
+        },
+        "category_XGrDfa": {
+          "type": "category",
+          "name": "Tazas",
+          "settings": {
+            "image": "shopify://shop_images/Tazas_d3effaa8-fcf2-45e8-8279-17fa7b6e21ea.png",
+            "title": "Tazas",
+            "link": "shopify://collections"
+          }
+        },
+        "category_3abJNi": {
+          "type": "category",
+          "name": "Sets",
+          "settings": {
+            "image": "shopify://shop_images/Combos.png",
+            "title": "Sets y Combos",
+            "link": "shopify://collections"
+          }
+        }
+      },
+      "block_order": [
+        "category_DhaQpM",
+        "category_ctftx3",
+        "category_p9wn94",
+        "category_BFWe4b",
+        "category_bHAWLj",
+        "category_EpcReL",
+        "category_XGrDfa",
+        "category_3abJNi"
+      ],
+      "name": "Categorías en imágenes",
+      "settings": {
+        "navigation_label": "Categorías de productosasd",
+        "caption": "",
+        "show_arrows": true,
+        "background": "#242829",
+        "text_color": "#ffffff",
+        "accent_color": "#9dd8d8",
+        "icon_color": "#ffffff",
+        "hover_color": "#f39200",
+        "icon_size": 110,
+        "item_width": 64,
+        "gap": 2,
+        "font_size": 12,
+        "icon_size_mobile": 80,
+        "item_width_mobile": 112,
+        "gap_mobile": 8,
+        "font_size_mobile": 11,
+        "use_custom_font": true,
+        "font": "archivo_n5",
+        "text_transform": "none",
+        "letter_spacing": 0.5,
+        "caption_size": 10,
+        "caption_spacing": 3,
+        "caption_gap": 20,
+        "max_width": 1200,
+        "padding_top": 10,
+        "padding_bottom": 10
       }
     },
     "product-grid": {
@@ -22,6 +309,7 @@
       "settings": {
         "products_per_page": 16,
         "columns_desktop": 4,
+        "columns_mobile": "2",
         "color_scheme": "scheme-1",
         "image_ratio": "adapt",
         "image_shape": "default",
@@ -32,7 +320,6 @@
         "enable_filtering": true,
         "filter_type": "horizontal",
         "enable_sorting": true,
-        "columns_mobile": "2",
         "padding_top": 36,
         "padding_bottom": 36
       }
@@ -40,6 +327,9 @@
   },
   "order": [
     "banner",
+    "image_banner_GxNniH",
+    "newsletter_AMcmTn",
+    "image_categories_xxkHgc",
     "product-grid"
   ]
 }

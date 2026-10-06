@@ -1,0 +1,414 @@
+{{ 'section-beneficiosicon.css' | asset_url | stylesheet_tag }}
+{%- style -%}
+  #BeneficiosIcon-{{ section.id }} {
+    --bi-bg: {{ section.settings.background }};
+    --bi-text: {{ section.settings.text_color }};
+    --bi-muted: {{ section.settings.muted_color }};
+    --bi-card: {{ section.settings.card_color }};
+    --bi-border: {{ section.settings.border_color }};
+    --bi-accent: {{ section.settings.accent_color }};
+    --bi-number-text: {{ section.settings.number_color }};
+    --bi-icon-color: {{ section.settings.icon_color }};
+    --bi-icon: {{ section.settings.icon_size }}px;
+    --bi-radius: {{ section.settings.radius }}px;
+    --bi-width: {{ section.settings.content_width }}px;
+    --bi-padding: {{ section.settings.padding }}px;
+    --bi-heading: {{ section.settings.heading_size }}px;
+    --bi-heading-mobile: {{ section.settings.heading_size_mobile }}px;
+    --bi-subtitle: {{ section.settings.subtitle_size }}px;
+    --bi-count: {{ section.blocks.size | at_least: 1 }};
+  }
+  {%- for block in section.blocks -%}
+    #Beneficio-{{ section.id }}-{{ block.id }} {
+      --bi-title: {{ block.settings.title_size }}px;
+      --bi-title-mobile: {{ block.settings.title_size_mobile }}px;
+      --bi-description: {{ block.settings.description_size }}px;
+      --bi-description-mobile: {{ block.settings.description_size_mobile }}px;
+    }
+  {%- endfor -%}
+{%- endstyle -%}
+<div id="BeneficiosIcon-{{ section.id }}" class="beneficiosicon color-{{ section.settings.color_scheme }}">
+  <div class="beneficiosicon__inner">
+    <div class="beneficiosicon__header">
+      <div>
+        {%- if section.settings.heading != blank -%}<h2 class="beneficiosicon__heading inline-richtext">{{ section.settings.heading }}</h2>{%- endif -%}
+        {%- if section.settings.subtitle != blank -%}<p class="beneficiosicon__subtitle">{{ section.settings.subtitle }}</p>{%- endif -%}
+      </div>
+      {%- if section.settings.button_label != blank -%}
+        <a class="beneficiosicon__button button{% if section.settings.button_secondary %} button--secondary{% else %} button--primary{% endif %}" data-button-icon="{{ section.settings.button_icon }}" {% if section.settings.button_link != blank %}href="{{ section.settings.button_link }}"{% else %}role="link" aria-disabled="true"{% endif %}>
+          <span>{{ section.settings.button_label | escape }}</span>
+          {%- if section.settings.button_arrow -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>{%- endif -%}
+        </a>
+      {%- endif -%}
+    </div>
+    {%- if section.blocks.size > 0 -%}
+      <ol class="beneficiosicon__steps" role="list">
+        {%- for block in section.blocks -%}
+          <li id="Beneficio-{{ section.id }}-{{ block.id }}" class="beneficiosicon__step" {{ block.shopify_attributes }}>
+            {%- if section.settings.show_numbers -%}<span class="beneficiosicon__number" aria-hidden="true">{{ forloop.index }}</span>{%- endif -%}
+            <span class="beneficiosicon__icon{% if block.settings.image != blank and block.settings.tint_icon %} beneficiosicon__icon--tinted{% endif %}" aria-hidden="true" {% if block.settings.image != blank and block.settings.tint_icon %}style="--bi-mask: url('{{ block.settings.image | image_url: width: 240 | escape }}');"{% endif %}>
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 240 | image_tag: widths: '80, 160, 240', sizes: '80px', loading: 'lazy', alt: '' }}
+              {%- else -%}{% render 'beneficiosicon-symbol', icon: block.settings.icon %}{%- endif -%}
+            </span>
+            <h3 class="beneficiosicon__title">{{ block.settings.title }}</h3>
+            <p class="beneficiosicon__description">{{ block.settings.description }}</p>
+            {%- unless forloop.last -%}{%- if section.settings.show_arrows -%}<svg class="beneficiosicon__next" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>{%- endif -%}{%- endunless -%}
+          </li>
+        {%- endfor -%}
+      </ol>
+    {%- endif -%}
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Beneficios con iconos",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Título",
+      "default": "¿Cómo comprar?"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subtitle",
+      "label": "Subtítulo",
+      "default": "Un proceso simple, rápido y seguro."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Texto del botón",
+      "default": "Solicitar cotización por WhatsApp"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Enlace del botón"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_secondary",
+      "label": "Botón secundario",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "button_icon",
+      "label": "Icono del botón",
+      "default": "whatsapp",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Usar ajuste global"
+        },
+        {
+          "value": "none",
+          "label": "Sin icono"
+        },
+        {
+          "value": "whatsapp",
+          "label": "WhatsApp"
+        },
+        {
+          "value": "custom",
+          "label": "Imagen del ajuste global"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "button_arrow",
+      "label": "Mostrar flecha en el botón",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de colores del botón",
+      "default": "scheme-4"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Fondo",
+      "default": "#FAFAFA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Texto principal",
+      "default": "#111B22"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "Descripciones",
+      "default": "#626B73"
+    },
+    {
+      "type": "color",
+      "id": "card_color",
+      "label": "Fondo de los pasos",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Bordes y separadores",
+      "default": "#EEEEEE"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Fondo de los números",
+      "default": "#FF8000"
+    },
+    {
+      "type": "color",
+      "id": "number_color",
+      "label": "Texto de los números",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Color de los iconos",
+      "default": "#111B22"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_numbers",
+      "label": "Mostrar números de paso",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Mostrar flechas entre pasos en escritorio",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Tamaño de los iconos",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Redondeado del contenedor",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "default": 6,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Ancho máximo",
+      "min": 800,
+      "max": 1600,
+      "step": 20,
+      "default": 1200,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Espacio superior e inferior",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Título en escritorio",
+      "min": 18,
+      "max": 60,
+      "step": 1,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Título en móvil",
+      "min": 18,
+      "max": 48,
+      "step": 1,
+      "default": 26,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Tamaño del subtítulo",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Beneficio con icono",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "label": "Título",
+          "default": "Nuevo paso"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "description",
+          "label": "Descripción",
+          "default": "Explicá este paso."
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icono",
+          "default": "clipboard",
+          "options": [
+            {
+              "value": "clipboard",
+              "label": "Lista"
+            },
+            {
+              "value": "cart",
+              "label": "Carrito"
+            },
+            {
+              "value": "card",
+              "label": "Pago"
+            },
+            {
+              "value": "box",
+              "label": "Caja"
+            },
+            {
+              "value": "truck",
+              "label": "Envío"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icono personalizado"
+        },
+        {
+          "type": "checkbox",
+          "id": "tint_icon",
+          "label": "Aplicar color al PNG",
+          "default": true,
+          "info": "Usá un PNG con fondo transparente."
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "label": "Título en escritorio",
+          "min": 10,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "title_size_mobile",
+          "label": "Título en móvil",
+          "min": 10,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "description_size",
+          "label": "Descripción en escritorio",
+          "min": 10,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "description_size_mobile",
+          "label": "Descripción en móvil",
+          "min": 10,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "default": 14
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Beneficios con iconos",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "clipboard",
+            "title": "Elegí tus productos",
+            "description": "Explorá nuestro catálogo y seleccioná lo que necesitás."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "cart",
+            "title": "Solicitá una cotización",
+            "description": "Indicá las cantidades y consultá precios por volumen."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "card",
+            "title": "Confirmá tu pedido",
+            "description": "Te enviamos el detalle, medios de pago y factura."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "box",
+            "title": "Preparamos y despachamos",
+            "description": "Coordinamos el envío por Vía Cargo u otro medio."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "truck",
+            "title": "Recibí en tu negocio",
+            "description": "En todo el país, con seguimiento."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

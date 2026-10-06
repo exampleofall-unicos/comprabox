@@ -1451,5 +1451,46 @@
         "default": "scheme-1"
       }
     ]
+  },
+  {
+    "name": "Iconos de botones",
+    "settings": [
+      {
+        "type": "select",
+        "id": "button_icon_mode",
+        "label": "Dónde mostrar iconos",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "Desactivado"
+          },
+          {
+            "value": "whatsapp",
+            "label": "Solo enlaces de WhatsApp"
+          },
+          {
+            "value": "all",
+            "label": "Todos los botones de texto del tema"
+          }
+        ]
+      },
+      {
+        "type": "image_picker",
+        "id": "button_icon_image",
+        "label": "Icono personalizado",
+        "info": "Opcional. Sin imagen se usa el icono de WhatsApp. Los botones de pago externos no se modifican."
+      },
+      {
+        "type": "range",
+        "id": "button_icon_size",
+        "label": "Tamaño del icono",
+        "min": 12,
+        "max": 32,
+        "step": 1,
+        "default": 18,
+        "unit": "px"
+      }
+    ]
   }
 ]

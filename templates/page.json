@@ -9,15 +9,320 @@
  */
 {
   "sections": {
+    "image_banner_QALE9V": {
+      "type": "image-banner",
+      "blocks": {
+        "eyebrow_RCjUjN": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "&nbsp;[color1]<strong>PARA REVENDEDORES, EMPRESAS Y EMPRENDEDORES</strong>[/color1]&nbsp;",
+            "text_color": "#ffffff",
+            "highlight_color_1": "#F39200",
+            "highlight_color_2": "#ffffff",
+            "highlight_color_3": "#ffc857",
+            "custom_typography": true,
+            "font_size_desktop": 12,
+            "font_size_mobile": 10,
+            "line_height": 1.4,
+            "letter_spacing": 1.6,
+            "text_transform": "none",
+            "custom_font_enabled": false,
+            "custom_font": "archivo_n4",
+            "custom_spacing": false,
+            "spacing_top": 18
+          }
+        },
+        "heading_rfzWDM": {
+          "type": "heading",
+          "settings": {
+            "heading": "Comprá al por mayor, [br][color1]<strong>hacé crecer tu negocio</strong>[/color1]&nbsp;",
+            "heading_size": "h0",
+            "text_color": "#ffffff",
+            "highlight_color_1": "#f39200",
+            "highlight_color_2": "#ffffff",
+            "highlight_color_3": "#ffc857",
+            "custom_typography": false,
+            "font_size_desktop": 48,
+            "font_size_mobile": 32,
+            "line_height": 1.1,
+            "letter_spacing": 0,
+            "text_transform": "none",
+            "custom_font_enabled": false,
+            "custom_font": "assistant_n4",
+            "custom_spacing": false,
+            "spacing_top": 12
+          }
+        },
+        "subheading_QCKdEq": {
+          "type": "subheading",
+          "settings": {
+            "text": "Gran variedad de termos, mates, botellas, vasos y más. [br]Stock permanente, precios por volumen y envíos a todo el país.",
+            "text_color": "#ffffff",
+            "highlight_color_1": "#ff8000",
+            "highlight_color_2": "#ffffff",
+            "highlight_color_3": "#ffc857",
+            "custom_typography": true,
+            "font_size_desktop": 20,
+            "font_size_mobile": 16,
+            "line_height": 1.4,
+            "letter_spacing": 0,
+            "text_transform": "none",
+            "custom_font_enabled": false,
+            "custom_font": "assistant_n4",
+            "custom_spacing": false,
+            "spacing_top": 12
+          }
+        },
+        "buttons_dtEEiF": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Ver productos",
+            "button_link_1": "shopify://collections/all",
+            "button_style_secondary_1": false,
+            "button_label_2": "Soy mayorista",
+            "button_link_2": "",
+            "button_style_secondary_2": true
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_RCjUjN",
+        "heading_rfzWDM",
+        "subheading_QCKdEq",
+        "buttons_dtEEiF"
+      ],
+      "settings": {
+        "image_overlay_opacity": 40,
+        "image_height": "medium",
+        "image_behavior": "none",
+        "desktop_content_position": "bottom-left",
+        "desktop_content_alignment": "left",
+        "show_text_box": false,
+        "color_scheme": "scheme-3",
+        "stack_images_on_mobile": false,
+        "mobile_content_alignment": "center",
+        "show_text_below": false
+      }
+    },
+    "newsletter_PphmtD": {
+      "type": "newsletter",
+      "blocks": {
+        "benefit_7BDYCP": {
+          "type": "benefit",
+          "settings": {
+            "title": "Stock permanente",
+            "description": "Productos siempre disponibles",
+            "icon": "tag",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        },
+        "benefit_6mP6Tf": {
+          "type": "benefit",
+          "settings": {
+            "title": "Precios por volumen",
+            "description": "Mejores descuentos",
+            "icon": "truck",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        },
+        "benefit_fijRyA": {
+          "type": "benefit",
+          "settings": {
+            "title": "Envíos a todo el país",
+            "description": "Rápidos y seguros",
+            "icon": "truck",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        },
+        "benefit_y9GUxg": {
+          "type": "benefit",
+          "settings": {
+            "title": "Factura A y B",
+            "description": "Para empresas y comercios",
+            "icon": "truck",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        },
+        "benefit_6xGjAn": {
+          "type": "benefit",
+          "settings": {
+            "title": "Asesoramiento personalizado",
+            "description": "Te ayudamos a elegir",
+            "icon": "tag",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        }
+      },
+      "block_order": [
+        "benefit_7BDYCP",
+        "benefit_6mP6Tf",
+        "benefit_fijRyA",
+        "benefit_y9GUxg",
+        "benefit_6xGjAn"
+      ],
+      "name": "t:sections.newsletter.presets.name",
+      "settings": {
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "upper_background": "#FFFFFF",
+        "upper_text": "#111B22",
+        "muted_text": "#59636B",
+        "lower_background": "#09151B",
+        "lower_text": "#FFFFFF",
+        "accent_color": "#FF8000",
+        "divider_color": "#E5E7EB",
+        "input_background": "#FFFFFF",
+        "input_text": "#343D45",
+        "upper_overlay": 0,
+        "lower_overlay": 30,
+        "icon_size": 40,
+        "mail_icon_size": 28,
+        "content_width": 1200,
+        "bar_padding": 28,
+        "custom_font": false,
+        "font": "assistant_n4"
+      }
+    },
     "main": {
       "type": "main-page",
+      "disabled": true,
       "settings": {
         "padding_top": 28,
         "padding_bottom": 28
       }
+    },
+    "beneficiosicon_XchFdi": {
+      "type": "beneficiosicon",
+      "blocks": {
+        "benefit_YdhU9K": {
+          "type": "benefit",
+          "settings": {
+            "title": "Elegí tus productos",
+            "description": "Explorá nuestro catálogo y seleccioná lo que necesitás.",
+            "icon": "clipboard",
+            "tint_icon": true,
+            "title_size": 16,
+            "title_size_mobile": 16,
+            "description_size": 14,
+            "description_size_mobile": 14
+          }
+        },
+        "benefit_yBkVHQ": {
+          "type": "benefit",
+          "settings": {
+            "title": "Solicitá una cotización",
+            "description": "Indicá las cantidades y consultá precios por volumen.",
+            "icon": "cart",
+            "tint_icon": true,
+            "title_size": 16,
+            "title_size_mobile": 16,
+            "description_size": 14,
+            "description_size_mobile": 14
+          }
+        },
+        "benefit_WaWTWK": {
+          "type": "benefit",
+          "settings": {
+            "title": "Confirmá tu pedido",
+            "description": "Te enviamos el detalle, medios de pago y factura.",
+            "icon": "card",
+            "tint_icon": true,
+            "title_size": 16,
+            "title_size_mobile": 16,
+            "description_size": 14,
+            "description_size_mobile": 14
+          }
+        },
+        "benefit_H79czA": {
+          "type": "benefit",
+          "settings": {
+            "title": "Preparamos y despachamos",
+            "description": "Coordinamos el envío por Vía Cargo u otro medio.",
+            "icon": "box",
+            "tint_icon": true,
+            "title_size": 16,
+            "title_size_mobile": 16,
+            "description_size": 14,
+            "description_size_mobile": 14
+          }
+        },
+        "benefit_WCceJr": {
+          "type": "benefit",
+          "settings": {
+            "title": "Recibí en tu negocio",
+            "description": "En todo el país, con seguimiento.",
+            "icon": "truck",
+            "tint_icon": true,
+            "title_size": 16,
+            "title_size_mobile": 16,
+            "description_size": 14,
+            "description_size_mobile": 14
+          }
+        }
+      },
+      "block_order": [
+        "benefit_YdhU9K",
+        "benefit_yBkVHQ",
+        "benefit_WaWTWK",
+        "benefit_H79czA",
+        "benefit_WCceJr"
+      ],
+      "name": "Beneficios con iconos",
+      "settings": {
+        "heading": "¿Cómo comprar?",
+        "subtitle": "Un proceso simple, rápido y seguro.",
+        "button_label": "Solicitar cotización por WhatsApp",
+        "button_link": "",
+        "button_secondary": false,
+        "button_icon": "whatsapp",
+        "button_arrow": true,
+        "color_scheme": "",
+        "background": "#FAFAFA",
+        "text_color": "#111B22",
+        "muted_color": "#626B73",
+        "card_color": "#FFFFFF",
+        "border_color": "#EEEEEE",
+        "accent_color": "#FF8000",
+        "number_color": "#FFFFFF",
+        "icon_color": "#111B22",
+        "show_numbers": true,
+        "show_arrows": true,
+        "icon_size": 40,
+        "radius": 6,
+        "content_width": 1200,
+        "padding": 24,
+        "heading_size": 30,
+        "heading_size_mobile": 26,
+        "subtitle_size": 16
+      }
     }
   },
   "order": [
-    "main"
+    "image_banner_QALE9V",
+    "newsletter_PphmtD",
+    "main",
+    "beneficiosicon_XchFdi"
   ]
 }

@@ -1,0 +1,253 @@
+{{ 'section-collection-grid2.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign form_id = 'CollectionGrid2Filters-' | append: section.id
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  assign priority_keys = 'category_metafield,capacity_metafield,material_metafield,colors_metafield' | split: ','
+  assign ordered_filters = collection.filters | slice: 0, 0
+  assign used_params = '|'
+  for key in priority_keys
+    assign field_path = section.settings[key] | strip
+    assign param = 'filter.p.m.' | append: field_path
+    assign token = param | prepend: '|' | append: '|'
+    unless used_params contains token
+      assign matches = collection.filters | where: 'param_name', param
+      assign ordered_filters = ordered_filters | concat: matches
+      assign used_params = used_params | append: param | append: '|'
+    endunless
+  endfor
+  for filter in collection.filters
+    assign token = filter.param_name | prepend: '|' | append: '|'
+    unless used_params contains token
+      assign matches = collection.filters | where: 'param_name', filter.param_name
+      assign ordered_filters = ordered_filters | concat: matches
+    endunless
+  endfor
+-%}
+{%- style -%}
+  #CollectionGrid2-{{ section.id }} {
+    --cg2-columns: {{ section.settings.columns_desktop }};
+    --cg2-mobile-columns: {{ section.settings.columns_mobile }};
+    --cg2-padding: {{ section.settings.padding }}px;
+    --cg2-heading: {{ section.settings.heading_size }}px;
+    --cg2-product-title: {{ section.settings.product_title_size }}px;
+    --cg2-accent: {{ section.settings.accent_color }};
+    --cg2-image-bg: {{ section.settings.image_background }};
+    --cg2-ratio: {{ section.settings.image_ratio }};
+  }
+{%- endstyle -%}
+<div id="CollectionGrid2-{{ section.id }}" class="cg2 color-{{ section.settings.color_scheme }}">
+  {%- paginate collection.products by section.settings.products_per_page -%}
+    <div class="page-width cg2-layout">
+      <aside class="cg2-sidebar" aria-labelledby="FilterTitle-{{ section.id }}">
+        <div class="cg2-filter-top"><h2 id="FilterTitle-{{ section.id }}">Filtros</h2><a href="{{ collection.url }}?sort_by={{ sort_by | url_encode }}">Limpiar filtros</a></div>
+        <form id="{{ form_id }}" method="get" action="{{ collection.url }}">
+          {%- for filter in ordered_filters -%}{% render 'collection-grid2-filter', filter: filter %}{%- endfor -%}
+          {%- if ordered_filters.size == 0 -%}
+            <p>No hay filtros disponibles para esta colección.</p>
+            {%- if request.design_mode -%}<p>Activá los filtros de metacampos en Shopify Search &amp; Discovery: Categoría, Capacidad, Material y Colores disponibles.</p>{%- endif -%}
+          {%- endif -%}
+          <button class="button button--primary cg2-apply" type="submit">Aplicar filtros</button>
+        </form>
+      </aside>
+      <div class="cg2-main">
+        <div class="cg2-toolbar">
+          <h2 class="cg2-title">{{ collection.title | escape }} <span class="cg2-count">({{ collection.products_count }} productos)</span></h2>
+          <div class="cg2-sort">
+            <label for="Grid2Sort-{{ section.id }}">{{ 'products.facets.sort_by_label' | t }}</label>
+            <select id="Grid2Sort-{{ section.id }}" name="sort_by" form="{{ form_id }}">
+              {%- for option in collection.sort_options -%}<option value="{{ option.value | escape }}" {% if option.value == sort_by %}selected{% endif %}>{{ option.name | escape }}</option>{%- endfor -%}
+            </select>
+            <button type="submit" class="button button--secondary" form="{{ form_id }}">Ordenar</button>
+          </div>
+        </div>
+        <ul class="cg2-active" role="list">
+          {%- for filter in collection.filters -%}
+            {%- for value in filter.active_values -%}<li><a href="{{ value.url_to_remove }}">{{ filter.label | escape }}: {{ value.label | escape }} <span aria-hidden="true">×</span><span class="visually-hidden">Quitar filtro</span></a></li>{%- endfor -%}
+            {%- if filter.type == 'price_range' -%}
+              {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}<li><a href="{{ filter.url_to_remove }}">{{ filter.label | escape }} <span aria-hidden="true">×</span><span class="visually-hidden">Quitar filtro de precio</span></a></li>{%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+        {%- if collection.products.size > 0 -%}
+          <ul class="cg2-grid" role="list">
+            {%- for product in collection.products -%}
+              {%- assign eager = false -%}{%- if forloop.index <= 2 -%}{%- assign eager = true -%}{%- endif -%}
+              <li>{% render 'collection-grid2-card', product: product, section: section, eager: eager %}</li>
+            {%- endfor -%}
+          </ul>
+          {%- if paginate.pages > 1 -%}{% render 'pagination', paginate: paginate, anchor: '' %}{%- endif -%}
+        {%- else -%}
+          <div class="cg2-empty"><h3>No encontramos productos con estos filtros.</h3><a class="button button--secondary" href="{{ collection.url }}">Limpiar filtros</a></div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endpaginate -%}
+</div>
+{% schema %}
+{
+  "name": "Grilla de productos 2",
+  "tag": "section",
+  "class": "section",
+  "limit": 1,
+  "enabled_on": {
+    "templates": [
+      "collection"
+    ]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de colores",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Productos por página",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columnas en escritorio",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columnas en móvil",
+      "default": "2",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Formato de las imágenes",
+      "default": "1",
+      "options": [
+        {
+          "value": "1",
+          "label": "Cuadrado"
+        },
+        {
+          "value": "0.8",
+          "label": "Vertical"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "image_background",
+      "label": "Fondo de las imágenes",
+      "default": "#F7F7F7"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Color de selección y foco",
+      "default": "#FF8000"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Tamaño del título de colección",
+      "min": 18,
+      "max": 48,
+      "step": 1,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "product_title_size",
+      "label": "Tamaño de nombres de productos",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Espacio superior e inferior",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Mostrar también el precio de venta del producto",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Metacampos y filtros"
+    },
+    {
+      "type": "paragraph",
+      "content": "Ingresá namespace.clave. Los filtros deben estar activados en Shopify Search & Discovery y tener valores en los productos. Se priorizan categoría, capacidad, material y colores. Para mostrar toda la tienda, usá la colección Todos los productos."
+    },
+    {
+      "type": "text",
+      "id": "category_metafield",
+      "label": "Categoría (filtro)",
+      "default": "custom.categoria"
+    },
+    {
+      "type": "text",
+      "id": "capacity_metafield",
+      "label": "Capacidad (filtro y tarjeta)",
+      "default": "custom.capacidad"
+    },
+    {
+      "type": "text",
+      "id": "material_metafield",
+      "label": "Material (filtro)",
+      "default": "custom.material"
+    },
+    {
+      "type": "text",
+      "id": "colors_metafield",
+      "label": "Colores disponibles (filtro)",
+      "default": "custom.colores_disponibles"
+    },
+    {
+      "type": "text",
+      "id": "box_metafield",
+      "label": "Unidades por caja (tarjeta)",
+      "default": "custom.unidades_por_caja"
+    },
+    {
+      "type": "text",
+      "id": "usd_metafield",
+      "label": "Precio USD (tarjeta)",
+      "default": "custom.precio_usd"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Grilla de productos 2"
+    }
+  ]
+}
+{% endschema %}

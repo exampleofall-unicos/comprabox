@@ -217,7 +217,7 @@
         "caption_gap": 20,
         "max_width": 1200,
         "padding_top": 10,
-        "padding_bottom": 20
+        "padding_bottom": 10
       }
     },
     "featured_collection": {
@@ -346,12 +346,12 @@
       ],
       "name": "Bloque de Marketing",
       "settings": {
-        "background": "#101C21",
-        "text_color": "#FFFFFF",
-        "heading_color": "#FFFFFF",
-        "accent_color": "#FF8000",
-        "panel_color": "#0B171D",
-        "panel_text_color": "#FFFFFF",
+        "background": "#101c21",
+        "text_color": "#ffffff",
+        "heading_color": "#ffffff",
+        "accent_color": "#ff8000",
+        "panel_color": "#0b171d",
+        "panel_text_color": "#ffffff",
         "overlay_color": "#071217",
         "overlay_opacity": 35,
         "panel_opacity": 0.8,
@@ -379,9 +379,9 @@
             "font_size_desktop": 12,
             "font_size_mobile": 11,
             "text_color": "",
-            "highlight_color_1": "#FF8000",
-            "highlight_color_2": "#111B22",
-            "highlight_color_3": "#59636B"
+            "highlight_color_1": "#ff8000",
+            "highlight_color_2": "#111b22",
+            "highlight_color_3": "#59636b"
           }
         },
         "heading_xbByhM": {
@@ -391,9 +391,9 @@
             "font_size_desktop": 36,
             "font_size_mobile": 30,
             "text_color": "",
-            "highlight_color_1": "#FF8000",
-            "highlight_color_2": "#111B22",
-            "highlight_color_3": "#59636B"
+            "highlight_color_1": "#ff8000",
+            "highlight_color_2": "#111b22",
+            "highlight_color_3": "#59636b"
           }
         },
         "text_mxPfWc": {
@@ -404,9 +404,9 @@
             "font_size_desktop": 16,
             "font_size_mobile": 16,
             "text_color": "",
-            "highlight_color_1": "#FF8000",
-            "highlight_color_2": "#111B22",
-            "highlight_color_3": "#59636B"
+            "highlight_color_1": "#ff8000",
+            "highlight_color_2": "#111b22",
+            "highlight_color_3": "#59636b"
           }
         },
         "benefit_4JFUp4": {
@@ -417,9 +417,9 @@
             "font_size_desktop": 15,
             "font_size_mobile": 15,
             "text_color": "",
-            "highlight_color_1": "#FF8000",
-            "highlight_color_2": "#111B22",
-            "highlight_color_3": "#59636B"
+            "highlight_color_1": "#ff8000",
+            "highlight_color_2": "#111b22",
+            "highlight_color_3": "#59636b"
           }
         },
         "benefit_N6pwta": {
@@ -430,9 +430,9 @@
             "font_size_desktop": 15,
             "font_size_mobile": 15,
             "text_color": "",
-            "highlight_color_1": "#FF8000",
-            "highlight_color_2": "#111B22",
-            "highlight_color_3": "#59636B"
+            "highlight_color_1": "#ff8000",
+            "highlight_color_2": "#111b22",
+            "highlight_color_3": "#59636b"
           }
         },
         "benefit_eCQpD9": {
@@ -443,9 +443,9 @@
             "font_size_desktop": 15,
             "font_size_mobile": 15,
             "text_color": "",
-            "highlight_color_1": "#FF8000",
-            "highlight_color_2": "#111B22",
-            "highlight_color_3": "#59636B"
+            "highlight_color_1": "#ff8000",
+            "highlight_color_2": "#111b22",
+            "highlight_color_3": "#59636b"
           }
         },
         "benefit_matP8g": {
@@ -456,9 +456,9 @@
             "font_size_desktop": 15,
             "font_size_mobile": 15,
             "text_color": "",
-            "highlight_color_1": "#FF8000",
-            "highlight_color_2": "#111B22",
-            "highlight_color_3": "#59636B"
+            "highlight_color_1": "#ff8000",
+            "highlight_color_2": "#111b22",
+            "highlight_color_3": "#59636b"
           }
         },
         "button_jfWcdM": {
@@ -485,11 +485,11 @@
       ],
       "name": "Bloque de Personalización",
       "settings": {
-        "background": "#FFFFFF",
-        "text_color": "#59636B",
-        "heading_color": "#111B22",
-        "accent_color": "#FF8000",
-        "overlay_color": "#FFFFFF",
+        "background": "#ffffff",
+        "text_color": "#59636b",
+        "heading_color": "#111b22",
+        "accent_color": "#ff8000",
+        "overlay_color": "#ffffff",
         "overlay_opacity": 85,
         "custom_font": false,
         "font": "assistant_n4",
@@ -504,6 +504,130 @@
         "copy_width": 46,
         "block_gap": 18
       }
+    },
+    "newsletter_RnwMGq": {
+      "type": "newsletter",
+      "blocks": {
+        "eyebrow_C4pREJ": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "¿Por qué elegirnos?",
+            "custom_size": true,
+            "size_desktop": 13,
+            "size_mobile": 12
+          }
+        },
+        "heading_Wwnd98": {
+          "type": "heading",
+          "settings": {
+            "heading": "Más que un proveedor, somos tu aliado",
+            "heading_size": "h1",
+            "custom_size": true,
+            "size_desktop": 28,
+            "size_mobile": 24
+          }
+        },
+        "benefit_4FPW3w": {
+          "type": "benefit",
+          "settings": {
+            "title": "Stock permanente",
+            "description": "Productos siempre disponibles",
+            "icon": "truck",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        },
+        "benefit_NzXh6Y": {
+          "type": "benefit",
+          "settings": {
+            "title": "Precios competitivos",
+            "description": "Directo de fábrica",
+            "icon": "tag",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        },
+        "benefit_C7d7rA": {
+          "type": "benefit",
+          "settings": {
+            "title": "Envíos a todo el país",
+            "description": "Rápidos y seguros",
+            "icon": "truck",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        },
+        "benefit_Gk7rQh": {
+          "type": "benefit",
+          "settings": {
+            "title": "Experiencia y confianza",
+            "description": "Trabajamos con emprendedores y empresas en todo el país",
+            "icon": "person",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        },
+        "email_form_QqRHjJ": {
+          "type": "email_form",
+          "settings": {
+            "title": "Suscribite y recibí novedades",
+            "description": "<p>Promociones, lanzamientos y consejos para hacer crecer tu negocio.</p>",
+            "email_label": "Tu correo electrónico",
+            "button_label": "Suscribirme",
+            "button_secondary": false,
+            "show_icon": true,
+            "custom_size": true,
+            "size_desktop": 18,
+            "size_mobile": 18,
+            "description_size": 13
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_C4pREJ",
+        "heading_Wwnd98",
+        "benefit_4FPW3w",
+        "benefit_NzXh6Y",
+        "benefit_C7d7rA",
+        "benefit_Gk7rQh",
+        "email_form_QqRHjJ"
+      ],
+      "name": "t:sections.newsletter.presets.name",
+      "settings": {
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 40,
+        "upper_background": "#FFFFFF",
+        "upper_text": "#111B22",
+        "muted_text": "#59636B",
+        "lower_background": "#09151B",
+        "lower_text": "#FFFFFF",
+        "accent_color": "#FF8000",
+        "divider_color": "#E5E7EB",
+        "input_background": "#FFFFFF",
+        "input_text": "#343D45",
+        "upper_overlay": 0,
+        "lower_overlay": 30,
+        "icon_size": 40,
+        "mail_icon_size": 28,
+        "content_width": 1200,
+        "bar_padding": 28,
+        "custom_font": false,
+        "font": "assistant_n4"
+      }
     }
   },
   "order": [
@@ -511,6 +635,7 @@
     "image_categories_6yG4Ab",
     "featured_collection",
     "marketing_block_Jx93bt",
-    "personalization_block_jiaKWj"
+    "personalization_block_jiaKWj",
+    "newsletter_RnwMGq"
   ]
 }

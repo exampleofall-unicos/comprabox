@@ -1,0 +1,49 @@
+.cg2 { padding-block: var(--cg2-padding); }
+.cg2-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
+.cg2-sidebar { border: 1px solid rgba(var(--color-foreground), .12); border-radius: 8px; padding: 18px; align-self: start; }
+.cg2-filter-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.cg2-filter-top h2 { margin: 0; font-size: 1.8rem; }
+.cg2 a { color: inherit; }
+.cg2-filter-top a { font-size: 1.2rem; text-underline-offset: 3px; }
+.cg2-filter { border-top: 1px solid rgba(var(--color-foreground), .1); padding-block: 14px; }
+.cg2-filter summary { display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; font-weight: 600; list-style: none; }
+.cg2-filter summary::-webkit-details-marker { display: none; }
+.cg2-filter[open] summary > span { transform: rotate(180deg); }
+.cg2-filter-values { list-style: none; padding: 8px 0 0; margin: 0; max-height: 280px; overflow-y: auto; }
+.cg2-option { display: flex; align-items: center; gap: 9px; min-height: 36px; cursor: pointer; font-size: 1.3rem; overflow-wrap: anywhere; }
+.cg2-option input { width: 16px; height: 16px; margin: 0; flex-shrink: 0; accent-color: var(--cg2-accent); }
+.cg2-option--disabled { opacity: .5; cursor: default; }
+.cg2-count { opacity: .7; font-size: 1.3rem; }
+.cg2-apply { width: 100%; margin-top: 12px; }
+.cg2-price-range { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; font-size: 1.2rem; }
+.cg2-price-range input, .cg2-sort select { border: 1px solid rgba(var(--color-foreground), .2); border-radius: 4px; padding: 10px; background: rgb(var(--color-background)); color: rgb(var(--color-foreground)); font: inherit; }
+.cg2-price-range input { width: 100%; min-width: 0; box-sizing: border-box; }
+.cg2-main { min-width: 0; }
+.cg2-toolbar { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.cg2-title { margin: 0; font-size: var(--cg2-heading); }
+.cg2-sort { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 1.3rem; }
+.cg2-sort select { max-width: 100%; }
+.cg2-sort .button { min-width: auto; padding-inline: 16px; }
+.cg2-grid { display: grid; grid-template-columns: repeat(var(--cg2-mobile-columns), minmax(0, 1fr)); gap: 12px; padding: 0; margin: 0; list-style: none; }
+.cg2-grid > li { min-width: 0; }
+.cg2-card { height: 100%; display: flex; flex-direction: column; border: 1px solid rgba(var(--color-foreground), .1); border-radius: 7px; overflow: hidden; background: rgb(var(--color-background)); }
+.cg2-card-image { position: relative; display: block; aspect-ratio: var(--cg2-ratio); background: var(--cg2-image-bg); }
+.cg2-card-image img, .cg2-card-image svg { display: block; width: 100%; height: 100%; object-fit: contain; }
+.cg2-sold-out { position: absolute; bottom: 8px; left: 8px; padding: 4px 8px; border-radius: 4px; background: rgb(var(--color-background)); font-size: 1.2rem; }
+.cg2-card-content { display: flex; flex-direction: column; flex: 1; padding: 12px; }
+.cg2-product-title { margin: 0; font-size: var(--cg2-product-title); line-height: 1.35; overflow-wrap: anywhere; }
+.cg2-product-title a { text-decoration: none; }
+.cg2-capacity, .cg2-price { font-size: 1.3rem; margin: 5px 0 0; overflow-wrap: anywhere; }
+.cg2-meta { display: flex; flex-wrap: wrap; gap: 8px; margin: auto 0 0; padding-top: 14px; }
+.cg2-meta > div { flex: 1 1 70px; border-radius: 4px; padding: 6px; background: rgba(var(--color-foreground), .04); }
+.cg2-meta dt { font-size: 1rem; line-height: 1.4; }
+.cg2-meta dd { font-size: 1.3rem; font-weight: 600; margin: 3px 0 0; overflow-wrap: anywhere; }
+.cg2-active { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 16px; padding: 0; list-style: none; }
+.cg2-active a { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(var(--color-foreground), .15); border-radius: 18px; padding: 6px 12px; font-size: 1.2rem; text-decoration: none; }
+.cg2-empty { padding: 40px 16px; text-align: center; }
+.cg2 a:focus-visible, .cg2 summary:focus-visible, .cg2 input:focus-visible, .cg2 select:focus-visible { outline: 2px solid var(--cg2-accent); outline-offset: 3px; }
+@media (min-width: 750px) { .cg2-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 990px) {
+  .cg2-layout { grid-template-columns: 230px minmax(0, 1fr); }
+  .cg2-grid { grid-template-columns: repeat(var(--cg2-columns), minmax(0, 1fr)); }
+}

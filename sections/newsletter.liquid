@@ -1,66 +1,128 @@
-{{ 'component-newsletter.css' | asset_url | stylesheet_tag }}
-{{ 'newsletter-section.css' | asset_url | stylesheet_tag }}
-
+{{ 'section-newsletter-benefits.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign benefits = section.blocks | where: 'type', 'benefit'
+  assign intro = section.blocks | where: 'type', 'heading'
+  assign paragraphs = section.blocks | where: 'type', 'paragraph'
+  assign eyebrows = section.blocks | where: 'type', 'eyebrow'
+  assign intro_count = intro.size | plus: paragraphs.size | plus: eyebrows.size
+  assign upper_image = section.settings.upper_image | default: section.settings.upper_image_mobile
+  assign upper_mobile = section.settings.upper_image_mobile | default: upper_image
+  assign lower_image = section.settings.image | default: section.settings.image_mobile
+  assign lower_mobile = section.settings.image_mobile | default: lower_image
+-%}
 {%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  {%- if section.settings.custom_font -%}{{ section.settings.font | font_face: font_display: 'swap' }}{%- endif -%}
+  #Newsletter-{{ section.id }} {
+    --nl-upper-bg: {{ section.settings.upper_background }};
+    --nl-upper-text: {{ section.settings.upper_text }};
+    --nl-muted: {{ section.settings.muted_text }};
+    --nl-lower-bg: {{ section.settings.lower_background }};
+    --nl-lower-text: {{ section.settings.lower_text }};
+    --nl-accent: {{ section.settings.accent_color }};
+    --nl-divider: {{ section.settings.divider_color }};
+    --nl-input-bg: {{ section.settings.input_background }};
+    --nl-input-text: {{ section.settings.input_text }};
+    --nl-upper-overlay: {{ section.settings.upper_overlay | divided_by: 100.0 }};
+    --nl-lower-overlay: {{ section.settings.lower_overlay | divided_by: 100.0 }};
+    --nl-icon: {{ section.settings.icon_size }}px;
+    --nl-mail-icon: {{ section.settings.mail_icon_size }}px;
+    --nl-width: {{ section.settings.content_width }}px;
+    --nl-top: {{ section.settings.padding_top }}px;
+    --nl-bottom: {{ section.settings.padding_bottom }}px;
+    --nl-bar-padding: {{ section.settings.bar_padding }}px;
+    --nl-count: {{ benefits.size | at_least: 1 }};
+    --nl-upper-position: {{ upper_image.presentation.focal_point | default: '50% 50%' }};
+    --nl-upper-mobile-position: {{ upper_mobile.presentation.focal_point | default: '50% 50%' }};
+    --nl-lower-position: {{ lower_image.presentation.focal_point | default: '50% 50%' }};
+    --nl-lower-mobile-position: {{ lower_mobile.presentation.focal_point | default: '50% 50%' }};
+    {%- if section.settings.custom_font %}
+      --nl-font: {{ section.settings.font.family }}, {{ section.settings.font.fallback_families }};
+      --nl-weight: {{ section.settings.font.weight }};
+      --nl-style: {{ section.settings.font.style }};
+    {%- endif %}
   }
-
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
-  }
+  {%- for block in section.blocks -%}
+    {%- if block.settings.custom_size -%}
+      #Newsletter-{{ section.id }} #NewsletterText-{{ block.id }} { font-size: {{ block.settings.size_mobile }}px; }
+      @media screen and (min-width: 750px) {
+        #Newsletter-{{ section.id }} #NewsletterText-{{ block.id }} { font-size: {{ block.settings.size_desktop }}px; }
+      }
+    {%- endif -%}
+    {%- if block.type == 'benefit' or block.type == 'email_form' -%}
+      #Newsletter-{{ section.id }} #NewsletterDescription-{{ block.id }} { font-size: {{ block.settings.description_size }}px; }
+    {%- endif -%}
+  {%- endfor -%}
 {%- endstyle -%}
-
-<div class="newsletter center {% if section.settings.full_width == false %}newsletter--narrow page-width{% endif %}">
-  <div class="newsletter__wrapper color-{{ section.settings.color_scheme }} gradient content-container isolate{% if section.settings.full_width %} content-container--full-width{% endif %} section-{{ section.id }}-padding">
-    {%- for block in section.blocks -%}
-      {%- case block.type -%}
-        {%- when '@app' -%}
-          {% render block %}
-        {%- when 'heading' -%}
-          <h2
-            class="inline-richtext {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-            {{ block.shopify_attributes }}
-            {% if settings.animations_reveal_on_scroll %}
-              data-cascade
-              style="--animation-order: {{ forloop.index }};"
-            {% endif %}
-          >
-            {{ block.settings.heading }}
-          </h2>
-        {%- when 'paragraph' -%}
-          <div
-            class="newsletter__subheading rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-            {{ block.shopify_attributes }}
-            {% if settings.animations_reveal_on_scroll %}
-              data-cascade
-              style="--animation-order: {{ forloop.index }};"
-            {% endif %}
-          >
-            {{ block.settings.text }}
+<div id="Newsletter-{{ section.id }}" class="nl-section{% unless section.settings.full_width %} page-width{% endunless %}">
+  {%- if intro_count > 0 or benefits.size > 0 -%}
+    <div class="nl-upper">
+      {% render 'newsletter-background', image: upper_image, image_mobile: upper_mobile %}
+      <div class="nl-overlay"></div>
+      <div class="nl-inner">
+        {%- if intro_count > 0 -%}
+          <div class="nl-intro">
+            {%- for block in section.blocks -%}
+              {%- case block.type -%}
+                {%- when 'eyebrow' -%}
+                  <p id="NewsletterText-{{ block.id }}" class="nl-eyebrow caption-with-letter-spacing" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+                {%- when 'heading' -%}
+                  <h2 id="NewsletterText-{{ block.id }}" class="nl-heading inline-richtext {{ block.settings.heading_size }}" {{ block.shopify_attributes }}>{{ block.settings.heading }}</h2>
+                {%- when 'paragraph' -%}
+                  <div id="NewsletterText-{{ block.id }}" class="nl-paragraph rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+              {%- endcase -%}
+            {%- endfor -%}
           </div>
-        {%- when 'email_form' -%}
-          <div {{ block.shopify_attributes }}>
-            {% form 'customer', class: 'newsletter-form' %}
+        {%- endif -%}
+        {%- if benefits.size > 0 -%}
+          <ul class="nl-benefits" role="list">
+            {%- for block in benefits -%}
+              <li class="nl-benefit" {{ block.shopify_attributes }}>
+                <span class="nl-icon{% if block.settings.image != blank and block.settings.tint_icon %} nl-icon--tinted{% endif %}" aria-hidden="true" {% if block.settings.image != blank and block.settings.tint_icon %}style="--nl-mask: url('{{ block.settings.image | image_url: width: 240 | escape }}');"{% endif %}>
+                  {%- if block.settings.image != blank -%}
+                    {{ block.settings.image | image_url: width: 240 | image_tag: widths: '80, 160, 240', sizes: '80px', loading: 'lazy', alt: '' }}
+                  {%- else -%}{% render 'newsletter-benefit-icon', icon: block.settings.icon %}{%- endif -%}
+                </span>
+                <div class="nl-benefit-copy">
+                  <h3 id="NewsletterText-{{ block.id }}" class="nl-benefit-title">{{ block.settings.title }}</h3>
+                  <p id="NewsletterDescription-{{ block.id }}" class="nl-benefit-description">{{ block.settings.description }}</p>
+                </div>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'email_form' -%}
+      <div class="nl-lower color-{{ section.settings.color_scheme }}" {{ block.shopify_attributes }}>
+        {% render 'newsletter-background', image: lower_image, image_mobile: lower_mobile %}
+        <div class="nl-overlay"></div>
+        <div class="nl-inner nl-form-layout">
+          <div class="nl-form-copy">
+            {%- if block.settings.show_icon -%}<span class="nl-mail" aria-hidden="true">{% render 'newsletter-benefit-icon', icon: 'mail' %}</span>{%- endif -%}
+            <div>
+              {%- if block.settings.title != blank -%}<h2 id="NewsletterText-{{ block.id }}" class="nl-form-heading h2">{{ block.settings.title }}</h2>{%- endif -%}
+              {%- if block.settings.description != blank -%}<div id="NewsletterDescription-{{ block.id }}" class="nl-description rte">{{ block.settings.description }}</div>{%- endif -%}
+            </div>
+          </div>
+          {%- liquid
+            assign form_id = 'NewsletterCustomer-' | append: section.id
+            assign email_label = 'newsletter.label' | t
+            assign email_label = block.settings.email_label | default: email_label
+            assign button_label = 'newsletter.button_label' | t
+            assign button_label = block.settings.button_label | default: button_label
+          -%}
+{% form 'customer', id: form_id, class: 'nl-form' %}
               <input type="hidden" name="contact[tags]" value="newsletter">
-              <div
-                class="newsletter-form__field-wrapper{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-                {% if settings.animations_reveal_on_scroll %}
-                  data-cascade
-                  style="--animation-order: {{ forloop.index }};"
-                {% endif %}
-              >
-                <div class="field">
+              <div>
+                <div class="nl-fields">
                   <input
                     id="NewsletterForm--{{ section.id }}"
                     type="email"
                     name="contact[email]"
-                    class="field__input"
-                    value="{{ form.email }}"
+                    class="nl-input"
+                    value="{{ form.email | escape }}"
                     aria-required="true"
                     autocorrect="off"
                     autocapitalize="off"
@@ -72,26 +134,25 @@
                     {% elsif form.posted_successfully? %}
                       aria-describedby="Newsletter-success--{{ section.id }}"
                     {% endif %}
-                    placeholder="{{ 'newsletter.label' | t }}"
+                    placeholder="{{ email_label | escape }}"
                     required
                   >
-                  <label class="field__label" for="NewsletterForm--{{ section.id }}">
-                    {{ 'newsletter.label' | t }}
+                  <label class="visually-hidden" for="NewsletterForm--{{ section.id }}">
+                    {{ email_label | escape }}
                   </label>
                   <button
                     type="submit"
-                    class="newsletter-form__button field__button"
+                    class="nl-submit button{% if block.settings.button_secondary %} button--secondary{% else %} button--primary{% endif %}"
                     name="commit"
-                    id="Subscribe"
-                    aria-label="{{ 'newsletter.button_label' | t }}"
+                    id="Subscribe-{{ section.id }}"
+                    aria-label="{{ button_label | escape }}"
                   >
-                    <span class="svg-wrapper">
-                      {{- 'icon-arrow.svg' | inline_asset_content -}}
-                    </span>
+                    {{ button_label | escape }}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
                   </button>
                 </div>
                 {%- if form.errors -%}
-                  <small class="newsletter-form__message form__message" id="Newsletter-error--{{ section.id }}">
+                  <small role="alert" class="nl-message form__message" id="Newsletter-error--{{ section.id }}">
                     <span class="svg-wrapper">
                       {{- 'icon-error.svg' | inline_asset_content -}}
                     </span>
@@ -101,8 +162,8 @@
                 {%- endif -%}
               </div>
               {%- if form.posted_successfully? -%}
-                <h3
-                  class="newsletter-form__message newsletter-form__message--success form__message"
+                <h3 role="status"
+                  class="nl-message form__message"
                   id="Newsletter-success--{{ section.id }}"
                   tabindex="-1"
                   autofocus
@@ -114,19 +175,22 @@
                 </h3>
               {%- endif -%}
             {% endform %}
-          </div>
-      {%- endcase -%}
-    {%- endfor -%}
-  </div>
+        </div>
+      </div>
+    {%- elsif block.type == '@app' -%}
+      <div class="nl-inner nl-app">{% render block %}</div>
+    {%- endif -%}
+  {%- endfor -%}
 </div>
-
 {% schema %}
 {
   "name": "t:sections.newsletter.name",
   "tag": "section",
   "class": "section",
   "disabled_on": {
-    "groups": ["header"]
+    "groups": [
+      "header"
+    ]
   },
   "settings": [
     {
@@ -137,7 +201,7 @@
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
-      "default": "scheme-1"
+      "default": "scheme-3"
     },
     {
       "type": "checkbox",
@@ -167,10 +231,203 @@
       "step": 4,
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
-      "default": 52
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Fondos por dispositivo"
+    },
+    {
+      "type": "image_picker",
+      "id": "upper_image",
+      "label": "Fondo superior: escritorio",
+      "info": "Opcional. Ajustá el punto focal en la imagen. Si falta una versión, se usa la disponible."
+    },
+    {
+      "type": "image_picker",
+      "id": "upper_image_mobile",
+      "label": "Fondo superior: móvil",
+      "info": "Opcional. Ajustá el punto focal en la imagen. Si falta una versión, se usa la disponible."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Fondo suscripción: escritorio",
+      "info": "Opcional. Ajustá el punto focal en la imagen. Si falta una versión, se usa la disponible."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Fondo suscripción: móvil",
+      "info": "Opcional. Ajustá el punto focal en la imagen. Si falta una versión, se usa la disponible."
+    },
+    {
+      "type": "color",
+      "id": "upper_background",
+      "label": "Fondo superior",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "upper_text",
+      "label": "Texto superior",
+      "default": "#111B22"
+    },
+    {
+      "type": "color",
+      "id": "muted_text",
+      "label": "Descripciones de beneficios",
+      "default": "#59636B"
+    },
+    {
+      "type": "color",
+      "id": "lower_background",
+      "label": "Fondo de suscripción",
+      "default": "#09151B"
+    },
+    {
+      "type": "color",
+      "id": "lower_text",
+      "label": "Texto de suscripción",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Color de iconos y texto destacado",
+      "default": "#FF8000"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Separadores y borde del campo",
+      "default": "#E5E7EB"
+    },
+    {
+      "type": "color",
+      "id": "input_background",
+      "label": "Fondo del campo de correo",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "input_text",
+      "label": "Texto del campo de correo",
+      "default": "#343D45"
+    },
+    {
+      "type": "range",
+      "id": "upper_overlay",
+      "label": "Opacidad sobre el fondo superior",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "lower_overlay",
+      "label": "Opacidad sobre el fondo de suscripción",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 30,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Tamaño de iconos de beneficios",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mail_icon_size",
+      "label": "Tamaño del icono de correo",
+      "min": 20,
+      "max": 64,
+      "step": 2,
+      "default": 28,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Ancho del contenido",
+      "min": 800,
+      "max": 1600,
+      "step": 20,
+      "default": 1200,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "bar_padding",
+      "label": "Espacio superior e inferior de suscripción",
+      "min": 12,
+      "max": 80,
+      "step": 2,
+      "default": 28,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_font",
+      "label": "Usar fuente personalizada",
+      "default": false
+    },
+    {
+      "type": "font_picker",
+      "id": "font",
+      "label": "Fuente",
+      "default": "assistant_n4"
     }
   ],
   "blocks": [
+    {
+      "type": "eyebrow",
+      "name": "Texto superior",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "¿Por qué elegirnos?"
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_size",
+          "label": "Personalizar tamaño del texto",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "size_desktop",
+          "label": "Tamaño en escritorio",
+          "min": 10,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "default": 13
+        },
+        {
+          "type": "range",
+          "id": "size_mobile",
+          "label": "Tamaño en móvil",
+          "min": 10,
+          "max": 60,
+          "step": 1,
+          "unit": "px",
+          "default": 12
+        }
+      ]
+    },
     {
       "type": "heading",
       "name": "t:sections.newsletter.blocks.heading.name",
@@ -209,6 +466,32 @@
           ],
           "default": "h1",
           "label": "t:sections.all.heading_size.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_size",
+          "label": "Personalizar tamaño del texto",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "size_desktop",
+          "label": "Tamaño en escritorio",
+          "min": 10,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "default": 28
+        },
+        {
+          "type": "range",
+          "id": "size_mobile",
+          "label": "Tamaño en móvil",
+          "min": 10,
+          "max": 60,
+          "step": 1,
+          "unit": "px",
+          "default": 24
         }
       ]
     },
@@ -222,13 +505,204 @@
           "id": "text",
           "default": "t:sections.newsletter.blocks.paragraph.settings.paragraph.default",
           "label": "t:sections.newsletter.blocks.paragraph.settings.paragraph.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_size",
+          "label": "Personalizar tamaño del texto",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "size_desktop",
+          "label": "Tamaño en escritorio",
+          "min": 10,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "size_mobile",
+          "label": "Tamaño en móvil",
+          "min": 10,
+          "max": 60,
+          "step": 1,
+          "unit": "px",
+          "default": 16
         }
       ]
     },
     {
       "type": "email_form",
       "name": "t:sections.newsletter.blocks.email_form.name",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "label": "Título",
+          "default": "Suscribite y recibí novedades"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Descripción",
+          "default": "<p>Promociones, lanzamientos y consejos para hacer crecer tu negocio.</p>"
+        },
+        {
+          "type": "text",
+          "id": "email_label",
+          "label": "Etiqueta del correo",
+          "default": "Tu correo electrónico"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Texto del botón",
+          "default": "Suscribirme"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_secondary",
+          "label": "Botón secundario",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icon",
+          "label": "Mostrar icono de correo",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_size",
+          "label": "Personalizar tamaño del texto",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "size_desktop",
+          "label": "Tamaño en escritorio",
+          "min": 10,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "default": 18
+        },
+        {
+          "type": "range",
+          "id": "size_mobile",
+          "label": "Tamaño en móvil",
+          "min": 10,
+          "max": 60,
+          "step": 1,
+          "unit": "px",
+          "default": 18
+        },
+        {
+          "type": "range",
+          "id": "description_size",
+          "label": "Tamaño de la descripción",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "default": 13
+        }
+      ]
+    },
+    {
+      "type": "benefit",
+      "name": "Beneficio con icono",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "label": "Título",
+          "default": "Nuestro beneficio"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "description",
+          "label": "Descripción",
+          "default": "Conocé las ventajas de trabajar con nosotros."
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icono",
+          "default": "truck",
+          "options": [
+            {
+              "value": "truck",
+              "label": "Envíos / stock"
+            },
+            {
+              "value": "tag",
+              "label": "Precios"
+            },
+            {
+              "value": "person",
+              "label": "Atención"
+            },
+            {
+              "value": "mail",
+              "label": "Correo"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icono personalizado"
+        },
+        {
+          "type": "checkbox",
+          "id": "tint_icon",
+          "label": "Aplicar color al icono PNG",
+          "default": true,
+          "info": "Usá PNG con fondo transparente."
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_size",
+          "label": "Personalizar tamaño del texto",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "size_desktop",
+          "label": "Tamaño en escritorio",
+          "min": 10,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "size_mobile",
+          "label": "Tamaño en móvil",
+          "min": 10,
+          "max": 60,
+          "step": 1,
+          "unit": "px",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "description_size",
+          "label": "Tamaño de la descripción",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "default": 13
+        }
+      ]
     },
     {
       "type": "@app"
@@ -239,16 +713,55 @@
       "name": "t:sections.newsletter.presets.name",
       "blocks": [
         {
-          "type": "heading"
+          "type": "eyebrow"
         },
         {
-          "type": "paragraph"
+          "type": "heading",
+          "settings": {
+            "heading": "Más que un proveedor, somos tu aliado",
+            "custom_size": true,
+            "size_desktop": 28,
+            "size_mobile": 24
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Stock permanente",
+            "description": "Productos siempre disponibles",
+            "icon": "truck"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Precios competitivos",
+            "description": "Directo de fábrica",
+            "icon": "tag"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Envíos a todo el país",
+            "description": "Rápidos y seguros",
+            "icon": "truck"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Experiencia y confianza",
+            "description": "Trabajamos con emprendedores y empresas en todo el país",
+            "icon": "person"
+          }
         },
         {
           "type": "email_form"
         }
       ]
     }
-  ]
+  ],
+  "max_blocks": 12
 }
 {% endschema %}

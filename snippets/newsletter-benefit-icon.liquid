@@ -1,0 +1,12 @@
+<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  {%- case icon -%}
+    {%- when 'tag' -%}
+      <path d="m5 26 21-21h17v17L22 43Zm28-13h1" /><circle cx="34" cy="14" r="2" />
+    {%- when 'person' -%}
+      <circle cx="24" cy="12" r="8" /><path d="M8 42V31c0-6 7-9 16-9s16 3 16 9v11Z" />
+    {%- when 'mail' -%}
+      <rect x="4" y="9" width="40" height="30" rx="3" /><path d="m5 11 19 15 19-15M5 37l13-13m25 13L30 24" />
+    {%- else -%}
+      <path d="M5 31V12h24v23H15m14-16h8l6 9v7h-5M5 22H2m3 6H1m28 7h-2" /><circle cx="11" cy="35" r="4" /><circle cx="34" cy="35" r="4" />
+  {%- endcase -%}
+</svg>

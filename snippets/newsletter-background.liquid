@@ -1,0 +1,10 @@
+{%- liquid
+  assign desktop = image | default: image_mobile
+  assign mobile = image_mobile | default: desktop
+-%}
+{%- if desktop != blank -%}
+  <picture class="nl-background" aria-hidden="true">
+    <source media="(max-width: 749px)" sizes="100vw" srcset="{{ mobile | image_url: width: 375 }} 375w, {{ mobile | image_url: width: 750 }} 750w, {{ mobile | image_url: width: 1500 }} 1500w">
+    {{ desktop | image_url: width: 2400 | image_tag: widths: '750, 1100, 1500, 2000, 2400', sizes: '100vw', loading: 'lazy', alt: '' }}
+  </picture>
+{%- endif -%}

@@ -1,0 +1,24 @@
+{% comment %}Accessible contact input. key is the stable Shopify contact field name.{% endcomment %}
+{%- assign field_id = form_id | append: '-' | append: key | handleize -%}
+<div class="quote-field{% if wide %} quote-field--wide{% endif %}">
+  <label for="{{ field_id }}">{{ label | escape }}{% if required %} <span class="quote-required" aria-hidden="true">*</span>{% endif %}</label>
+  <div class="quote-control">
+    <span class="quote-field-icon">{% render 'contact-quote-icon', icon: icon, image: image, tint: tint %}</span>
+    {% if options %}
+      <select id="{{ field_id }}" name="contact[{{ key | escape }}]" {% if required %}required aria-required="true"{% endif %} {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}>
+        <option value="">{{ placeholder | escape }}</option>
+        {% for item in options %}{% assign option = item | strip %}{% if option != blank %}<option value="{{ option | escape }}" {% if value == option %}selected{% endif %}>{{ option | escape }}</option>{% endif %}{% endfor %}
+      </select>
+    {% elsif type == 'textarea' %}
+      <textarea id="{{ field_id }}" name="contact[{{ key | escape }}]" rows="4" placeholder="{{ placeholder | escape }}">{{ value | escape }}</textarea>
+    {% else %}
+      <input id="{{ field_id }}" name="contact[{{ key | escape }}]" type="{{ type | default: 'text' }}" value="{{ value | escape }}" placeholder="{{ placeholder | escape }}"
+        {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
+        {% if required %}required aria-required="true"{% endif %}
+        {% if type == 'number' %}min="1" step="1" inputmode="numeric"{% endif %}
+        {% if type == 'email' %}autocapitalize="off" spellcheck="false"{% endif %}
+        {% if error %}aria-invalid="true" aria-describedby="{{ field_id }}-error"{% endif %}>
+    {% endif %}
+  </div>
+  {% if error %}<small class="quote-error" id="{{ field_id }}-error">{{ error | escape }}</small>{% endif %}
+</div>

@@ -1,138 +1,90 @@
 {%- render 'section-button-icons', section: section -%}
 {{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
-
-{%- style -%}
-  .section-{{ section.id }}-padding {
+{%- liquid
+  assign form_id = 'ContactForm-' | append: section.id
+  assign provinces = section.settings.provinces | default: 'Otra provincia' | newline_to_br | split: '<br />'
+  assign products = section.settings.products | default: 'Otro producto' | newline_to_br | split: '<br />'
+  assign personalization_options = 'Sí|No|Necesito asesoramiento' | split: '|'
+-%}
+{% style %}
+  #Quote-{{ section.id }} {
+    --quote-accent: {{ section.settings.accent_color }};
+    --quote-panel: {{ section.settings.panel_color }};
+    --quote-whatsapp: {{ section.settings.whatsapp_color }};
+    --quote-field-size: {{ section.settings.field_icon_size }}px;
+    --quote-icon-size: {{ section.settings.contact_icon_size }}px;
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
-
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
+  @media (min-width: 750px) {
+    #Quote-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; }
   }
-{%- endstyle -%}
-
-<div class="color-{{ section.settings.color_scheme }} gradient">
-  <div class="contact page-width page-width--narrow section-{{ section.id }}-padding">
-    {%- if section.settings.heading != blank -%}
-      <h2 class="title title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-        {{ section.settings.heading }}
-      </h2>
-    {%- else -%}
-      <h2 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h2>
-    {%- endif -%}
-    {%- liquid
-      assign contact_form_class = 'isolate'
-      if settings.animations_reveal_on_scroll
-        assign contact_form_class = 'isolate scroll-trigger animate--slide-in'
-      endif
-    -%}
-    {%- form 'contact', id: 'ContactForm', class: contact_form_class -%}
-      {%- if form.posted_successfully? -%}
-        <h2 class="form-status form-status-list form__message" tabindex="-1" autofocus>
-          {{- 'icon-success.svg' | inline_asset_content -}}
-          {{ 'templates.contact.form.post_success' | t }}
-        </h2>
-      {%- elsif form.errors -%}
-        <div class="form__message">
-          <h2 class="form-status caption-large text-body" role="alert" tabindex="-1" autofocus>
-            {{- 'icon-error.svg' | inline_asset_content -}}
-            {{ 'templates.contact.form.error_heading' | t }}
-          </h2>
+{% endstyle %}
+<div id="Quote-{{ section.id }}" class="quote-contact color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width quote-layout{% unless section.settings.show_sidebar %} quote-layout--single{% endunless %}">
+    <div class="quote-panel">
+      {% if section.settings.eyebrow != blank %}<p class="quote-eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}
+      {% if section.settings.heading != blank %}<h2 class="{{ section.settings.heading_size }} quote-heading">{{ section.settings.heading }}</h2>{% else %}<h2 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h2>{% endif %}
+      {% if section.settings.description != blank %}<div class="quote-description rte">{{ section.settings.description }}</div>{% endif %}
+      {% form 'contact', id: form_id, class: 'quote-form' %}
+        {% if form.posted_successfully? %}
+          <div class="form-status form__message" role="status" tabindex="-1" autofocus><span class="quote-status-icon">{% render 'contact-quote-icon', icon: 'success', image: section.settings.success_icon %}</span>{{ 'templates.contact.form.post_success' | t }}</div>
+        {% elsif form.errors %}
+          <div class="quote-error-summary" role="alert" tabindex="-1" autofocus>
+            <h3 class="h3">{{ 'templates.contact.form.error_heading' | t }}</h3>
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+        {% liquid
+          assign name_value = form.name | default: customer.name
+          assign email_value = form.email | default: customer.email
+          assign phone_value = form.phone | default: customer.phone
+          assign email_error = form.errors.messages.email
+        %}
+        <div class="quote-fields">
+          {% render 'contact-quote-field', form_id: form_id, key: 'name', label: 'Nombre y apellido', placeholder: 'Ej. Juan Pérez', required: true, autocomplete: 'name', icon: 'person', value: name_value, image: section.settings.field_icon_name %}
+          {% render 'contact-quote-field', form_id: form_id, key: 'Empresa', label: 'Empresa / Negocio', placeholder: 'Ej. Distribuidora Norte', required: true, autocomplete: 'organization', icon: 'business', value: form.Empresa, image: section.settings.field_icon_empresa %}
+          {% render 'contact-quote-field', form_id: form_id, key: 'CUIT', label: 'CUIT (opcional)', placeholder: 'XX-XXXXXXXX-X', icon: 'document', value: form.CUIT, image: section.settings.field_icon_cuit %}
+          {% render 'contact-quote-field', form_id: form_id, key: 'Provincia', label: 'Provincia', placeholder: 'Seleccioná tu provincia', required: true, autocomplete: 'address-level1', icon: 'pin', options: provinces, value: form.Provincia, image: section.settings.field_icon_provincia %}
+          {% render 'contact-quote-field', form_id: form_id, key: 'phone', label: 'WhatsApp', placeholder: 'Ej. +54 9 11 1234 5678', type: 'tel', required: true, autocomplete: 'tel', icon: 'whatsapp', value: phone_value, image: section.settings.field_icon_phone %}
+          {% render 'contact-quote-field', form_id: form_id, key: 'Producto', label: 'Producto de interés', placeholder: 'Seleccioná un producto', required: true, icon: 'box', options: products, value: form.Producto, image: section.settings.field_icon_producto %}
+          {% render 'contact-quote-field', form_id: form_id, key: 'Cantidad', label: 'Cantidad estimada', placeholder: 'Ej. 50', type: 'number', required: true, icon: 'quantity', value: form.Cantidad, image: section.settings.field_icon_cantidad %}
+          {% render 'contact-quote-field', form_id: form_id, key: 'Personalizacion', label: '¿Requiere personalización?', placeholder: 'Seleccioná una opción', icon: 'edit', options: personalization_options, value: form.Personalizacion, image: section.settings.field_icon_personalizacion %}
+          {% render 'contact-quote-field', form_id: form_id, key: 'email', label: 'Correo electrónico', placeholder: 'nombre@empresa.com', type: 'email', required: true, autocomplete: 'email', icon: 'email', wide: true, value: email_value, error: email_error, image: section.settings.field_icon_email %}
+          {% render 'contact-quote-field', form_id: form_id, key: 'body', label: 'Mensaje adicional (opcional)', placeholder: 'Contanos detalles de tu pedido, colores, grabados, fecha estimada, etc.', type: 'textarea', icon: 'document', wide: true, value: form.body, image: section.settings.field_icon_body %}
         </div>
-        <ul class="form-status-list caption-large" role="list">
-          <li>
-            <a href="#ContactForm-email" class="link">
-              {{ form.errors.translated_fields.email | capitalize }}
-              {{ form.errors.messages.email }}
-            </a>
-          </li>
-        </ul>
-      {%- endif -%}
-      <div class="contact__fields">
-        <div class="field">
-          <input
-            class="field__input"
-            autocomplete="name"
-            type="text"
-            id="ContactForm-name"
-            name="contact[{{ 'templates.contact.form.name' | t }}]"
-            value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
-            placeholder="{{ 'templates.contact.form.name' | t }}"
-          >
-          <label class="field__label" for="ContactForm-name">{{ 'templates.contact.form.name' | t }}</label>
+        <p class="quote-required-note">Los campos con * son obligatorios.</p>
+        <button type="submit" class="button button--primary quote-submit" {% render 'button-icon-attributes', image: section.settings.submit_icon , position: section.settings.submit_icon_position, text_color: section.settings.submit_icon_text_color %}>{{ section.settings.submit_label | escape }}</button>
+        {% if section.settings.privacy_text != blank %}<p class="quote-privacy"><span>{% render 'contact-quote-icon', icon: 'lock', image: section.settings.privacy_icon %}</span>{{ section.settings.privacy_text | escape }}</p>{% endif %}
+      {% endform %}
+    </div>
+    {% if section.settings.show_sidebar %}
+      <aside class="quote-sidebar" aria-label="{{ section.settings.contact_heading | escape }}">
+        <div class="quote-whatsapp{% if section.settings.whatsapp_art != blank %} quote-whatsapp--illustrated{% endif %}">
+          <span class="quote-contact-icon">{% render 'contact-quote-icon', icon: 'whatsapp', image: section.settings.whatsapp_badge %}</span>
+          <div>
+            <h3 class="h3">{{ section.settings.whatsapp_heading | escape }}</h3>
+            <div class="rte quote-description">{{ section.settings.whatsapp_text }}</div>
+            {% if section.settings.whatsapp_link != blank %}<a class="button button--primary" href="{{ section.settings.whatsapp_link }}" {% render 'button-icon-attributes', image: section.settings.whatsapp_icon , position: section.settings.whatsapp_icon_position, text_color: section.settings.whatsapp_icon_text_color %}>{{ section.settings.whatsapp_label | escape }}</a>{% elsif request.design_mode %}<p class="quote-description">Agregá el enlace de WhatsApp en los ajustes de esta sección.</p>{% endif %}
+          </div>
+          {% if section.settings.whatsapp_art != blank %}<div class="quote-whatsapp-art">{{ section.settings.whatsapp_art | image_url: width: 240 | image_tag: loading: 'lazy', alt: '' }}</div>{% endif %}
         </div>
-        <div class="field field--with-error">
-          <input
-            autocomplete="email"
-            type="email"
-            id="ContactForm-email"
-            class="field__input"
-            name="contact[email]"
-            spellcheck="false"
-            autocapitalize="off"
-            value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
-            aria-required="true"
-            {% if form.errors contains 'email' %}
-              aria-invalid="true"
-              aria-describedby="ContactForm-email-error"
-            {% endif %}
-            placeholder="{{ 'templates.contact.form.email' | t }}"
-          >
-          <label class="field__label" for="ContactForm-email">
-            {{- 'templates.contact.form.email' | t }}
-            <span aria-hidden="true">*</span></label
-          >
-          {%- if form.errors contains 'email' -%}
-            <small class="contact__field-error" id="ContactForm-email-error">
-              <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
-              <span class="form__message">
-                <span class="svg-wrapper">
-                  {{- 'icon-error.svg' | inline_asset_content -}}
-                </span>
-                {{- form.errors.translated_fields.email | capitalize }}
-                {{ form.errors.messages.email -}}
-              </span>
-            </small>
-          {%- endif -%}
-        </div>
-      </div>
-      <div class="field">
-        <input
-          type="tel"
-          id="ContactForm-phone"
-          class="field__input"
-          autocomplete="tel"
-          name="contact[{{ 'templates.contact.form.phone' | t }}]"
-          pattern="[0-9\-]*"
-          value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
-          placeholder="{{ 'templates.contact.form.phone' | t }}"
-        >
-        <label class="field__label" for="ContactForm-phone">{{ 'templates.contact.form.phone' | t }}</label>
-      </div>
-      <div class="field">
-        <textarea
-          rows="10"
-          id="ContactForm-body"
-          class="text-area field__input"
-          name="contact[{{ 'templates.contact.form.comment' | t }}]"
-          placeholder="{{ 'templates.contact.form.comment' | t }}"
-        >
-          {{- form.body -}}
-        </textarea>
-        <label class="form__label field__label" for="ContactForm-body">
-          {{- 'templates.contact.form.comment' | t -}}
-        </label>
-      </div>
-      <div class="contact__button">
-        <button type="submit" class="button">
-          {{ 'templates.contact.form.send' | t }}
-        </button>
-      </div>
-    {%- endform -%}
+        {% if section.blocks.size > 0 %}
+          <div class="quote-panel quote-details">
+            <h3 class="h2">{{ section.settings.contact_heading | escape }}</h3>
+            {% for block in section.blocks %}
+              <div class="quote-detail" {{ block.shopify_attributes }}>
+                <span class="quote-contact-icon">{% render 'contact-quote-icon', icon: block.settings.icon, image: block.settings.image, tint: block.settings.tint_icon %}</span>
+                <div><h4>{{ block.settings.title | escape }}</h4>
+                  {% if block.settings.value != blank %}{% if block.settings.link != blank %}<a class="quote-detail-value link" href="{{ block.settings.link }}">{{ block.settings.value | escape }}</a>{% else %}<p class="quote-detail-value">{{ block.settings.value | escape }}</p>{% endif %}{% endif %}
+                  {% if block.settings.text != blank %}<div class="quote-description rte">{{ block.settings.text }}</div>{% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </aside>
+    {% endif %}
   </div>
 </div>
 
@@ -142,12 +94,35 @@
   "tag": "section",
   "class": "section",
   "disabled_on": {
-    "groups": ["header", "footer"]
+    "groups": [
+      "header",
+      "footer"
+    ]
   },
   "settings": [
-    {"type": "header", "content": "Iconos de botones"},
-    {"type": "image_picker", "id": "section_button_icon_image", "label": "Imagen para los botones", "info": "Opcional. Sin imagen se usa la configuración global del tema. Se recomienda PNG transparente."},
-    {"type": "range", "id": "section_button_icon_size", "label": "Tamaño de iconos", "info": "Se aplica a las imágenes elegidas en esta sección o sus bloques.", "min": 12, "max": 40, "step": 1, "default": 18, "unit": "px"},
+    {
+      "type": "header",
+      "content": "Iconos de botones"
+    },
+    {
+      "type": "image_picker",
+      "id": "section_button_icon_image",
+      "label": "Imagen para los botones",
+      "info": "Opcional. Sin imagen se usa la configuración global del tema. Se recomienda PNG transparente."
+    },
+{"type": "select", "id": "section_button_icon_image_position", "label": "Posición del icono", "default": "inherit", "options": [{"value": "inherit", "label": "Heredar configuración"}, {"value": "left", "label": "Izquierda del texto"}, {"value": "right", "label": "Derecha del texto"}]},
+{"type": "color", "id": "section_button_icon_image_text_color", "label": "Color del texto del botón", "info": "Opcional. Vacío conserva el esquema de colores o la configuración heredada."},
+    {
+      "type": "range",
+      "id": "section_button_icon_size",
+      "label": "Tamaño de iconos",
+      "info": "Se aplica a las imágenes elegidas en esta sección o sus bloques.",
+      "min": 12,
+      "max": 40,
+      "step": 1,
+      "default": 18,
+      "unit": "px"
+    },
     {
       "type": "inline_richtext",
       "id": "heading",
@@ -211,11 +186,331 @@
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
       "default": 36
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texto superior",
+      "default": "SOLICITÁ TU COTIZACIÓN"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Descripción",
+      "default": "<p>Cuanta más información nos brindes, más precisa será tu cotización.</p>"
+    },
+    {
+      "type": "textarea",
+      "id": "provinces",
+      "label": "Provincias",
+      "info": "Una opción por línea. No dejar vacío.",
+      "default": "Ciudad Autónoma de Buenos Aires\nBuenos Aires\nCatamarca\nChaco\nChubut\nCórdoba\nCorrientes\nEntre Ríos\nFormosa\nJujuy\nLa Pampa\nLa Rioja\nMendoza\nMisiones\nNeuquén\nRío Negro\nSalta\nSan Juan\nSan Luis\nSanta Cruz\nSanta Fe\nSantiago del Estero\nTierra del Fuego\nTucumán"
+    },
+    {
+      "type": "textarea",
+      "id": "products",
+      "label": "Productos de interés",
+      "info": "Una opción por línea. No dejar vacío.",
+      "default": "Termos\nMates\nBotellas\nVasos\nTazas\nJarros\nShakers\nSets y combos\nOtro"
+    },
+    {
+      "type": "text",
+      "id": "submit_label",
+      "label": "Texto del botón de envío",
+      "default": "Enviar solicitud de cotización"
+    },
+    {
+      "type": "image_picker",
+      "id": "submit_icon",
+      "label": "Imagen del botón de envío"
+    },
+{"type": "select", "id": "submit_icon_position", "label": "Posición del icono", "default": "inherit", "options": [{"value": "inherit", "label": "Heredar configuración"}, {"value": "left", "label": "Izquierda del texto"}, {"value": "right", "label": "Derecha del texto"}]},
+{"type": "color", "id": "submit_icon_text_color", "label": "Color del texto del botón", "info": "Opcional. Vacío conserva el esquema de colores o la configuración heredada."},
+    {
+      "type": "text",
+      "id": "privacy_text",
+      "label": "Nota al pie",
+      "default": "Usaremos tus datos para responder tu consulta."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sidebar",
+      "label": "Mostrar panel de contacto",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_heading",
+      "label": "Título de WhatsApp",
+      "default": "Hablá directamente por WhatsApp"
+    },
+    {
+      "type": "richtext",
+      "id": "whatsapp_text",
+      "label": "Texto de WhatsApp",
+      "default": "<p>Conversá con nuestro equipo comercial.</p>"
+    },
+    {
+      "type": "url",
+      "id": "whatsapp_link",
+      "label": "Enlace de WhatsApp",
+      "info": "Usá https://wa.me/ seguido del número completo con código de país, sin espacios ni signos."
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_label",
+      "label": "Texto del botón de WhatsApp",
+      "default": "Iniciar conversación"
+    },
+    {
+      "type": "image_picker",
+      "id": "whatsapp_icon",
+      "label": "Imagen del botón de WhatsApp"
+    },
+{"type": "select", "id": "whatsapp_icon_position", "label": "Posición del icono", "default": "inherit", "options": [{"value": "inherit", "label": "Heredar configuración"}, {"value": "left", "label": "Izquierda del texto"}, {"value": "right", "label": "Derecha del texto"}]},
+{"type": "color", "id": "whatsapp_icon_text_color", "label": "Color del texto del botón", "info": "Opcional. Vacío conserva el esquema de colores o la configuración heredada."},
+    {
+      "type": "text",
+      "id": "contact_heading",
+      "label": "Título de datos de contacto",
+      "default": "Otros medios de contacto"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Color de iconos y texto superior",
+      "default": "#f57800"
+    },
+    {
+      "type": "color",
+      "id": "panel_color",
+      "label": "Fondo de las tarjetas",
+      "default": "#f8f9fa"
+    },
+    {
+      "type": "color",
+      "id": "whatsapp_color",
+      "label": "Fondo de WhatsApp",
+      "default": "#fff1e5"
+    },
+    {
+      "type": "range",
+      "id": "contact_icon_size",
+      "label": "Tamaño de iconos de contacto",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "Iconos del formulario"
+    },
+    {
+      "type": "image_picker",
+      "id": "field_icon_name",
+      "label": "Nombre y apellido",
+      "info": "Opcional. Sin imagen se conserva el icono predeterminado."
+    },
+    {
+      "type": "image_picker",
+      "id": "field_icon_empresa",
+      "label": "Empresa / Negocio",
+      "info": "Opcional. Sin imagen se conserva el icono predeterminado."
+    },
+    {
+      "type": "image_picker",
+      "id": "field_icon_cuit",
+      "label": "CUIT",
+      "info": "Opcional. Sin imagen se conserva el icono predeterminado."
+    },
+    {
+      "type": "image_picker",
+      "id": "field_icon_provincia",
+      "label": "Provincia",
+      "info": "Opcional. Sin imagen se conserva el icono predeterminado."
+    },
+    {
+      "type": "image_picker",
+      "id": "field_icon_phone",
+      "label": "WhatsApp del formulario",
+      "info": "Opcional. Sin imagen se conserva el icono predeterminado."
+    },
+    {
+      "type": "image_picker",
+      "id": "field_icon_producto",
+      "label": "Producto de interés",
+      "info": "Opcional. Sin imagen se conserva el icono predeterminado."
+    },
+    {
+      "type": "image_picker",
+      "id": "field_icon_cantidad",
+      "label": "Cantidad estimada",
+      "info": "Opcional. Sin imagen se conserva el icono predeterminado."
+    },
+    {
+      "type": "image_picker",
+      "id": "field_icon_personalizacion",
+      "label": "Personalización",
+      "info": "Opcional. Sin imagen se conserva el icono predeterminado."
+    },
+    {
+      "type": "image_picker",
+      "id": "field_icon_email",
+      "label": "Correo electrónico",
+      "info": "Opcional. Sin imagen se conserva el icono predeterminado."
+    },
+    {
+      "type": "image_picker",
+      "id": "field_icon_body",
+      "label": "Mensaje adicional",
+      "info": "Opcional. Sin imagen se conserva el icono predeterminado."
+    },
+    {
+      "type": "range",
+      "id": "field_icon_size",
+      "label": "Tamaño de iconos de campos",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 18,
+      "unit": "px"
+    },
+    {
+      "type": "image_picker",
+      "id": "privacy_icon",
+      "label": "Icono de nota al pie"
+    },
+    {
+      "type": "image_picker",
+      "id": "success_icon",
+      "label": "Icono de envío exitoso"
+    },
+    {
+      "type": "header",
+      "content": "Imágenes del panel de WhatsApp"
+    },
+    {
+      "type": "image_picker",
+      "id": "whatsapp_badge",
+      "label": "Icono junto al título"
+    },
+    {
+      "type": "image_picker",
+      "id": "whatsapp_art",
+      "label": "Imagen decorativa a la derecha",
+      "info": "Opcional. Por ejemplo, una ilustración de WhatsApp con fondo transparente."
     }
   ],
   "presets": [
     {
-      "name": "t:sections.contact-form.presets.name"
+      "name": "t:sections.contact-form.presets.name",
+      "settings": {
+        "heading": "Completá el formulario",
+        "heading_size": "h2"
+      },
+      "blocks": [
+        {
+          "type": "contact_detail",
+          "settings": {
+            "icon": "phone",
+            "title": "Teléfono"
+          }
+        },
+        {
+          "type": "contact_detail",
+          "settings": {
+            "icon": "email",
+            "title": "Email"
+          }
+        },
+        {
+          "type": "contact_detail",
+          "settings": {
+            "icon": "pin",
+            "title": "Dirección"
+          }
+        },
+        {
+          "type": "contact_detail",
+          "settings": {
+            "icon": "clock",
+            "title": "Horarios de atención"
+          }
+        }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "blocks": [
+    {
+      "type": "contact_detail",
+      "name": "Icono y contacto",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icono",
+          "options": [
+            {
+              "value": "phone",
+              "label": "Teléfono"
+            },
+            {
+              "value": "email",
+              "label": "Email"
+            },
+            {
+              "value": "pin",
+              "label": "Dirección"
+            },
+            {
+              "value": "clock",
+              "label": "Horarios"
+            },
+            {
+              "value": "whatsapp",
+              "label": "WhatsApp"
+            }
+          ],
+          "default": "phone"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icono personalizado"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Contacto"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Dato de contacto"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Enlace opcional",
+          "info": "Por ejemplo, tel:+541112345678, mailto:ventas@tudominio.com o un enlace al mapa."
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Información adicional"
+        },
+        {
+          "type": "checkbox",
+          "id": "tint_icon",
+          "label": "Aplicar color al icono PNG",
+          "default": false,
+          "info": "Usa el color de iconos de la sección. Requiere una imagen con fondo transparente."
+        }
+      ]
     }
   ]
 }

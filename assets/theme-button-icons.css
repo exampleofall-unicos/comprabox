@@ -18,3 +18,59 @@
 .theme-button-icon-only > svg,
 .theme-button-icon-only > .svg-wrapper { display: none; }
 .theme-button-icon-only > .theme-button-icon { margin-inline-end: 0; }
+
+/* Primary/secondary variables come from Dawn's selected color scheme. */
+.theme-button-managed.button {
+  color: rgb(var(--color-button-text)) !important;
+  background-color: rgba(var(--color-button), var(--alpha-button-background, 1)) !important;
+}
+.theme-button-managed.theme-button-custom-color {
+  color: var(--theme-button-text-color) !important;
+}
+.theme-button-icon[data-side="right"] { margin-inline-start: 8px; margin-inline-end: 0; }
+.theme-button-icon-only > .theme-button-icon { margin-inline: 0; }
+
+/* One CTA style; Dawn supplies border, radius, shadow and scheme variables. */
+html .theme-button-managed.button,
+html .customer button.theme-button-managed {
+  font-family: var(--font-body-family);
+  font-style: var(--font-body-style);
+  font-weight: var(--font-body-weight);
+  font-size: var(--theme-button-font-size, 15px) !important;
+  border: 0;
+  border-radius: var(--buttons-radius-outset, var(--buttons-radius));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Independent translate preserves positioning transforms on navigation controls. */
+html .theme-button-managed {
+  transition: filter var(--theme-button-duration, 200ms) ease,
+    translate var(--theme-button-duration, 200ms) ease,
+    box-shadow var(--theme-button-duration, 200ms) ease !important;
+}
+/* Disable Dawn's optional card/button hover transforms only on managed CTAs. */
+html .theme-button-managed.button,
+html .customer button.theme-button-managed {
+  transform: none !important;
+}
+html .theme-button-managed.button::before,
+html .theme-button-managed.button::after,
+html .customer button.theme-button-managed::before,
+html .customer button.theme-button-managed::after {
+  transform: none !important;
+  transition: none !important;
+}
+html .theme-button-managed.button:hover::after,
+html .customer button.theme-button-managed:hover::after {
+  --border-offset: 0px;
+  box-shadow: 0 0 0 var(--buttons-border-width) rgba(var(--color-button-text), var(--border-opacity)),
+    0 0 0 var(--buttons-border-width) rgba(var(--color-button), var(--alpha-button-background));
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  html[data-theme-button-motion="subtle"] .theme-button-managed:not(:disabled):not([aria-disabled="true"]):not(.loading):hover { filter: brightness(.94); }
+  html[data-theme-button-motion="lift"] .theme-button-managed:not(:disabled):not([aria-disabled="true"]):not(.loading):hover { translate: 0 -2px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html .theme-button-managed { transition: none !important; translate: none !important; }
+}

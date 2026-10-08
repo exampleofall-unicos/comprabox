@@ -208,11 +208,11 @@
   .ai-product-info-cta-button-{{ ai_gen_id }} {
     display: inline-block;
     padding: {{ block.settings.button_padding_vertical }}px {{ block.settings.button_padding_horizontal }}px;
-    background-color: {{ block.settings.button_background }};
-    color: {{ block.settings.button_text_color }};
+    background-color: rgb(var(--color-button));
+    color: rgb(var(--color-button-text));
     text-decoration: none;
     border-radius: {{ settings.buttons_radius }}px;
-    border: {{ settings.buttons_border_thickness }}px solid {{ block.settings.button_background }};
+    border: {{ settings.buttons_border_thickness }}px solid rgb(var(--color-button));
     font-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
     font-weight: {{ settings.type_body_font.weight }};
     font-size: calc({{ block.settings.button_text_size }}px * {{ settings.body_scale }} / 100);
@@ -222,9 +222,9 @@
   }
 
   .ai-product-info-cta-button-{{ ai_gen_id }}:hover {
-    background-color: {{ block.settings.button_hover_background }};
-    border-color: {{ block.settings.button_hover_background }};
-    color: {{ block.settings.button_hover_text_color }};
+    background-color: rgb(var(--color-button));
+    border-color: rgb(var(--color-button));
+    color: rgb(var(--color-button-text));
   }
 
   .ai-product-info-empty-{{ ai_gen_id }} {
@@ -475,8 +475,8 @@
         {% if block.settings.cta_button_text != blank %}
           <a
             href="{{ block.settings.cta_button_url }}"
-            class="ai-product-info-cta-button-{{ ai_gen_id }}"
-{% render 'button-icon-attributes', image: block.settings.button_image %}
+            class="ai-product-info-cta-button-{{ ai_gen_id }} button button--primary"
+{% render 'button-icon-attributes', image: block.settings.button_image , position: block.settings.button_image_position, text_color: block.settings.button_image_text_color %}
            >
             {{ block.settings.cta_button_text }}
           </a>
@@ -504,6 +504,8 @@
   "tag": null,
   "settings": [
     {"type": "image_picker", "id": "button_image", "label": "Imagen del botón", "info": "Opcional. Sin imagen se hereda el icono de la sección o del tema. Se recomienda PNG transparente."},
+{"type": "select", "id": "button_image_position", "label": "Posición del icono", "default": "inherit", "options": [{"value": "inherit", "label": "Heredar configuración"}, {"value": "left", "label": "Izquierda del texto"}, {"value": "right", "label": "Derecha del texto"}]},
+{"type": "color", "id": "button_image_text_color", "label": "Color del texto del botón", "info": "Opcional. Vacío conserva el esquema de colores o la configuración heredada."},
     {
       "type": "header",
       "content": "Especificaciones técnicas"

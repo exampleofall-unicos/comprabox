@@ -97,7 +97,7 @@
           {%- when 'button' -%}
             <div class="personalization-block__button-wrapper" {{ block.shopify_attributes }}>
               {%- if block.settings.button_label != blank -%}
-                <a id="PersonalizationText-{{ block.id }}" class="personalization-block__button button{% if block.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %}" {% if block.settings.button_link != blank %}href="{{ block.settings.button_link }}"{% else %}role="link" aria-disabled="true"{% endif %} {% render 'button-icon-attributes', image: block.settings.button_image %}>
+                <a id="PersonalizationText-{{ block.id }}" class="personalization-block__button button{% if block.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %}" {% if block.settings.button_link != blank %}href="{{ block.settings.button_link }}"{% else %}role="link" aria-disabled="true"{% endif %} {% render 'button-icon-attributes', image: block.settings.button_image , position: block.settings.button_image_position, text_color: block.settings.button_image_text_color %}>
                   <span>{{ block.settings.button_label | escape }}</span>
                   {%- if block.settings.show_arrow -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>{%- endif -%}
                 </a>
@@ -123,6 +123,8 @@
   "settings": [
     {"type": "header", "content": "Iconos de botones"},
     {"type": "image_picker", "id": "section_button_icon_image", "label": "Imagen para los botones", "info": "Opcional. Sin imagen se usa la configuración global del tema. Se recomienda PNG transparente."},
+{"type": "select", "id": "section_button_icon_image_position", "label": "Posición del icono", "default": "inherit", "options": [{"value": "inherit", "label": "Heredar configuración"}, {"value": "left", "label": "Izquierda del texto"}, {"value": "right", "label": "Derecha del texto"}]},
+{"type": "color", "id": "section_button_icon_image_text_color", "label": "Color del texto del botón", "info": "Opcional. Vacío conserva el esquema de colores o la configuración heredada."},
     {"type": "range", "id": "section_button_icon_size", "label": "Tamaño de iconos", "info": "Se aplica a las imágenes elegidas en esta sección o sus bloques.", "min": 12, "max": 40, "step": 1, "default": 18, "unit": "px"},
     {
       "type": "image_picker",
@@ -491,6 +493,8 @@
       "name": "Botón",
       "settings": [
     {"type": "image_picker", "id": "button_image", "label": "Imagen del botón", "info": "Opcional. Sin imagen se hereda el icono de la sección o del tema. Se recomienda PNG transparente."},
+{"type": "select", "id": "button_image_position", "label": "Posición del icono", "default": "inherit", "options": [{"value": "inherit", "label": "Heredar configuración"}, {"value": "left", "label": "Izquierda del texto"}, {"value": "right", "label": "Derecha del texto"}]},
+{"type": "color", "id": "button_image_text_color", "label": "Color del texto del botón", "info": "Opcional. Vacío conserva el esquema de colores o la configuración heredada."},
         {
           "type": "text",
           "id": "button_label",

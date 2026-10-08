@@ -198,3 +198,6 @@
   .image-categories__arrow,
   .image-categories__icon { transition: none; }
 }
+
+/* Navigation buttons inherit the active Dawn scheme. */
+.image-categories__arrow, .image-categories__arrow:active:not(:disabled) { color: rgb(var(--color-foreground)); }

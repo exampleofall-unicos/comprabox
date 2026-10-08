@@ -4,6 +4,8 @@
 {% endcomment %}
 <template
   data-theme-button-scope
+  data-icon-position="{{ section.settings.section_button_icon_image_position | default: 'inherit' }}"
+  data-text-color="{{ section.settings.section_button_icon_image_text_color }}"
   data-icon-size="{{ section.settings.section_button_icon_size | default: 18 }}"
   {% if section.settings.section_button_icon_image != blank %}
     data-icon-image="{{ section.settings.section_button_icon_image | image_url: width: 120 | escape }}"

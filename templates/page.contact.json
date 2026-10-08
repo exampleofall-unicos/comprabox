@@ -11,24 +11,95 @@
   "sections": {
     "main": {
       "type": "main-page",
+      "disabled": true,
       "settings": {
+        "section_button_icon_image_position": "inherit",
+        "section_button_icon_image_text_color": "",
+        "section_button_icon_size": 18,
         "padding_top": 36,
         "padding_bottom": 36
       }
     },
-    "form": {
+    "contact_form_UzNV7U": {
       "type": "contact-form",
+      "blocks": {
+        "contact_detail_AF4XCp": {
+          "type": "contact_detail",
+          "settings": {
+            "icon": "phone",
+            "title": "Teléfono",
+            "value": "",
+            "link": "",
+            "text": ""
+          }
+        },
+        "contact_detail_Q8rwy3": {
+          "type": "contact_detail",
+          "settings": {
+            "icon": "email",
+            "title": "Email",
+            "value": "",
+            "link": "",
+            "text": ""
+          }
+        },
+        "contact_detail_baetCX": {
+          "type": "contact_detail",
+          "settings": {
+            "icon": "pin",
+            "title": "Dirección",
+            "value": "",
+            "link": "",
+            "text": ""
+          }
+        },
+        "contact_detail_VbVWVf": {
+          "type": "contact_detail",
+          "settings": {
+            "icon": "clock",
+            "title": "Horarios de atención",
+            "value": "",
+            "link": "",
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "contact_detail_AF4XCp",
+        "contact_detail_Q8rwy3",
+        "contact_detail_baetCX",
+        "contact_detail_VbVWVf"
+      ],
+      "name": "t:sections.contact-form.presets.name",
       "settings": {
-        "heading": "",
-        "heading_size": "h1",
-        "color_scheme": "scheme-1",
+        "section_button_icon_size": 18,
+        "heading": "Completá el formulario",
+        "heading_size": "h2",
+        "color_scheme": "",
         "padding_top": 36,
-        "padding_bottom": 36
+        "padding_bottom": 36,
+        "eyebrow": "SOLICITÁ TU COTIZACIÓN",
+        "description": "<p>Cuanta más información nos brindes, más precisa será tu cotización.</p>",
+        "provinces": "Ciudad Autónoma de Buenos Aires\nBuenos Aires\nCatamarca\nChaco\nChubut\nCórdoba\nCorrientes\nEntre Ríos\nFormosa\nJujuy\nLa Pampa\nLa Rioja\nMendoza\nMisiones\nNeuquén\nRío Negro\nSalta\nSan Juan\nSan Luis\nSanta Cruz\nSanta Fe\nSantiago del Estero\nTierra del Fuego\nTucumán",
+        "products": "Termos\nMates\nBotellas\nVasos\nTazas\nJarros\nShakers\nSets y combos\nOtro",
+        "submit_label": "Enviar solicitud de cotización",
+        "submit_icon": "shopify://shop_images/whatsapp.png",
+        "privacy_text": "Usaremos tus datos para responder tu consulta.",
+        "show_sidebar": true,
+        "whatsapp_heading": "Hablá directamente por WhatsApp",
+        "whatsapp_text": "<p>Conversá con nuestro equipo comercial.</p>",
+        "whatsapp_link": "",
+        "whatsapp_label": "Iniciar conversación",
+        "contact_heading": "Otros medios de contacto",
+        "accent_color": "#f57800",
+        "panel_color": "#f8f9fa",
+        "whatsapp_color": "#fff1e5",
+        "contact_icon_size": 32
       }
     }
   },
   "order": [
     "main",
-    "form"
+    "contact_form_UzNV7U"
   ]
 }

@@ -128,7 +128,7 @@
                 {%- endif -%}
                 {%- if block.settings.link_label != blank -%}
                   <a
-                    class="link animate-arrow" {% render 'button-icon-attributes', image: block.settings.button_image %}
+                    class="link animate-arrow" {% render 'button-icon-attributes', image: block.settings.button_image , position: block.settings.button_image_position, text_color: block.settings.button_image_text_color %}
                     {% if block.settings.link == blank %}
                       role="link" aria-disabled="true"
                     {% else %}
@@ -202,6 +202,8 @@
   "settings": [
     {"type": "header", "content": "Iconos de botones"},
     {"type": "image_picker", "id": "section_button_icon_image", "label": "Imagen para los botones", "info": "Opcional. Sin imagen se usa la configuración global del tema. Se recomienda PNG transparente."},
+{"type": "select", "id": "section_button_icon_image_position", "label": "Posición del icono", "default": "inherit", "options": [{"value": "inherit", "label": "Heredar configuración"}, {"value": "left", "label": "Izquierda del texto"}, {"value": "right", "label": "Derecha del texto"}]},
+{"type": "color", "id": "section_button_icon_image_text_color", "label": "Color del texto del botón", "info": "Opcional. Vacío conserva el esquema de colores o la configuración heredada."},
     {"type": "range", "id": "section_button_icon_size", "label": "Tamaño de iconos", "info": "Se aplica a las imágenes elegidas en esta sección o sus bloques.", "min": 12, "max": 40, "step": 1, "default": 18, "unit": "px"},
     {
       "type": "inline_richtext",
@@ -409,6 +411,8 @@
       "name": "t:sections.multicolumn.blocks.column.name",
       "settings": [
         {"type": "image_picker", "id": "button_image", "label": "Imagen del enlace", "info": "Opcional. Sin imagen se usa el icono de la sección o del tema."},
+{"type": "select", "id": "button_image_position", "label": "Posición del icono", "default": "inherit", "options": [{"value": "inherit", "label": "Heredar configuración"}, {"value": "left", "label": "Izquierda del texto"}, {"value": "right", "label": "Derecha del texto"}]},
+{"type": "color", "id": "button_image_text_color", "label": "Color del texto del botón", "info": "Opcional. Vacío conserva el esquema de colores o la configuración heredada."},
         {
           "type": "image_picker",
           "id": "image",

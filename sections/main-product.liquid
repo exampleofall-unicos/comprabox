@@ -929,6 +929,8 @@
       "limit": 1,
       "settings": [
     {"type": "image_picker", "id": "button_image", "label": "Imagen del botón de compra", "info": "Opcional. Sin imagen se hereda el icono de la sección o del tema. Se recomienda PNG transparente."},
+{"type": "select", "id": "button_image_position", "label": "Posición del icono", "default": "inherit", "options": [{"value": "inherit", "label": "Heredar configuración"}, {"value": "left", "label": "Izquierda del texto"}, {"value": "right", "label": "Derecha del texto"}]},
+{"type": "color", "id": "button_image_text_color", "label": "Color del texto del botón", "info": "Opcional. Vacío conserva el esquema de colores o la configuración heredada."},
         {
           "type": "checkbox",
           "id": "show_dynamic_checkout",
@@ -2151,6 +2153,8 @@
   "settings": [
     {"type": "header", "content": "Iconos de botones"},
     {"type": "image_picker", "id": "section_button_icon_image", "label": "Imagen para los botones", "info": "Opcional. Sin imagen se usa la configuración global del tema. Se recomienda PNG transparente."},
+{"type": "select", "id": "section_button_icon_image_position", "label": "Posición del icono", "default": "inherit", "options": [{"value": "inherit", "label": "Heredar configuración"}, {"value": "left", "label": "Izquierda del texto"}, {"value": "right", "label": "Derecha del texto"}]},
+{"type": "color", "id": "section_button_icon_image_text_color", "label": "Color del texto del botón", "info": "Opcional. Vacío conserva el esquema de colores o la configuración heredada."},
     {"type": "range", "id": "section_button_icon_size", "label": "Tamaño de iconos", "info": "Se aplica a las imágenes elegidas en esta sección o sus bloques.", "min": 12, "max": 40, "step": 1, "default": 18, "unit": "px"},
 
     {

@@ -76,6 +76,10 @@
         "button": {
           "type": "buttons",
           "settings": {
+            "button_image_1_position": "inherit",
+            "button_image_1_text_color": "#ffffff",
+            "button_image_2_position": "inherit",
+            "button_image_2_text_color": "",
             "button_label_1": "Ver productos",
             "button_link_1": "shopify://collections/all",
             "button_style_secondary_1": false,
@@ -92,6 +96,9 @@
         "button"
       ],
       "settings": {
+        "section_button_icon_image_position": "inherit",
+        "section_button_icon_image_text_color": "",
+        "section_button_icon_size": 18,
         "image_overlay_opacity": 40,
         "image_height": "small",
         "image_behavior": "none",
@@ -192,9 +199,12 @@
       ],
       "name": "Categorías en imágenes",
       "settings": {
+        "section_button_icon_image_position": "inherit",
+        "section_button_icon_image_text_color": "",
+        "section_button_icon_size": 18,
         "navigation_label": "Categorías de productosasd",
         "caption": "",
-        "show_arrows": true,
+        "show_arrows": false,
         "background": "#242829",
         "text_color": "#ffffff",
         "accent_color": "#9dd8d8",
@@ -223,6 +233,9 @@
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
+        "section_button_icon_image_position": "inherit",
+        "section_button_icon_image_text_color": "",
+        "section_button_icon_size": 18,
         "collection": "all",
         "products_to_show": 8,
         "title": "Featured products",
@@ -282,6 +295,8 @@
         "button_tbCbyj": {
           "type": "button",
           "settings": {
+            "button_image_position": "inherit",
+            "button_image_text_color": "",
             "button_label": "Quiero ser mayorista",
             "button_link": "",
             "button_style_secondary": false,
@@ -293,6 +308,7 @@
           "type": "benefit",
           "settings": {
             "icon": "box",
+            "image": "shopify://shop_images/product_44cfece8-efb8-4134-aa20-f3f9dcc7446b.png",
             "tint_icon": true,
             "text": "Amplio catálogo de productos",
             "font_size_desktop": 15,
@@ -304,6 +320,7 @@
           "type": "benefit",
           "settings": {
             "icon": "volume",
+            "image": "shopify://shop_images/discount_2747fd1f-f632-441a-a511-0d9a78d4cbdc.png",
             "tint_icon": true,
             "text": "Precios por volumen",
             "font_size_desktop": 15,
@@ -315,6 +332,7 @@
           "type": "benefit",
           "settings": {
             "icon": "truck",
+            "image": "shopify://shop_images/fast-delivery_5a47e88f-c3cc-4631-b498-07785e81cf0f.png",
             "tint_icon": true,
             "text": "Envíos a todo el país",
             "font_size_desktop": 15,
@@ -326,6 +344,7 @@
           "type": "benefit",
           "settings": {
             "icon": "person",
+            "image": "shopify://shop_images/headphones-with-mic_58b87529-b361-4c62-9a26-98a7ff1a94d8.png",
             "tint_icon": true,
             "text": "Atención comercial personalizada",
             "font_size_desktop": 15,
@@ -346,7 +365,10 @@
       ],
       "name": "Bloque de Marketing",
       "settings": {
-        "background": "#101c21",
+        "section_button_icon_image_position": "inherit",
+        "section_button_icon_image_text_color": "",
+        "section_button_icon_size": 17,
+        "background": "#242829",
         "text_color": "#ffffff",
         "heading_color": "#ffffff",
         "accent_color": "#ff8000",
@@ -357,7 +379,7 @@
         "panel_opacity": 0.8,
         "custom_font": false,
         "font": "assistant_n4",
-        "icon_size": 40,
+        "icon_size": 42,
         "panel_radius": 8,
         "content_width": 1200,
         "panel_width": 320,
@@ -464,6 +486,8 @@
         "button_jfWcdM": {
           "type": "button",
           "settings": {
+            "button_image_position": "inherit",
+            "button_image_text_color": "",
             "button_label": "Quiero personalizar",
             "button_link": "",
             "button_style_secondary": false,
@@ -485,6 +509,9 @@
       ],
       "name": "Bloque de Personalización",
       "settings": {
+        "section_button_icon_image_position": "inherit",
+        "section_button_icon_image_text_color": "",
+        "section_button_icon_size": 18,
         "background": "#ffffff",
         "text_color": "#59636b",
         "heading_color": "#111b22",
@@ -533,6 +560,7 @@
             "title": "Stock permanente",
             "description": "Productos siempre disponibles",
             "icon": "truck",
+            "image": "shopify://shop_images/product_44cfece8-efb8-4134-aa20-f3f9dcc7446b.png",
             "tint_icon": true,
             "custom_size": true,
             "size_desktop": 14,
@@ -546,6 +574,7 @@
             "title": "Precios competitivos",
             "description": "Directo de fábrica",
             "icon": "tag",
+            "image": "shopify://shop_images/price-tag_a325f66d-6b14-4c1e-91d8-e10cbcb9b192.png",
             "tint_icon": true,
             "custom_size": true,
             "size_desktop": 14,
@@ -559,6 +588,7 @@
             "title": "Envíos a todo el país",
             "description": "Rápidos y seguros",
             "icon": "truck",
+            "image": "shopify://shop_images/fast-delivery_5a47e88f-c3cc-4631-b498-07785e81cf0f.png",
             "tint_icon": true,
             "custom_size": true,
             "size_desktop": 14,
@@ -572,6 +602,7 @@
             "title": "Experiencia y confianza",
             "description": "Trabajamos con emprendedores y empresas en todo el país",
             "icon": "person",
+            "image": "shopify://shop_images/hand-shake_e3b949af-4cf9-49ac-b21d-11ea8329b8dc.png",
             "tint_icon": true,
             "custom_size": true,
             "size_desktop": 14,
@@ -582,12 +613,15 @@
         "email_form_QqRHjJ": {
           "type": "email_form",
           "settings": {
+            "button_image": "shopify://shop_images/mail.png",
+            "button_image_position": "inherit",
+            "button_image_text_color": "",
             "title": "Suscribite y recibí novedades",
             "description": "<p>Promociones, lanzamientos y consejos para hacer crecer tu negocio.</p>",
             "email_label": "Tu correo electrónico",
             "button_label": "Suscribirme",
             "button_secondary": false,
-            "show_icon": true,
+            "show_icon": false,
             "custom_size": true,
             "size_desktop": 18,
             "size_mobile": 18,
@@ -606,6 +640,9 @@
       ],
       "name": "t:sections.newsletter.presets.name",
       "settings": {
+        "section_button_icon_image_position": "inherit",
+        "section_button_icon_image_text_color": "",
+        "section_button_icon_size": 18,
         "color_scheme": "",
         "full_width": true,
         "padding_top": 40,
@@ -613,7 +650,7 @@
         "upper_background": "#ffffff",
         "upper_text": "#111b22",
         "muted_text": "#59636b",
-        "lower_background": "#09151b",
+        "lower_background": "#242829",
         "lower_text": "#ffffff",
         "accent_color": "#ff8000",
         "divider_color": "#e5e7eb",
@@ -622,7 +659,7 @@
         "upper_overlay": 0,
         "lower_overlay": 30,
         "icon_size": 40,
-        "mail_icon_size": 28,
+        "mail_icon_size": 40,
         "content_width": 1200,
         "bar_padding": 28,
         "custom_font": false,

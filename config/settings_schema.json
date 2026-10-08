@@ -311,6 +311,123 @@
         "unit": "px",
         "label": "t:settings_schema.global.settings.blur.label",
         "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Iconos y color del texto"
+      },
+      {
+        "type": "select",
+        "id": "button_icon_mode",
+        "label": "Dónde mostrar iconos",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "Desactivado"
+          },
+          {
+            "value": "whatsapp",
+            "label": "Solo enlaces de WhatsApp"
+          },
+          {
+            "value": "all",
+            "label": "Todos los botones de texto del tema"
+          }
+        ]
+      },
+      {
+        "type": "image_picker",
+        "id": "button_icon_image",
+        "label": "Icono personalizado",
+        "info": "Opcional. Sin imagen se usa el icono de WhatsApp. Los botones de pago externos no se modifican."
+      },
+      {
+        "type": "range",
+        "id": "button_icon_size",
+        "label": "Tamaño del icono",
+        "min": 12,
+        "max": 32,
+        "step": 1,
+        "default": 18,
+        "unit": "px"
+      },
+      {
+        "type": "select",
+        "id": "button_icon_position",
+        "label": "Posición del icono",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Izquierda del texto"
+          },
+          {
+            "value": "right",
+            "label": "Derecha del texto"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "button_icon_text_color",
+        "label": "Color del texto del botón",
+        "info": "Opcional. Vacío conserva el esquema de colores o la configuración heredada."
+      },
+      {
+        "type": "header",
+        "content": "Estilo y comportamiento global"
+      },
+      {
+        "type": "checkbox",
+        "id": "buttons_allow_local_styles",
+        "label": "Permitir estilos por sección o botón",
+        "default": false,
+        "info": "Desactivado: tamaño del icono, posición y color del texto se controlan aquí. Las imágenes individuales se conservan."
+      },
+      {
+        "type": "select",
+        "id": "buttons_hover_effect",
+        "label": "Animación al pasar el puntero",
+        "default": "subtle",
+        "options": [
+          {
+            "value": "none",
+            "label": "Ninguna"
+          },
+          {
+            "value": "subtle",
+            "label": "Cambio suave de brillo"
+          },
+          {
+            "value": "lift",
+            "label": "Elevación suave"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "buttons_motion_duration",
+        "label": "Duración de la animación",
+        "min": 100,
+        "max": 400,
+        "step": 25,
+        "unit": "ms",
+        "default": 200
+      },
+      {
+        "type": "range",
+        "id": "buttons_text_size",
+        "label": "Tamaño del texto",
+        "min": 12,
+        "max": 24,
+        "step": 1,
+        "unit": "px",
+        "default": 15
+      },
+      {
+        "type": "paragraph",
+        "content": "Los colores de fondo y los estilos primario/secundario siguen el esquema de colores. Los controles de navegación conservan su tamaño funcional. No modifica pagos acelerados ni botones de aplicaciones externas."
       }
     ]
   },
@@ -1449,47 +1566,6 @@
         "id": "cart_color_scheme",
         "label": "t:sections.all.colors.label",
         "default": "scheme-1"
-      }
-    ]
-  },
-  {
-    "name": "Iconos de botones",
-    "settings": [
-      {
-        "type": "select",
-        "id": "button_icon_mode",
-        "label": "Dónde mostrar iconos",
-        "default": "none",
-        "options": [
-          {
-            "value": "none",
-            "label": "Desactivado"
-          },
-          {
-            "value": "whatsapp",
-            "label": "Solo enlaces de WhatsApp"
-          },
-          {
-            "value": "all",
-            "label": "Todos los botones de texto del tema"
-          }
-        ]
-      },
-      {
-        "type": "image_picker",
-        "id": "button_icon_image",
-        "label": "Icono personalizado",
-        "info": "Opcional. Sin imagen se usa el icono de WhatsApp. Los botones de pago externos no se modifican."
-      },
-      {
-        "type": "range",
-        "id": "button_icon_size",
-        "label": "Tamaño del icono",
-        "min": 12,
-        "max": 32,
-        "step": 1,
-        "default": 18,
-        "unit": "px"
       }
     ]
   }

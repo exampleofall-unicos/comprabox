@@ -1,3 +1,4 @@
+{%- render 'section-button-icons', section: section -%}
 {{ 'section-rich-text.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
@@ -70,7 +71,8 @@
                       href="{{ block.settings.button_link }}"
                     {% endif %}
                     class="button{% if block.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %}"
-                  >
+{% render 'button-icon-attributes', image: block.settings.button_image %}
+                   >
                     {{- block.settings.button_label | escape -}}
                   </a>
                 {%- endif -%}
@@ -82,7 +84,8 @@
                       href="{{ block.settings.button_link_2 }}"
                     {% endif %}
                     class="button{% if block.settings.button_style_secondary_2 %} button--secondary{% else %} button--primary{% endif %}"
-                  >
+{% render 'button-icon-attributes', image: block.settings.button_image_2 %}
+                   >
                     {{- block.settings.button_label_2 | escape -}}
                   </a>
                 {%- endif -%}
@@ -103,6 +106,9 @@
     "groups": ["header", "footer"]
   },
   "settings": [
+    {"type": "header", "content": "Iconos de botones"},
+    {"type": "image_picker", "id": "section_button_icon_image", "label": "Imagen para los botones", "info": "Opcional. Sin imagen se usa la configuración global del tema. Se recomienda PNG transparente."},
+    {"type": "range", "id": "section_button_icon_size", "label": "Tamaño de iconos", "info": "Se aplica a las imágenes elegidas en esta sección o sus bloques.", "min": 12, "max": 40, "step": 1, "default": 18, "unit": "px"},
     {
       "type": "select",
       "id": "desktop_content_position",
@@ -289,6 +295,8 @@
       "name": "t:sections.rich-text.blocks.buttons.name",
       "limit": 2,
       "settings": [
+    {"type": "image_picker", "id": "button_image", "label": "Imagen del botón", "info": "Opcional. Sin imagen se hereda el icono de la sección o del tema. Se recomienda PNG transparente."},
+    {"type": "image_picker", "id": "button_image_2", "label": "Imagen del botón 2", "info": "Opcional. Sin imagen se hereda el icono de la sección o del tema. Se recomienda PNG transparente."},
         {
          "type": "header",
          "content": "t:sections.rich-text.blocks.buttons.settings.header_button1.content"

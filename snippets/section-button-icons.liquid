@@ -1,0 +1,11 @@
+{% comment %}
+  Section fallback for text buttons, including dynamically rendered Dawn cards.
+  An empty image preserves the global theme settings.
+{% endcomment %}
+<template
+  data-theme-button-scope
+  data-icon-size="{{ section.settings.section_button_icon_size | default: 18 }}"
+  {% if section.settings.section_button_icon_image != blank %}
+    data-icon-image="{{ section.settings.section_button_icon_image | image_url: width: 120 | escape }}"
+  {% endif %}
+></template>

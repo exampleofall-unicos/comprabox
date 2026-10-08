@@ -9,3 +9,12 @@
   pointer-events: none;
 }
 .theme-button-icon svg, .theme-button-icon img { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+/* Keep Dawn loading states and each button's typography intact. */
+.theme-button-icon { font-style: normal; vertical-align: middle; }
+.button.loading > .theme-button-icon { visibility: hidden; }
+
+/* Replace the native SVG only for an icon-only submit with an uploaded image. */
+.theme-button-icon-only > svg,
+.theme-button-icon-only > .svg-wrapper { display: none; }
+.theme-button-icon-only > .theme-button-icon { margin-inline-end: 0; }

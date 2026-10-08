@@ -1,3 +1,4 @@
+{%- render 'section-button-icons', section: section -%}
 {{ 'customer.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
@@ -110,6 +111,9 @@
 {
   "name": "t:sections.main-activate-account.name",
   "settings": [
+    {"type": "header", "content": "Iconos de botones"},
+    {"type": "image_picker", "id": "section_button_icon_image", "label": "Imagen para los botones", "info": "Opcional. Sin imagen se usa la configuración global del tema. Se recomienda PNG transparente."},
+    {"type": "range", "id": "section_button_icon_size", "label": "Tamaño de iconos", "info": "Se aplica a las imágenes elegidas en esta sección o sus bloques.", "min": 12, "max": 40, "step": 1, "default": 18, "unit": "px"},
     {
       "type": "header",
       "content": "t:sections.all.padding.section_padding_heading"

@@ -1,0 +1,2 @@
+{% comment %}Optional image for an individual button. Falls back to section/theme.{% endcomment %}
+data-button-icon-image="{% if image != blank %}{{ image | image_url: width: 120 | escape }}{% endif %}"

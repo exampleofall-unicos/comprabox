@@ -1,3 +1,4 @@
+{%- render 'section-button-icons', section: section -%}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 
@@ -201,7 +202,7 @@
     {%- if section.settings.show_view_all and more_in_collection -%}
       <div class="center collection__view-all{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
         <a
-          href="{{ section.settings.collection.url }}"
+          href="{{ section.settings.collection.url }}" data-button-icon="inherit"
           class="{% if section.settings.view_all_style == 'link' %}link underlined-link{% elsif section.settings.view_all_style == 'solid' %}button{% else %}button button--secondary{% endif %}"
           aria-label="{{ 'sections.featured_collection.view_all_label' | t: collection_name: section.settings.collection.title | escape }}"
         >
@@ -224,6 +225,9 @@
     "groups": ["header", "footer"]
   },
   "settings": [
+    {"type": "header", "content": "Iconos de botones"},
+    {"type": "image_picker", "id": "section_button_icon_image", "label": "Imagen para los botones", "info": "Opcional. Sin imagen se usa la configuración global del tema. Se recomienda PNG transparente."},
+    {"type": "range", "id": "section_button_icon_size", "label": "Tamaño de iconos", "info": "Se aplica a las imágenes elegidas en esta sección o sus bloques.", "min": 12, "max": 40, "step": 1, "default": 18, "unit": "px"},
     {
       "type": "collection",
       "id": "collection",

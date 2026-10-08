@@ -1,41 +1,77 @@
 (() => {
   const mode = document.currentScript?.dataset.buttonIconMode || 'none';
-  const selector = '.button, button[type="submit"], [data-button-icon]';
+  const selector = '.button, button, [data-button-icon], [data-button-icon-image]';
+  const excluded = '.shopify-app-block, .shopify-payment-button, .additional-checkout-buttons, shopify-accelerated-checkout, shopify-accelerated-checkout-cart';
+  const controls = '.quantity__button, .slider-button, .slider-counter__link, .slideshow__autoplay, .order-calculator__stepper-button';
   const templates = {
     default: document.getElementById('ThemeButtonDefaultIcon'),
     whatsapp: document.getElementById('ThemeButtonWhatsappIcon'),
   };
   const isWhatsapp = (button) => {
+    const href = button.getAttribute('href');
+    if (!href) return false;
     try {
-      const url = new URL(button.getAttribute('href'), location.href);
+      const url = new URL(href, location.href);
       return url.protocol === 'whatsapp:' || ['wa.me', 'api.whatsapp.com', 'web.whatsapp.com', 'www.whatsapp.com', 'whatsapp.com'].includes(url.hostname);
     } catch { return false; }
   };
+  const hasText = (button) => {
+    const label = button.cloneNode(true);
+    label.querySelectorAll('.theme-button-icon, svg, .svg-wrapper, .loading__spinner, .visually-hidden, [hidden], [aria-hidden="true"]').forEach((node) => node.remove());
+    return Boolean(label.textContent.trim());
+  };
   const update = (button) => {
+    if (!button.matches('a, button, [role="button"]')) return;
     const existing = button.querySelector(':scope > .theme-button-icon');
     const choice = button.dataset.buttonIcon || 'inherit';
-    // Leave icon-only controls, express payments and third-party payment widgets alone.
-    const hasText = [...button.childNodes].some((node) =>
-      !(node.nodeType === 1 && node.matches('.theme-button-icon, svg, .loading__spinner, .visually-hidden, [hidden], [aria-hidden="true"]')) && node.textContent.trim()
-    );
+    const section = button.closest('.shopify-section');
+    const scope = section?.querySelector('template[data-theme-button-scope]');
+    const image = button.dataset.buttonIconImage || scope?.dataset.iconImage || '';
+    const textButton = hasText(button);
+    const globalImage = templates.default?.content.querySelector('img');
+    // Dawn newsletter/search submit buttons use an accessible label and an SVG.
+    const imageSubmit = button.matches('button[type="submit"]') && (image || (mode === 'all' && globalImage));
     let type = null;
-    if (hasText && !button.closest('.shopify-payment-button, shopify-accelerated-checkout, shopify-accelerated-checkout-cart')) {
-      if (choice === 'whatsapp') type = 'whatsapp';
-      else if (choice === 'custom') type = 'default';
-      else if (choice !== 'none' && (mode === 'all' || (mode === 'whatsapp' && isWhatsapp(button)))) type = 'default';
+    if (choice !== 'none' && !button.matches(controls) && !button.closest(excluded) && (textButton || imageSubmit)) {
+      if (image) type = 'image';
+      else if (choice === 'whatsapp') type = 'whatsapp';
+      else if (choice === 'custom' || mode === 'all' || (mode === 'whatsapp' && isWhatsapp(button))) type = 'default';
     }
-    if (existing?.dataset.iconType === type) return;
+    button.classList.toggle('theme-button-icon-only', Boolean(type && !textButton));
+    const key = type === 'image' ? image : type;
+    const size = image && scope ? `${scope.dataset.iconSize || 18}px` : '';
+    if (existing && existing.dataset.iconKey === key) {
+      existing.style.setProperty('--theme-button-icon-size', size);
+      return;
+    }
     existing?.remove();
-    if (type && templates[type]) {
-      const icon = templates[type].content.firstElementChild.cloneNode(true);
-      icon.dataset.iconType = type;
-      button.prepend(icon);
+    if (!type) return;
+    // Use <i>, not <span>: Dawn finds the first span to update add-to-cart labels.
+    const icon = document.createElement('i');
+    icon.className = 'theme-button-icon';
+    icon.setAttribute('aria-hidden', 'true');
+    icon.dataset.iconKey = key;
+    if (size) icon.style.setProperty('--theme-button-icon-size', size);
+    if (type === 'image') {
+      const img = document.createElement('img');
+      img.src = image;
+      img.alt = '';
+      img.width = 40;
+      img.height = 40;
+      img.decoding = 'async';
+      icon.append(img);
+    } else {
+      const source = templates[type]?.content.firstElementChild;
+      if (!source) return;
+      [...source.childNodes].forEach((node) => icon.append(node.cloneNode(true)));
     }
+    button.prepend(icon);
   };
   const pending = new Set();
   let frame;
   const enqueue = (element) => {
     if (!(element instanceof Element)) return;
+    if (element.matches('template[data-theme-button-scope]')) element = element.closest('.shopify-section') || element;
     const parentButton = element.closest(selector);
     if (parentButton) pending.add(parentButton);
     element.querySelectorAll(selector).forEach((button) => pending.add(button));
@@ -46,9 +82,11 @@
     });
   };
   enqueue(document.body);
+  document.addEventListener('shopify:section:load', (event) => enqueue(event.target));
   new MutationObserver((records) => {
-    records.forEach((record) => {
-      enqueue(record.target.nodeType === 1 ? record.target : record.target.parentElement);
-    });
-  }).observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['href', 'data-button-icon'] });
+    records.forEach((record) => enqueue(record.target.nodeType === 1 ? record.target : record.target.parentElement));
+  }).observe(document.body, {
+    subtree: true, childList: true, characterData: true, attributes: true,
+    attributeFilter: ['type', 'href', 'data-button-icon', 'data-button-icon-image', 'data-icon-image', 'data-icon-size'],
+  });
 })();

@@ -1,3 +1,4 @@
+{%- render 'section-button-icons', section: section -%}
 {{ 'section-multicolumn.css' | asset_url | stylesheet_tag }}
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
 
@@ -36,7 +37,7 @@
           {{ section.settings.title }}
         </h2>
         {%- if section.settings.button_label != blank and show_mobile_slider -%}
-          <a href="{{ section.settings.button_link }}" class="link underlined-link large-up-hide">
+          <a href="{{ section.settings.button_link }}" class="link underlined-link large-up-hide" data-button-icon="inherit">
             {{- section.settings.button_label | escape -}}
           </a>
         {%- endif -%}
@@ -127,7 +128,7 @@
                 {%- endif -%}
                 {%- if block.settings.link_label != blank -%}
                   <a
-                    class="link animate-arrow"
+                    class="link animate-arrow" {% render 'button-icon-attributes', image: block.settings.button_image %}
                     {% if block.settings.link == blank %}
                       role="link" aria-disabled="true"
                     {% else %}
@@ -199,6 +200,9 @@
     "groups": ["header", "footer"]
   },
   "settings": [
+    {"type": "header", "content": "Iconos de botones"},
+    {"type": "image_picker", "id": "section_button_icon_image", "label": "Imagen para los botones", "info": "Opcional. Sin imagen se usa la configuración global del tema. Se recomienda PNG transparente."},
+    {"type": "range", "id": "section_button_icon_size", "label": "Tamaño de iconos", "info": "Se aplica a las imágenes elegidas en esta sección o sus bloques.", "min": 12, "max": 40, "step": 1, "default": 18, "unit": "px"},
     {
       "type": "inline_richtext",
       "id": "title",
@@ -404,6 +408,7 @@
       "type": "column",
       "name": "t:sections.multicolumn.blocks.column.name",
       "settings": [
+        {"type": "image_picker", "id": "button_image", "label": "Imagen del enlace", "info": "Opcional. Sin imagen se usa el icono de la sección o del tema."},
         {
           "type": "image_picker",
           "id": "image",

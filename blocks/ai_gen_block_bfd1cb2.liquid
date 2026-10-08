@@ -476,7 +476,8 @@
           <a
             href="{{ block.settings.cta_button_url }}"
             class="ai-product-info-cta-button-{{ ai_gen_id }}"
-          >
+{% render 'button-icon-attributes', image: block.settings.button_image %}
+           >
             {{ block.settings.cta_button_text }}
           </a>
         {% endif %}
@@ -502,6 +503,7 @@
   "name": "Información del producto",
   "tag": null,
   "settings": [
+    {"type": "image_picker", "id": "button_image", "label": "Imagen del botón", "info": "Opcional. Sin imagen se hereda el icono de la sección o del tema. Se recomienda PNG transparente."},
     {
       "type": "header",
       "content": "Especificaciones técnicas"

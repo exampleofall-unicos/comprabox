@@ -70,7 +70,7 @@
               assign quantity_rule_soldout = true
             endif
           -%}
-          <button
+          <button {% render 'button-icon-attributes', image: block.settings.button_image %}
             id="ProductSubmitButton-{{ section_id }}"
             type="submit"
             name="add"
@@ -102,7 +102,7 @@
   {%- else -%}
     <div class="product-form">
       <div class="product-form__buttons form">
-        <button
+        <button {% render 'button-icon-attributes', image: block.settings.button_image %}
           type="submit"
           name="add"
           class="product-form__submit button button--full-width button--primary"

@@ -1,3 +1,5 @@
+{%- render 'section-button-icons', section: section -%}
+{%- render 'section-button-icons', section: section -%}
 <div class="{% if section.settings.include_margins %}page-width{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
   {%- for block in section.blocks -%}
     {% render block %}
@@ -10,6 +12,10 @@
   "tag": "section",
   "class": "section",
   "settings": [
+    {"type": "header", "content": "Iconos de botones"},
+    {"type": "header", "content": "Iconos de botones"},
+    {"type": "image_picker", "id": "section_button_icon_image", "label": "Imagen para los botones", "info": "Opcional. Sin imagen se usa la configuración global del tema. Se recomienda PNG transparente."},
+    {"type": "range", "id": "section_button_icon_size", "label": "Tamaño de iconos", "info": "Se aplica a las imágenes elegidas en esta sección o sus bloques.", "min": 12, "max": 40, "step": 1, "default": 18, "unit": "px"},
     {
       "type": "checkbox",
       "id": "include_margins",

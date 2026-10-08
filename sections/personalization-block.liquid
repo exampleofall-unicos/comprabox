@@ -1,3 +1,4 @@
+{%- render 'section-button-icons', section: section -%}
 {{ 'section-personalization-block.css' | asset_url | stylesheet_tag }}
 {%- liquid
   assign desktop_image = section.settings.image | default: section.settings.image_mobile
@@ -96,7 +97,7 @@
           {%- when 'button' -%}
             <div class="personalization-block__button-wrapper" {{ block.shopify_attributes }}>
               {%- if block.settings.button_label != blank -%}
-                <a id="PersonalizationText-{{ block.id }}" class="personalization-block__button button{% if block.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %}" {% if block.settings.button_link != blank %}href="{{ block.settings.button_link }}"{% else %}role="link" aria-disabled="true"{% endif %}>
+                <a id="PersonalizationText-{{ block.id }}" class="personalization-block__button button{% if block.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %}" {% if block.settings.button_link != blank %}href="{{ block.settings.button_link }}"{% else %}role="link" aria-disabled="true"{% endif %} {% render 'button-icon-attributes', image: block.settings.button_image %}>
                   <span>{{ block.settings.button_label | escape }}</span>
                   {%- if block.settings.show_arrow -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>{%- endif -%}
                 </a>
@@ -120,6 +121,9 @@
     ]
   },
   "settings": [
+    {"type": "header", "content": "Iconos de botones"},
+    {"type": "image_picker", "id": "section_button_icon_image", "label": "Imagen para los botones", "info": "Opcional. Sin imagen se usa la configuración global del tema. Se recomienda PNG transparente."},
+    {"type": "range", "id": "section_button_icon_size", "label": "Tamaño de iconos", "info": "Se aplica a las imágenes elegidas en esta sección o sus bloques.", "min": 12, "max": 40, "step": 1, "default": 18, "unit": "px"},
     {
       "type": "image_picker",
       "id": "image",
@@ -486,6 +490,7 @@
       "type": "button",
       "name": "Botón",
       "settings": [
+    {"type": "image_picker", "id": "button_image", "label": "Imagen del botón", "info": "Opcional. Sin imagen se hereda el icono de la sección o del tema. Se recomienda PNG transparente."},
         {
           "type": "text",
           "id": "button_label",

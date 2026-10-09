@@ -19,7 +19,7 @@
 <div class="color-{{ section.settings.color_scheme }} gradient">
   <div class="collapsible-content collapsible-{{ section.settings.layout }}-layout isolate{% if section.settings.layout == 'section' %} page-width{% elsif section.settings.layout == 'none' %} content-container content-container--full-width{% endif %}">
     <div class="collapsible-content__wrapper section-{{ section.id }}-padding{% if section.settings.layout == 'section' %} content-container color-{{ section.settings.container_color_scheme }} gradient{% endif %}">
-      <div class="{% if section.settings.image == blank %}collapsible-content-wrapper-narrow{% else %}page-width{% endif %}">
+      <div class="{% if section.settings.image == blank and section.settings.question_columns == 'one' %}collapsible-content-wrapper-narrow{% else %}page-width{% endif %}">
         <div
           class="collapsible-content__header{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           style="text-align: {{ section.settings.heading_alignment }};"
@@ -69,37 +69,30 @@
               </div>
             </div>
           {% endif %}
-          <div class="grid__item">
-            {%- for block in section.blocks -%}
-              <div
-                class="accordion{% if section.settings.layout == 'row' %} content-container color-{{ section.settings.container_color_scheme }} gradient{% endif %}"
-                {{ block.shopify_attributes }}
-              >
-                <details
-                  id="Details-{{ block.id }}-{{ section.id }}"
-                  {% if section.settings.open_first_collapsible_row and forloop.first %}
-                    open
-                  {% endif %}
-                >
-                  <summary id="Summary-{{ block.id }}-{{ section.id }}">
-                    {% render 'icon-accordion', icon: block.settings.icon %}
-                    <h3 class="accordion__title inline-richtext h4">
-                      {{ block.settings.heading | default: block.settings.page.title | escape }}
-                    </h3>
-                    {{- 'icon-caret.svg' | inline_asset_content -}}
-                  </summary>
-                  <div
-                    class="accordion__content rte"
-                    id="CollapsibleAccordion-{{ block.id }}-{{ section.id }}"
-                    role="region"
-                    aria-labelledby="Summary-{{ block.id }}-{{ section.id }}"
-                  >
-                    {{ block.settings.row_content }}
-                    {{ block.settings.page.content }}
+          <div class="grid__item collapsible-content__questions">
+            {%- liquid
+              assign column_count = 2
+              if section.settings.question_columns == 'one'
+                assign column_count = 1
+              endif
+              assign column_break = section.blocks.size | times: 1.0 | divided_by: column_count | ceil
+            -%}
+            <div class="collapsible-content__columns{% if column_count == 2 %} collapsible-content__columns--two{% endif %}">
+              {%- for column in (1..column_count) -%}
+                {%- assign column_offset = forloop.index0 | times: column_break -%}
+                {%- if column_offset < section.blocks.size -%}
+                  <div class="collapsible-content__column">
+                    {%- for block in section.blocks offset: column_offset limit: column_break -%}
+                      {%- assign first_row = false -%}
+                      {%- if column == 1 and forloop.first -%}
+                        {%- assign first_row = true -%}
+                      {%- endif -%}
+                      {% render 'collapsible-content-row', section: section, block: block, first_row: first_row %}
+                    {%- endfor -%}
                   </div>
-                </details>
-              </div>
-            {%- endfor -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
           </div>
         </div>
       </div>
@@ -116,6 +109,17 @@
     "groups": ["header", "footer"]
   },
   "settings": [
+    {
+      "type": "select",
+      "id": "question_columns",
+      "label": "Columnas de preguntas en escritorio",
+      "options": [
+        { "value": "one", "label": "Una columna" },
+        { "value": "two", "label": "Dos columnas" }
+      ],
+      "default": "two",
+      "info": "Las preguntas se reparten de arriba hacia abajo: primero la columna izquierda y luego la derecha. En móvil se muestran en una sola columna."
+    },
     {"type": "header", "content": "Iconos de botones"},
     {"type": "image_picker", "id": "section_button_icon_image", "label": "Imagen para los botones", "info": "Opcional. Sin imagen se usa la configuración global del tema. Se recomienda PNG transparente."},
 {"type": "select", "id": "section_button_icon_image_position", "label": "Posición del icono", "default": "inherit", "options": [{"value": "inherit", "label": "Heredar configuración"}, {"value": "left", "label": "Izquierda del texto"}, {"value": "right", "label": "Derecha del texto"}]},

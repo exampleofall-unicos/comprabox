@@ -390,7 +390,7 @@
         "full_width": true,
         "padding_top": 20,
         "padding_bottom": 20,
-        "upper_background": "#FFFFFF",
+        "upper_background": "#ffffff",
         "upper_text": "#111b22",
         "muted_text": "#59636b",
         "lower_background": "#09151b",
@@ -412,11 +412,38 @@
     "collapsible_content_AbEEGd": {
       "type": "collapsible-content",
       "blocks": {
+        "collapsible_row_ckhPjJ": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "¿Cuál es la compra mínima?",
+            "icon": "none",
+            "row_content": "",
+            "page": ""
+          }
+        },
+        "collapsible_row_JfFpRL": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "¿Los precios incluyen IVA?",
+            "icon": "none",
+            "row_content": "",
+            "page": ""
+          }
+        },
         "collapsible_row_z7Fagp": {
           "type": "collapsible_row",
           "settings": {
-            "heading": "Fila desplegable",
-            "icon": "check_mark",
+            "heading": "¿Hacen factura A y B?",
+            "icon": "none",
+            "row_content": "",
+            "page": ""
+          }
+        },
+        "collapsible_row_irfGjC": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "¿Envían al interior del país?",
+            "icon": "none",
             "row_content": "",
             "page": ""
           }
@@ -424,8 +451,8 @@
         "collapsible_row_yJk4iP": {
           "type": "collapsible_row",
           "settings": {
-            "heading": "Fila desplegable",
-            "icon": "check_mark",
+            "heading": "¿Puedo elegir colores?",
+            "icon": "none",
             "row_content": "",
             "page": ""
           }
@@ -433,8 +460,8 @@
         "collapsible_row_7yyUqp": {
           "type": "collapsible_row",
           "settings": {
-            "heading": "Fila desplegable",
-            "icon": "check_mark",
+            "heading": "¿Las cajas vienen surtidas?",
+            "icon": "none",
             "row_content": "",
             "page": ""
           }
@@ -442,35 +469,49 @@
         "collapsible_row_79wNab": {
           "type": "collapsible_row",
           "settings": {
-            "heading": "Fila desplegable",
-            "icon": "check_mark",
+            "heading": "¿Cuánto demora un pedido con grabado?",
+            "icon": "none",
+            "row_content": "",
+            "page": ""
+          }
+        },
+        "collapsible_row_DmRDMF": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "¿Qué medios de pago aceptan?",
+            "icon": "none",
             "row_content": "",
             "page": ""
           }
         }
       },
       "block_order": [
+        "collapsible_row_ckhPjJ",
+        "collapsible_row_JfFpRL",
         "collapsible_row_z7Fagp",
+        "collapsible_row_irfGjC",
         "collapsible_row_yJk4iP",
         "collapsible_row_7yyUqp",
-        "collapsible_row_79wNab"
+        "collapsible_row_79wNab",
+        "collapsible_row_DmRDMF"
       ],
       "name": "t:sections.collapsible_content.presets.name",
       "settings": {
+        "question_columns": "two",
         "section_button_icon_image_position": "inherit",
         "section_button_icon_image_text_color": "",
         "section_button_icon_size": 18,
         "caption": "",
-        "heading": "Contenido desplegable",
+        "heading": "Preguntas frecuentes",
         "heading_size": "h1",
-        "heading_alignment": "center",
+        "heading_alignment": "left",
         "layout": "none",
-        "container_color_scheme": "",
-        "color_scheme": "",
+        "container_color_scheme": "scheme-69c1b8b1-0dc2-4d0e-8fcf-657bf58dc41a",
+        "color_scheme": "scheme-69c1b8b1-0dc2-4d0e-8fcf-657bf58dc41a",
         "open_first_collapsible_row": false,
         "image_ratio": "adapt",
         "desktop_layout": "image_second",
-        "padding_top": 36,
+        "padding_top": 12,
         "padding_bottom": 36
       }
     },
@@ -513,7 +554,7 @@
         "muted_text": "#59636b",
         "lower_background": "#242829",
         "lower_text": "#ffffff",
-        "accent_color": "#F39200",
+        "accent_color": "#f39200",
         "divider_color": "#e5e7eb",
         "input_background": "#ffffff",
         "input_text": "#343d45",

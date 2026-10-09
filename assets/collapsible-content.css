@@ -126,3 +126,12 @@
     }
   }
 }
+
+/* Independent columns keep the original details/summary behavior and block order. */
+.collapsible-content__columns { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 2rem; align-items: start; }
+.collapsible-content__column { min-width: 0; }
+.collapsible-content__column:only-child { grid-column: 1 / -1; }
+.collapsible-content__questions { min-width: 0; }
+@media screen and (min-width: 750px) {
+  .collapsible-content__columns--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

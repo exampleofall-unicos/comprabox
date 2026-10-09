@@ -555,6 +555,9 @@
       "general": {
         "complete_purchase_button_label": "Continuar"
       }
+    },
+    "links": {
+      "powered_by_shopify": "Powered by Únicos ®"
     }
   }
 }

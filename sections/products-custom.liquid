@@ -1,0 +1,383 @@
+{%- render 'section-button-icons', section: section -%}
+{{ 'section-products-custom.css' | asset_url | stylesheet_tag }}
+{% style %}
+  #ProductsCustom-{{ section.id }} {
+    --pc-accent: {{ section.settings.accent_color }};
+    --pc-gap: {{ section.settings.card_gap }}px;
+    --pc-ratio: {{ section.settings.image_ratio }};
+    --pc-card-width: {{ section.settings.card_width | default: 140 }}px;
+    --pc-card-height: {{ section.settings.card_height | default: 220 }}px;
+    --pc-card-width-mobile: {{ section.settings.card_width_mobile | default: 160 }}px;
+    --pc-card-height-mobile: {{ section.settings.card_height_mobile | default: 240 }}px;
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media (min-width: 750px) {
+    #ProductsCustom-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; }
+  }
+{% endstyle %}
+<div id="ProductsCustom-{{ section.id }}" class="pc-section{% if section.settings.custom_card_size %} pc-section--custom-size{% endif %} color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width pc-layout{% if section.blocks.size == 0 %} pc-layout--empty{% endif %}">
+    <div class="pc-copy">
+      {% if section.settings.eyebrow != blank %}<p class="pc-eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}
+      {% if section.settings.heading != blank %}<h2 class="pc-heading inline-richtext {{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>{% endif %}
+      {% if section.settings.text != blank %}<div class="pc-text rte">{{ section.settings.text }}</div>{% endif %}
+      {% if section.settings.button_label != blank %}
+        <a class="button{% if section.settings.button_secondary %} button--secondary{% else %} button--primary{% endif %}"
+          {% if section.settings.button_link != blank %}href="{{ section.settings.button_link }}"{% else %}role="link" aria-disabled="true"{% endif %}
+          {% render 'button-icon-attributes', image: section.settings.button_image, position: section.settings.button_image_position, text_color: section.settings.button_image_text_color %}>
+          {{ section.settings.button_label | escape }}
+        </a>
+      {% endif %}
+    </div>
+    {% if section.blocks.size > 0 %}
+      <div class="pc-viewport" tabindex="0" role="region" aria-label="{{ section.settings.categories_label | escape }}">
+        <ul class="pc-list" role="list">
+          {% for block in section.blocks %}
+            {% liquid
+              assign category_image = block.settings.image | default: block.settings.collection.featured_image
+              assign category_title = block.settings.title | default: block.settings.collection.title | default: 'Categoría'
+              assign category_link = block.settings.link | default: block.settings.collection.url
+            %}
+            <li class="pc-card" {{ block.shopify_attributes }}>
+              {% if category_link != blank %}<a class="pc-card-link" href="{{ category_link }}">{% else %}<div class="pc-card-link">{% endif %}
+                <div class="pc-image pc-image--{{ section.settings.image_fit }}">
+                  {% if category_image != blank %}
+                    {{ category_image | image_url: width: 720 | image_tag: widths: '160, 240, 360, 540, 720', sizes: '(min-width: 990px) 180px, 45vw', loading: 'lazy', alt: '' }}
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
+                </div>
+                <span class="pc-card-title">{{ category_title | escape }}</span>
+              {% if category_link != blank %}</a>{% else %}</div>{% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% elsif request.design_mode %}
+      <p class="pc-empty">Agregá bloques de categoría para mostrar las imágenes y sus enlaces.</p>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Productos personalizables",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de colores",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texto superior",
+      "default": "PRODUCTOS PERSONALIZABLES"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Título",
+      "default": "Una amplia variedad de productos"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Tamaño del título",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Pequeño"
+        },
+        {
+          "value": "h1",
+          "label": "Mediano"
+        },
+        {
+          "value": "h0",
+          "label": "Grande"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Descripción",
+      "default": "<p>Grabamos en diferentes modelos y capacidades. Seleccioná el producto que más se adapte a tu idea y solicitá tu cotización.</p>"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Color del texto superior",
+      "default": "#bd4f00"
+    },
+    {
+      "type": "header",
+      "content": "Botón"
+    },
+    {
+      "type": "paragraph",
+      "content": "El estilo y las animaciones se controlan en Configuración del tema > Botones. Para usar colores o posiciones propios, activá allí los estilos por sección."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Texto del botón",
+      "default": "Ver catálogo completo"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Enlace del botón"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_secondary",
+      "label": "Estilo secundario",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "button_image",
+      "label": "Imagen del icono"
+    },
+    {
+      "type": "select",
+      "id": "button_image_position",
+      "label": "Posición del icono",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Heredar del tema"
+        },
+        {
+          "value": "left",
+          "label": "Izquierda"
+        },
+        {
+          "value": "right",
+          "label": "Derecha"
+        }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "color",
+      "id": "button_image_text_color",
+      "label": "Color del texto del botón",
+      "info": "Opcional. Vacío hereda la configuración del tema."
+    },
+    {
+      "type": "header",
+      "content": "Tarjetas de categorías"
+    },
+    {
+      "type": "text",
+      "id": "categories_label",
+      "label": "Nombre accesible de la lista",
+      "default": "Categorías de productos personalizables"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Formato de las imágenes",
+      "options": [
+        {
+          "value": "3 / 4",
+          "label": "Vertical"
+        },
+        {
+          "value": "1 / 1",
+          "label": "Cuadrado"
+        },
+        {
+          "value": "4 / 5",
+          "label": "Retrato corto"
+        }
+      ],
+      "default": "3 / 4"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Ajuste de imagen",
+      "options": [
+        {
+          "value": "contain",
+          "label": "Mostrar completa"
+        },
+        {
+          "value": "cover",
+          "label": "Rellenar y recortar"
+        }
+      ],
+      "default": "contain"
+    },
+    {
+      "type": "header",
+      "content": "Dimensiones de las tarjetas"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_card_size",
+      "label": "Usar tamaño personalizado",
+      "default": false,
+      "info": "Activalo para definir ancho y alto. El alto incluye la imagen y el nombre. Desactivado conserva el formato automático."
+    },
+    {
+      "type": "range",
+      "id": "card_width",
+      "label": "Ancho en escritorio",
+      "min": 100,
+      "max": 360,
+      "step": 10,
+      "default": 140,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_height",
+      "label": "Alto en escritorio",
+      "min": 160,
+      "max": 560,
+      "step": 10,
+      "default": 220,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_width_mobile",
+      "label": "Ancho en móvil",
+      "min": 100,
+      "max": 280,
+      "step": 10,
+      "default": 160,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_height_mobile",
+      "label": "Alto en móvil",
+      "min": 160,
+      "max": 480,
+      "step": 10,
+      "default": 240,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Separación entre tarjetas",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Espacio superior",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Espacio inferior",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 28
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Categoría",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Nombre de categoría"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen de carátula"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Enlace de destino"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Colección opcional",
+          "info": "Su nombre, imagen y enlace se usan si dejás vacíos los campos anteriores."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Productos personalizables",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "Termos"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Mates"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Botellas"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Vasos"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Tazas"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Sets y Combos"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

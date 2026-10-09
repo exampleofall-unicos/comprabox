@@ -221,6 +221,92 @@
         "font": "assistant_n4"
       }
     },
+    "products_custom_y3gc6k": {
+      "type": "products-custom",
+      "blocks": {
+        "category_7Mgchn": {
+          "type": "category",
+          "settings": {
+            "title": "Termos",
+            "link": "",
+            "collection": ""
+          }
+        },
+        "category_EKRrqM": {
+          "type": "category",
+          "settings": {
+            "title": "Mates",
+            "link": "",
+            "collection": ""
+          }
+        },
+        "category_GqdnJE": {
+          "type": "category",
+          "settings": {
+            "title": "Botellas",
+            "link": "",
+            "collection": ""
+          }
+        },
+        "category_dbUJrw": {
+          "type": "category",
+          "settings": {
+            "title": "Vasos",
+            "link": "",
+            "collection": ""
+          }
+        },
+        "category_kb6rW3": {
+          "type": "category",
+          "settings": {
+            "title": "Tazas",
+            "link": "",
+            "collection": ""
+          }
+        },
+        "category_aUVLAj": {
+          "type": "category",
+          "settings": {
+            "title": "Sets y Combos",
+            "link": "",
+            "collection": ""
+          }
+        }
+      },
+      "block_order": [
+        "category_7Mgchn",
+        "category_EKRrqM",
+        "category_GqdnJE",
+        "category_dbUJrw",
+        "category_kb6rW3",
+        "category_aUVLAj"
+      ],
+      "name": "Productos personalizables",
+      "settings": {
+        "color_scheme": "scheme-aa1ef54c-dbd2-42e0-9508-a1444aea4051",
+        "eyebrow": "PRODUCTOS PERSONALIZABLES",
+        "heading": "Una amplia variedad de productos",
+        "heading_size": "h1",
+        "text": "<p>Grabamos en diferentes modelos y capacidades. Seleccioná el producto que más se adapte a tu idea y solicitá tu cotización.</p>",
+        "accent_color": "#F39200",
+        "button_label": "Ver catálogo completo",
+        "button_link": "shopify://collections/all",
+        "button_secondary": false,
+        "button_image_position": "inherit",
+        "button_image_text_color": "#F39200",
+        "categories_label": "",
+        "image_ratio": "3 / 4",
+        "image_fit": "contain",
+        "custom_card_size": true,
+        "card_width": 180,
+        "card_height": 300,
+        "card_width_mobile": 160,
+        "card_height_mobile": 240,
+        "card_gap": 12,
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
     "beneficiosicon_NzdMHQ": {
       "type": "beneficiosicon",
       "blocks": {
@@ -385,7 +471,7 @@
         "muted_text": "#59636b",
         "lower_background": "#242829",
         "lower_text": "#ffffff",
-        "accent_color": "#F39200",
+        "accent_color": "#f39200",
         "divider_color": "#e5e7eb",
         "input_background": "#ffffff",
         "input_text": "#343d45",
@@ -403,6 +489,7 @@
   "order": [
     "image_banner_QALE9V",
     "newsletter_PphmtD",
+    "products_custom_y3gc6k",
     "beneficiosicon_NzdMHQ",
     "main",
     "newsletter_kxzcRc"

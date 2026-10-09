@@ -2,13 +2,16 @@
 {%- assign field_id = form_id | append: '-' | append: key | handleize -%}
 <div class="quote-field{% if wide %} quote-field--wide{% endif %}">
   <label for="{{ field_id }}">{{ label | escape }}{% if required %} <span class="quote-required" aria-hidden="true">*</span>{% endif %}</label>
-  <div class="quote-control">
+  <div class="quote-control{% if options %} quote-control--select{% endif %}">
     <span class="quote-field-icon">{% render 'contact-quote-icon', icon: icon, image: image, tint: tint %}</span>
     {% if options %}
       <select id="{{ field_id }}" name="contact[{{ key | escape }}]" {% if required %}required aria-required="true"{% endif %} {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}>
         <option value="">{{ placeholder | escape }}</option>
         {% for item in options %}{% assign option = item | strip %}{% if option != blank %}<option value="{{ option | escape }}" {% if value == option %}selected{% endif %}>{{ option | escape }}</option>{% endif %}{% endfor %}
       </select>
+      <span class="quote-select-arrow" aria-hidden="true">
+        <svg viewBox="0 0 12 8" fill="none" focusable="false"><path d="m2 2 4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
     {% elsif type == 'textarea' %}
       <textarea id="{{ field_id }}" name="contact[{{ key | escape }}]" rows="4" placeholder="{{ placeholder | escape }}">{{ value | escape }}</textarea>
     {% else %}

@@ -14,7 +14,10 @@
     "footer": {
       "type": "footer",
       "settings": {
-        "color_scheme": "scheme-1",
+        "section_button_icon_image_position": "inherit",
+        "section_button_icon_image_text_color": "",
+        "section_button_icon_size": 18,
+        "color_scheme": "scheme-4",
         "newsletter_enable": false,
         "newsletter_heading": "Subscribe to our emails",
         "enable_follow_on_shop": true,

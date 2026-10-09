@@ -66,9 +66,45 @@
 .quote-whatsapp--illustrated { grid-template-columns: auto minmax(0, 1fr) 6rem; }
 .quote-whatsapp-art { align-self: center; }
 .quote-whatsapp-art img { display: block; width: 100%; height: auto; max-height: 12rem; object-fit: contain; }
-@media (max-width: 1199px) {
+@media (max-width: 749px) {
   .quote-whatsapp--illustrated { grid-template-columns: auto minmax(0, 1fr); }
   .quote-whatsapp-art { grid-column: 2; width: 6rem; justify-self: end; }
 }
 
 .quote-field-icon .quote-icon-mask, .quote-privacy .quote-icon-mask { color: var(--quote-accent); }
+
+/* Consistent select appearance, with native keyboard and mobile pickers. */
+.quote-control--select select {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-inline-end: 4rem;
+  text-overflow: ellipsis;
+}
+.quote-select-arrow {
+  position: absolute;
+  inset-inline-end: 1.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: block;
+  width: 1.2rem;
+  height: .8rem;
+  color: rgba(var(--color-foreground), .65);
+  pointer-events: none;
+}
+.quote-select-arrow svg { display: block; width: 100%; height: 100%; }
+.quote-control--select:focus-within .quote-select-arrow { color: rgb(var(--color-foreground)); }
+.quote-contact { font-family: var(--font-body-family); font-style: var(--font-body-style); font-weight: var(--font-body-weight); }
+.quote-description { font-size: calc(1.4rem * var(--font-body-scale, 1)); }
+.quote-field > label { font-size: calc(1.3rem * var(--font-body-scale, 1)); }
+.quote-whatsapp-badge--default {
+  box-sizing: content-box;
+  padding: .8rem;
+  border-radius: 50%;
+  background: var(--quote-accent);
+  color: #fff;
+}
+.quote-whatsapp-badge img { display: block; }
+@media (forced-colors: active) {
+  .quote-control--select select { appearance: auto; }
+  .quote-select-arrow { display: none; }
+}

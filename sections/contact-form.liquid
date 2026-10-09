@@ -61,7 +61,7 @@
     {% if section.settings.show_sidebar %}
       <aside class="quote-sidebar" aria-label="{{ section.settings.contact_heading | escape }}">
         <div class="quote-whatsapp{% if section.settings.whatsapp_art != blank %} quote-whatsapp--illustrated{% endif %}">
-          <span class="quote-contact-icon">{% render 'contact-quote-icon', icon: 'whatsapp', image: section.settings.whatsapp_badge %}</span>
+          <span class="quote-contact-icon quote-whatsapp-badge{% if section.settings.whatsapp_badge == blank %} quote-whatsapp-badge--default{% endif %}">{% render 'contact-quote-icon', icon: 'whatsapp', image: section.settings.whatsapp_badge %}</span>
           <div>
             <h3 class="h3">{{ section.settings.whatsapp_heading | escape }}</h3>
             <div class="rte quote-description">{{ section.settings.whatsapp_text }}</div>
@@ -394,7 +394,7 @@
     {
       "type": "image_picker",
       "id": "whatsapp_badge",
-      "label": "Icono junto al título"
+      "label": "Icono de WhatsApp junto al título"
     },
     {
       "type": "image_picker",

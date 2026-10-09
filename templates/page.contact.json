@@ -20,86 +20,521 @@
         "padding_bottom": 36
       }
     },
-    "contact_form_UzNV7U": {
-      "type": "contact-form",
+    "image_banner_XPqH4q": {
+      "type": "image-banner",
       "blocks": {
-        "contact_detail_AF4XCp": {
-          "type": "contact_detail",
+        "eyebrow_caAh7C": {
+          "type": "eyebrow",
           "settings": {
-            "icon": "phone",
-            "title": "Teléfono",
-            "value": "",
-            "link": "",
-            "text": ""
+            "text": "[color1]<strong>CONTACTO / COTIZACIÓN MAYORISTA</strong>[/color1]&nbsp;",
+            "text_color": "",
+            "highlight_color_1": "#f39200",
+            "highlight_color_2": "#ffffff",
+            "highlight_color_3": "#ffc857",
+            "custom_typography": true,
+            "font_size_desktop": 12,
+            "font_size_mobile": 10,
+            "line_height": 1.4,
+            "letter_spacing": 1.6,
+            "text_transform": "none",
+            "custom_font_enabled": false,
+            "custom_font": "assistant_n4",
+            "custom_spacing": false,
+            "spacing_top": 12
           }
         },
-        "contact_detail_Q8rwy3": {
-          "type": "contact_detail",
+        "heading_TwxUDm": {
+          "type": "heading",
           "settings": {
-            "icon": "email",
-            "title": "Email",
-            "value": "",
-            "link": "",
-            "text": ""
+            "heading": "Hablemos de [br] [color1]tu próximo pedido[/color1]&nbsp;",
+            "heading_size": "h0",
+            "text_color": "#ffffff",
+            "highlight_color_1": "#f39200",
+            "highlight_color_2": "#ffffff",
+            "highlight_color_3": "#ffc857",
+            "custom_typography": false,
+            "font_size_desktop": 48,
+            "font_size_mobile": 32,
+            "line_height": 1.1,
+            "letter_spacing": 0,
+            "text_transform": "none",
+            "custom_font_enabled": false,
+            "custom_font": "assistant_n4",
+            "custom_spacing": false,
+            "spacing_top": 0
           }
         },
-        "contact_detail_baetCX": {
-          "type": "contact_detail",
+        "subheading_mk6djk": {
+          "type": "subheading",
           "settings": {
-            "icon": "pin",
-            "title": "Dirección",
-            "value": "",
-            "link": "",
-            "text": ""
-          }
-        },
-        "contact_detail_VbVWVf": {
-          "type": "contact_detail",
-          "settings": {
-            "icon": "clock",
-            "title": "Horarios de atención",
-            "value": "",
-            "link": "",
-            "text": ""
+            "text": "Contanos qué productos te interesan y te enviamos una cotización [br]personalizada con los mejores precios por volumen.",
+            "text_color": "#ffffff",
+            "highlight_color_1": "#ff8000",
+            "highlight_color_2": "#ffffff",
+            "highlight_color_3": "#ffc857",
+            "custom_typography": true,
+            "font_size_desktop": 20,
+            "font_size_mobile": 16,
+            "line_height": 1.4,
+            "letter_spacing": 0,
+            "text_transform": "none",
+            "custom_font_enabled": false,
+            "custom_font": "assistant_n4",
+            "custom_spacing": false,
+            "spacing_top": 12
           }
         }
       },
       "block_order": [
-        "contact_detail_AF4XCp",
-        "contact_detail_Q8rwy3",
-        "contact_detail_baetCX",
-        "contact_detail_VbVWVf"
+        "eyebrow_caAh7C",
+        "heading_TwxUDm",
+        "subheading_mk6djk"
+      ],
+      "settings": {
+        "section_button_icon_image_position": "inherit",
+        "section_button_icon_image_text_color": "",
+        "section_button_icon_size": 18,
+        "image_overlay_opacity": 40,
+        "image_height": "small",
+        "image_behavior": "none",
+        "desktop_content_position": "bottom-left",
+        "desktop_content_alignment": "left",
+        "show_text_box": false,
+        "color_scheme": "scheme-3",
+        "stack_images_on_mobile": false,
+        "mobile_content_alignment": "center",
+        "show_text_below": false
+      }
+    },
+    "newsletter_wCHkEx": {
+      "type": "newsletter",
+      "blocks": {
+        "benefit_CWHfiA": {
+          "type": "benefit",
+          "settings": {
+            "title": "Respuesta rápida",
+            "description": "En menos de 24 hs",
+            "icon": "truck",
+            "image": "shopify://shop_images/urgent_11240373.png",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        },
+        "benefit_RXahKb": {
+          "type": "benefit",
+          "settings": {
+            "title": "Precios por volumen",
+            "description": "Descuentos especiales",
+            "icon": "truck",
+            "image": "shopify://shop_images/discount_2747fd1f-f632-441a-a511-0d9a78d4cbdc.png",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        },
+        "benefit_hdcztg": {
+          "type": "benefit",
+          "settings": {
+            "title": "Envíos a todo el país",
+            "description": "Vía Cargo y otros medios",
+            "icon": "truck",
+            "image": "shopify://shop_images/fast-delivery_5a47e88f-c3cc-4631-b498-07785e81cf0f.png",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        },
+        "benefit_JNa8ae": {
+          "type": "benefit",
+          "settings": {
+            "title": "Asesoramiento comercial",
+            "description": "Te ayudamos a elegir",
+            "icon": "tag",
+            "image": "shopify://shop_images/headphones-with-mic_58b87529-b361-4c62-9a26-98a7ff1a94d8.png",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        }
+      },
+      "block_order": [
+        "benefit_CWHfiA",
+        "benefit_RXahKb",
+        "benefit_hdcztg",
+        "benefit_JNa8ae"
+      ],
+      "name": "t:sections.newsletter.presets.name",
+      "settings": {
+        "section_button_icon_image_position": "inherit",
+        "section_button_icon_image_text_color": "",
+        "section_button_icon_size": 18,
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 20,
+        "padding_bottom": 16,
+        "upper_background": "#ffffff",
+        "upper_text": "#111b22",
+        "muted_text": "#59636b",
+        "lower_background": "#09151b",
+        "lower_text": "#ffffff",
+        "accent_color": "#f39200",
+        "divider_color": "#e5e7eb",
+        "input_background": "#ffffff",
+        "input_text": "#343d45",
+        "upper_overlay": 0,
+        "lower_overlay": 30,
+        "icon_size": 50,
+        "mail_icon_size": 28,
+        "content_width": 1200,
+        "bar_padding": 28,
+        "custom_font": false,
+        "font": "assistant_n4"
+      }
+    },
+    "contact_form_8Vd46W": {
+      "type": "contact-form",
+      "blocks": {
+        "contact_detail_EJ9aTc": {
+          "type": "contact_detail",
+          "settings": {
+            "icon": "phone",
+            "image": "shopify://shop_images/whatsapp.png",
+            "title": "Teléfono",
+            "value": "+54 11 4029 4853",
+            "link": "",
+            "text": "<p>Lunes a viernes de 9 a 18 hs</p>",
+            "tint_icon": true
+          }
+        },
+        "contact_detail_HiCHCB": {
+          "type": "contact_detail",
+          "settings": {
+            "icon": "email",
+            "image": "shopify://shop_images/mail.svg",
+            "title": "Email",
+            "value": "ventas@comprabox.com.ar",
+            "link": "",
+            "text": "<p>Te respondemos en menos de 24hs</p>",
+            "tint_icon": true
+          }
+        },
+        "contact_detail_aFCtqV": {
+          "type": "contact_detail",
+          "settings": {
+            "icon": "pin",
+            "image": "shopify://shop_images/map-pin.svg",
+            "title": "Dirección",
+            "value": "Buenos Aires, Argentina",
+            "link": "",
+            "text": "<p>Coordinamos visitas con cita previa</p>",
+            "tint_icon": true
+          }
+        },
+        "contact_detail_9jrY7D": {
+          "type": "contact_detail",
+          "settings": {
+            "icon": "clock",
+            "image": "shopify://shop_images/clock.svg",
+            "title": "Horarios de atención",
+            "value": "Lunes a viernes de 9:00 a 18:00 hs",
+            "link": "",
+            "text": "<p>Sábados de 9:00 a 13:00 hs</p>",
+            "tint_icon": true
+          }
+        }
+      },
+      "block_order": [
+        "contact_detail_EJ9aTc",
+        "contact_detail_HiCHCB",
+        "contact_detail_aFCtqV",
+        "contact_detail_9jrY7D"
       ],
       "name": "t:sections.contact-form.presets.name",
       "settings": {
+        "section_button_icon_image": "shopify://shop_images/whatsapps.png",
+        "section_button_icon_image_position": "inherit",
+        "section_button_icon_image_text_color": "",
         "section_button_icon_size": 18,
         "heading": "Completá el formulario",
-        "heading_size": "h2",
-        "color_scheme": "",
-        "padding_top": 36,
+        "heading_size": "h0",
+        "color_scheme": "scheme-aa1ef54c-dbd2-42e0-9508-a1444aea4051",
+        "padding_top": 0,
         "padding_bottom": 36,
         "eyebrow": "SOLICITÁ TU COTIZACIÓN",
         "description": "<p>Cuanta más información nos brindes, más precisa será tu cotización.</p>",
         "provinces": "Ciudad Autónoma de Buenos Aires\nBuenos Aires\nCatamarca\nChaco\nChubut\nCórdoba\nCorrientes\nEntre Ríos\nFormosa\nJujuy\nLa Pampa\nLa Rioja\nMendoza\nMisiones\nNeuquén\nRío Negro\nSalta\nSan Juan\nSan Luis\nSanta Cruz\nSanta Fe\nSantiago del Estero\nTierra del Fuego\nTucumán",
         "products": "Termos\nMates\nBotellas\nVasos\nTazas\nJarros\nShakers\nSets y combos\nOtro",
         "submit_label": "Enviar solicitud de cotización",
-        "submit_icon": "shopify://shop_images/whatsapp.png",
+        "submit_icon": "shopify://shop_images/whatsapps.png",
+        "submit_icon_position": "inherit",
+        "submit_icon_text_color": "#f39200",
         "privacy_text": "Usaremos tus datos para responder tu consulta.",
         "show_sidebar": true,
         "whatsapp_heading": "Hablá directamente por WhatsApp",
         "whatsapp_text": "<p>Conversá con nuestro equipo comercial.</p>",
-        "whatsapp_link": "",
+        "whatsapp_link": "shopify://pages/mayoristas",
         "whatsapp_label": "Iniciar conversación",
+        "whatsapp_icon_position": "inherit",
+        "whatsapp_icon_text_color": "",
         "contact_heading": "Otros medios de contacto",
-        "accent_color": "#f57800",
+        "accent_color": "#f39200",
         "panel_color": "#f8f9fa",
         "whatsapp_color": "#fff1e5",
-        "contact_icon_size": 32
+        "contact_icon_size": 32,
+        "field_icon_name": "shopify://shop_images/circle-user-round.svg",
+        "field_icon_empresa": "shopify://shop_images/briefcase-business.svg",
+        "field_icon_cuit": "shopify://shop_images/file-text.svg",
+        "field_icon_provincia": "shopify://shop_images/map-pin.svg",
+        "field_icon_phone": "shopify://shop_images/whatsapp.png",
+        "field_icon_producto": "shopify://shop_images/box.svg",
+        "field_icon_cantidad": "shopify://shop_images/calculator.svg",
+        "field_icon_personalizacion": "shopify://shop_images/pencil.svg",
+        "field_icon_email": "shopify://shop_images/mail.svg",
+        "field_icon_body": "shopify://shop_images/message-square-more.svg",
+        "field_icon_size": 18,
+        "whatsapp_badge": "shopify://shop_images/Marca_Origial22_c7adf584-262f-40fc-af12-19eb5a0961f1.png"
+      }
+    },
+    "newsletter_tax4Vi": {
+      "type": "newsletter",
+      "blocks": {
+        "heading_rR6CVK": {
+          "type": "heading",
+          "settings": {
+            "heading": "&nbsp;¿Por qué contactarnos?&nbsp;",
+            "heading_size": "h1",
+            "custom_size": false,
+            "size_desktop": 28,
+            "size_mobile": 24
+          }
+        },
+        "benefit_4MBTzj": {
+          "type": "benefit",
+          "settings": {
+            "title": "Asesoramiento personalizado",
+            "description": "Te ayudamos a elegir los productos ideales",
+            "icon": "truck",
+            "image": "shopify://shop_images/headphones-with-mic_58b87529-b361-4c62-9a26-98a7ff1a94d8.png",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        },
+        "benefit_YTRpti": {
+          "type": "benefit",
+          "settings": {
+            "title": "Precios competitivos",
+            "description": "Descuentos por volumen y condiciones especiales",
+            "icon": "tag",
+            "image": "shopify://shop_images/price-tag_a325f66d-6b14-4c1e-91d8-e10cbcb9b192.png",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        },
+        "benefit_iB4egi": {
+          "type": "benefit",
+          "settings": {
+            "title": "Stock permanente",
+            "description": "Gran disponibilidad todo el año",
+            "icon": "truck",
+            "image": "shopify://shop_images/product_44cfece8-efb8-4134-aa20-f3f9dcc7446b.png",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        },
+        "benefit_KNwGgh": {
+          "type": "benefit",
+          "settings": {
+            "title": "Envíos a todo el país",
+            "description": "Coordinamos por Vía Cargo y otros medios",
+            "icon": "person",
+            "image": "shopify://shop_images/fast-delivery_5a47e88f-c3cc-4631-b498-07785e81cf0f.png",
+            "tint_icon": true,
+            "custom_size": true,
+            "size_desktop": 14,
+            "size_mobile": 14,
+            "description_size": 13
+          }
+        }
+      },
+      "block_order": [
+        "heading_rR6CVK",
+        "benefit_4MBTzj",
+        "benefit_YTRpti",
+        "benefit_iB4egi",
+        "benefit_KNwGgh"
+      ],
+      "name": "t:sections.newsletter.presets.name",
+      "settings": {
+        "section_button_icon_image_position": "inherit",
+        "section_button_icon_image_text_color": "",
+        "section_button_icon_size": 18,
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "upper_background": "#FFFFFF",
+        "upper_text": "#111b22",
+        "muted_text": "#59636b",
+        "lower_background": "#09151b",
+        "lower_text": "#ffffff",
+        "accent_color": "#f39200",
+        "divider_color": "#e5e7eb",
+        "input_background": "#ffffff",
+        "input_text": "#343d45",
+        "upper_overlay": 0,
+        "lower_overlay": 30,
+        "icon_size": 50,
+        "mail_icon_size": 28,
+        "content_width": 1200,
+        "bar_padding": 28,
+        "custom_font": false,
+        "font": "assistant_n4"
+      }
+    },
+    "collapsible_content_AbEEGd": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_z7Fagp": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Fila desplegable",
+            "icon": "check_mark",
+            "row_content": "",
+            "page": ""
+          }
+        },
+        "collapsible_row_yJk4iP": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Fila desplegable",
+            "icon": "check_mark",
+            "row_content": "",
+            "page": ""
+          }
+        },
+        "collapsible_row_7yyUqp": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Fila desplegable",
+            "icon": "check_mark",
+            "row_content": "",
+            "page": ""
+          }
+        },
+        "collapsible_row_79wNab": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Fila desplegable",
+            "icon": "check_mark",
+            "row_content": "",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_z7Fagp",
+        "collapsible_row_yJk4iP",
+        "collapsible_row_7yyUqp",
+        "collapsible_row_79wNab"
+      ],
+      "name": "t:sections.collapsible_content.presets.name",
+      "settings": {
+        "section_button_icon_image_position": "inherit",
+        "section_button_icon_image_text_color": "",
+        "section_button_icon_size": 18,
+        "caption": "",
+        "heading": "Contenido desplegable",
+        "heading_size": "h1",
+        "heading_alignment": "center",
+        "layout": "none",
+        "container_color_scheme": "",
+        "color_scheme": "",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "newsletter_rcywjj": {
+      "type": "newsletter",
+      "blocks": {
+        "email_form_HUqF7P": {
+          "type": "email_form",
+          "settings": {
+            "button_image": "shopify://shop_images/mail32.png",
+            "button_image_position": "inherit",
+            "button_image_text_color": "",
+            "title": "Suscribite y recibí novedades",
+            "description": "<p>Promociones, lanzamientos y consejos para hacer crecer tu negocio.</p>",
+            "email_label": "Tu correo electrónico",
+            "button_label": "Suscribirme",
+            "button_secondary": false,
+            "show_icon": false,
+            "custom_size": true,
+            "size_desktop": 18,
+            "size_mobile": 18,
+            "description_size": 13
+          }
+        }
+      },
+      "block_order": [
+        "email_form_HUqF7P"
+      ],
+      "name": "t:sections.newsletter.presets.name",
+      "settings": {
+        "section_button_icon_image_position": "inherit",
+        "section_button_icon_image_text_color": "",
+        "section_button_icon_size": 18,
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 40,
+        "upper_background": "#ffffff",
+        "upper_text": "#111b22",
+        "muted_text": "#59636b",
+        "lower_background": "#242829",
+        "lower_text": "#ffffff",
+        "accent_color": "#F39200",
+        "divider_color": "#e5e7eb",
+        "input_background": "#ffffff",
+        "input_text": "#343d45",
+        "upper_overlay": 0,
+        "lower_overlay": 30,
+        "icon_size": 40,
+        "mail_icon_size": 40,
+        "content_width": 1200,
+        "bar_padding": 28,
+        "custom_font": false,
+        "font": "assistant_n4"
       }
     }
   },
   "order": [
     "main",
-    "contact_form_UzNV7U"
+    "image_banner_XPqH4q",
+    "newsletter_wCHkEx",
+    "contact_form_8Vd46W",
+    "newsletter_tax4Vi",
+    "collapsible_content_AbEEGd",
+    "newsletter_rcywjj"
   ]
 }

@@ -345,12 +345,66 @@
         "heading_size_mobile": 26,
         "subtitle_size": 16
       }
+    },
+    "newsletter_yJYUfN": {
+      "type": "newsletter",
+      "blocks": {
+        "email_form_CNXUAQ": {
+          "type": "email_form",
+          "settings": {
+            "button_image": "shopify://shop_images/mail32.png",
+            "button_image_position": "inherit",
+            "button_image_text_color": "",
+            "title": "Suscribite y recibí novedades",
+            "description": "<p>Promociones, lanzamientos y consejos para hacer crecer tu negocio.</p>",
+            "email_label": "Tu correo electrónico",
+            "button_label": "Suscribirme",
+            "button_secondary": false,
+            "show_icon": false,
+            "custom_size": true,
+            "size_desktop": 18,
+            "size_mobile": 18,
+            "description_size": 13
+          }
+        }
+      },
+      "block_order": [
+        "email_form_CNXUAQ"
+      ],
+      "name": "t:sections.newsletter.presets.name",
+      "settings": {
+        "section_button_icon_image_position": "inherit",
+        "section_button_icon_image_text_color": "",
+        "section_button_icon_size": 18,
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 40,
+        "upper_background": "#ffffff",
+        "upper_text": "#111b22",
+        "muted_text": "#59636b",
+        "lower_background": "#242829",
+        "lower_text": "#ffffff",
+        "accent_color": "#F39200",
+        "divider_color": "#e5e7eb",
+        "input_background": "#ffffff",
+        "input_text": "#343d45",
+        "upper_overlay": 0,
+        "lower_overlay": 30,
+        "icon_size": 40,
+        "mail_icon_size": 40,
+        "content_width": 1200,
+        "bar_padding": 28,
+        "custom_font": false,
+        "font": "assistant_n4"
+      }
     }
   },
   "order": [
     "image_banner_QALE9V",
     "newsletter_PphmtD",
     "main",
-    "beneficiosicon_XchFdi"
+    "beneficiosicon_XchFdi",
+    "newsletter_yJYUfN"
   ]
 }

@@ -35,7 +35,7 @@
         "heading_rfzWDM": {
           "type": "heading",
           "settings": {
-            "heading": "Comprá al por mayor, [br][color1]<strong>hacé crecer tu negocio</strong>[/color1]&nbsp;",
+            "heading": "Convertí un producto [br][color1]<strong>en algo único</strong>[/color1]&nbsp;",
             "heading_size": "h0",
             "text_color": "#ffffff",
             "highlight_color_1": "#f39200",
@@ -56,7 +56,7 @@
         "subheading_QCKdEq": {
           "type": "subheading",
           "settings": {
-            "text": "Gran variedad de termos, mates, botellas, vasos y más. [br]Stock permanente, precios por volumen y envíos a todo el país.",
+            "text": "Grabado láser de alta precisión en termos, mates, botellas, vasos y más. [br]Ideal para empresas, eventos, merchandising y tu propia marca.",
             "text_color": "#ffffff",
             "highlight_color_1": "#ff8000",
             "highlight_color_2": "#ffffff",
@@ -84,7 +84,7 @@
             "button_label_1": "Solicitar cotización",
             "button_link_1": "shopify://collections/all",
             "button_style_secondary_1": false,
-            "button_label_2": "Ver catálogo",
+            "button_label_2": "Ver productos personalizables",
             "button_link_2": "shopify://collections/frontpage",
             "button_style_secondary_2": true
           }
@@ -101,7 +101,7 @@
         "section_button_icon_image_text_color": "",
         "section_button_icon_size": 18,
         "image_overlay_opacity": 40,
-        "image_height": "medium",
+        "image_height": "small",
         "image_behavior": "none",
         "desktop_content_position": "bottom-left",
         "desktop_content_alignment": "left",
@@ -221,27 +221,16 @@
         "font": "assistant_n4"
       }
     },
-    "main": {
-      "type": "main-page",
-      "disabled": true,
-      "settings": {
-        "section_button_icon_image_position": "inherit",
-        "section_button_icon_image_text_color": "",
-        "section_button_icon_size": 18,
-        "padding_top": 28,
-        "padding_bottom": 28
-      }
-    },
-    "beneficiosicon_XchFdi": {
+    "beneficiosicon_NzdMHQ": {
       "type": "beneficiosicon",
       "blocks": {
-        "benefit_YdhU9K": {
+        "benefit_Vctr74": {
           "type": "benefit",
           "settings": {
-            "title": "Elegí tus productos",
-            "description": "Explorá nuestro catálogo y seleccioná lo que necesitás.",
+            "title": "Consultanos",
+            "description": "Contanos tu idea, producto y cantidad estimada.",
             "icon": "clipboard",
-            "image": "shopify://shop_images/Marca_Origial22_c7adf584-262f-40fc-af12-19eb5a0961f1.png",
+            "image": "shopify://shop_images/chat-bubble.png",
             "tint_icon": false,
             "title_size": 16,
             "title_size_mobile": 16,
@@ -249,13 +238,13 @@
             "description_size_mobile": 14
           }
         },
-        "benefit_yBkVHQ": {
+        "benefit_JaHjhm": {
           "type": "benefit",
           "settings": {
-            "title": "Solicitá una cotización",
-            "description": "Indicá las cantidades y consultá precios por volumen.",
+            "title": "Envía tu diseño",
+            "description": "Podés enviarnos tu logo o te ayudamos a diseñarlo.",
             "icon": "cart",
-            "image": "shopify://shop_images/chat-bubble.png",
+            "image": "shopify://shop_images/image_1.png",
             "tint_icon": true,
             "title_size": 16,
             "title_size_mobile": 16,
@@ -263,11 +252,11 @@
             "description_size_mobile": 14
           }
         },
-        "benefit_WaWTWK": {
+        "benefit_xBTFGk": {
           "type": "benefit",
           "settings": {
-            "title": "Confirmá tu pedido",
-            "description": "Te enviamos el detalle, medios de pago y factura.",
+            "title": "Confirmamos y cotizamos",
+            "description": "Te enviamos una propuesta con precio y tiempos.",
             "icon": "card",
             "image": "shopify://shop_images/check-list_3e9a3fd1-eb42-4dbd-aad0-d04a948e1f6a.png",
             "tint_icon": true,
@@ -277,13 +266,13 @@
             "description_size_mobile": 14
           }
         },
-        "benefit_H79czA": {
+        "benefit_BDHPVJ": {
           "type": "benefit",
           "settings": {
-            "title": "Preparamos y despachamos",
-            "description": "Coordinamos el envío por Vía Cargo u otro medio.",
+            "title": "Personalizamos",
+            "description": "Grabado láser de alta precisión y control de calidad.",
             "icon": "box",
-            "image": "shopify://shop_images/fast-delivery_5a47e88f-c3cc-4631-b498-07785e81cf0f.png",
+            "image": "shopify://shop_images/laser.png",
             "tint_icon": false,
             "title_size": 16,
             "title_size_mobile": 16,
@@ -291,14 +280,14 @@
             "description_size_mobile": 14
           }
         },
-        "benefit_WCceJr": {
+        "benefit_YTTphM": {
           "type": "benefit",
           "settings": {
-            "title": "Recibí en tu negocio",
-            "description": "En todo el país, con seguimiento.",
+            "title": "Preparamos y enviamos",
+            "description": "Recibí tu pedido en todo el país.",
             "icon": "truck",
-            "image": "shopify://shop_images/location.png",
-            "tint_icon": true,
+            "image": "shopify://shop_images/Marca_Origial22_c7adf584-262f-40fc-af12-19eb5a0961f1.png",
+            "tint_icon": false,
             "title_size": 16,
             "title_size_mobile": 16,
             "description_size": 14,
@@ -307,11 +296,11 @@
         }
       },
       "block_order": [
-        "benefit_YdhU9K",
-        "benefit_yBkVHQ",
-        "benefit_WaWTWK",
-        "benefit_H79czA",
-        "benefit_WCceJr"
+        "benefit_Vctr74",
+        "benefit_JaHjhm",
+        "benefit_xBTFGk",
+        "benefit_BDHPVJ",
+        "benefit_YTTphM"
       ],
       "name": "Beneficios con iconos",
       "settings": {
@@ -319,13 +308,13 @@
         "section_button_icon_image_position": "inherit",
         "section_button_icon_image_text_color": "",
         "section_button_icon_size": 18,
-        "heading": "¿Cómo comprar?",
-        "subtitle": "Un proceso simple, rápido y seguro.",
-        "button_label": "Solicitar cotización por WhatsApp",
-        "button_link": "https://api.whatsapp.com/send/?phone=5491140294853&text&type=phone_number&app_absent=0",
-        "button_secondary": true,
-        "button_icon": "whatsapp",
-        "button_arrow": true,
+        "heading": "¿Cómo funciona?",
+        "subtitle": "Un proceso simple, rápido para que recibas tus productos personalizados.",
+        "button_label": "",
+        "button_link": "",
+        "button_secondary": false,
+        "button_icon": "none",
+        "button_arrow": false,
         "color_scheme": "scheme-ed82a996-6cee-441e-91aa-619fc46351f3",
         "background": "#fafafa",
         "text_color": "#111b22",
@@ -345,12 +334,77 @@
         "heading_size_mobile": 26,
         "subtitle_size": 16
       }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "section_button_icon_image_position": "inherit",
+        "section_button_icon_image_text_color": "",
+        "section_button_icon_size": 18,
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "newsletter_kxzcRc": {
+      "type": "newsletter",
+      "blocks": {
+        "email_form_eAmDQA": {
+          "type": "email_form",
+          "settings": {
+            "button_image": "shopify://shop_images/mail32.png",
+            "button_image_position": "inherit",
+            "button_image_text_color": "",
+            "title": "Suscribite y recibí novedades",
+            "description": "<p>Promociones, lanzamientos y consejos para hacer crecer tu negocio.</p>",
+            "email_label": "Tu correo electrónico",
+            "button_label": "Suscribirme",
+            "button_secondary": false,
+            "show_icon": false,
+            "custom_size": true,
+            "size_desktop": 18,
+            "size_mobile": 18,
+            "description_size": 13
+          }
+        }
+      },
+      "block_order": [
+        "email_form_eAmDQA"
+      ],
+      "name": "t:sections.newsletter.presets.name",
+      "settings": {
+        "section_button_icon_image_position": "inherit",
+        "section_button_icon_image_text_color": "",
+        "section_button_icon_size": 18,
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 40,
+        "upper_background": "#ffffff",
+        "upper_text": "#111b22",
+        "muted_text": "#59636b",
+        "lower_background": "#242829",
+        "lower_text": "#ffffff",
+        "accent_color": "#F39200",
+        "divider_color": "#e5e7eb",
+        "input_background": "#ffffff",
+        "input_text": "#343d45",
+        "upper_overlay": 0,
+        "lower_overlay": 30,
+        "icon_size": 40,
+        "mail_icon_size": 40,
+        "content_width": 1200,
+        "bar_padding": 28,
+        "custom_font": false,
+        "font": "assistant_n4"
+      }
     }
   },
   "order": [
     "image_banner_QALE9V",
     "newsletter_PphmtD",
+    "beneficiosicon_NzdMHQ",
     "main",
-    "beneficiosicon_XchFdi"
+    "newsletter_kxzcRc"
   ]
 }

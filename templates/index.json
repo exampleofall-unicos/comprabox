@@ -120,7 +120,7 @@
           "settings": {
             "image": "shopify://shop_images/Termos.png",
             "title": "Termos",
-            "link": "shopify://collections/all"
+            "link": "shopify://collections/termos"
           }
         },
         "category_a3gT84": {
@@ -129,7 +129,7 @@
           "settings": {
             "image": "shopify://shop_images/Mates.png",
             "title": "Mates",
-            "link": "shopify://collections"
+            "link": "shopify://collections/mates"
           }
         },
         "category_N9j3z6": {
@@ -138,7 +138,7 @@
           "settings": {
             "image": "shopify://shop_images/Autocebantes.png",
             "title": "Autocebantes",
-            "link": "shopify://collections"
+            "link": "shopify://collections/autocebantes"
           }
         },
         "category_NECYrp": {
@@ -147,7 +147,7 @@
           "settings": {
             "image": "shopify://shop_images/Botellas.png",
             "title": "Botellas",
-            "link": "shopify://collections"
+            "link": "shopify://collections/botellas"
           }
         },
         "category_wgErBx": {
@@ -156,7 +156,7 @@
           "settings": {
             "image": "shopify://shop_images/Botellas_Deportivas.png",
             "title": "Botellas Deportivas",
-            "link": "shopify://collections"
+            "link": "shopify://collections/botellas-deportivas"
           }
         },
         "category_gwDRqK": {
@@ -165,7 +165,7 @@
           "settings": {
             "image": "shopify://shop_images/Vasos_8abc3a2b-f290-48e2-b753-cf523c6d254b.png",
             "title": "Vasos",
-            "link": "shopify://collections"
+            "link": "shopify://collections/vasos"
           }
         },
         "category_m8zCQi": {
@@ -174,7 +174,7 @@
           "settings": {
             "image": "shopify://shop_images/Tazas_d3effaa8-fcf2-45e8-8279-17fa7b6e21ea.png",
             "title": "Tazas",
-            "link": "shopify://collections"
+            "link": "shopify://collections/tazas"
           }
         },
         "category_bKabai": {
@@ -183,7 +183,7 @@
           "settings": {
             "image": "shopify://shop_images/Combos.png",
             "title": "Sets y Combos",
-            "link": "shopify://collections"
+            "link": "shopify://collections/sets-y-combos"
           }
         }
       },
@@ -230,16 +230,17 @@
         "padding_bottom": 10
       }
     },
-    "featured_collection": {
+    "featured_collection_r6pKtH": {
       "type": "featured-collection",
+      "name": "t:sections.featured-collection.presets.name",
       "settings": {
         "section_button_icon_image_position": "inherit",
         "section_button_icon_image_text_color": "",
         "section_button_icon_size": 18,
         "collection": "all",
-        "products_to_show": 8,
-        "title": "Featured products",
-        "heading_size": "h2",
+        "products_to_show": 4,
+        "title": "Colección destacada",
+        "heading_size": "h1",
         "description": "",
         "show_description": false,
         "description_style": "body",
@@ -248,16 +249,16 @@
         "full_width": false,
         "show_view_all": true,
         "view_all_style": "solid",
-        "color_scheme": "scheme-aa1ef54c-dbd2-42e0-9508-a1444aea4051",
+        "color_scheme": "",
         "image_ratio": "adapt",
         "image_shape": "default",
-        "show_secondary_image": true,
+        "show_secondary_image": false,
         "show_vendor": false,
         "show_rating": false,
         "quick_add": "none",
         "columns_mobile": "2",
         "swipe_on_mobile": false,
-        "padding_top": 44,
+        "padding_top": 36,
         "padding_bottom": 36
       }
     },
@@ -298,7 +299,7 @@
             "button_image_position": "inherit",
             "button_image_text_color": "",
             "button_label": "Quiero ser mayorista",
-            "button_link": "",
+            "button_link": "https://wa.me/5491140294853?text=Hola!%20Me%20interesa%20abastecer%20mi%20negocio%20con%20sus%20productos!",
             "button_style_secondary": false,
             "font_size_desktop": 15,
             "font_size_mobile": 15
@@ -371,7 +372,7 @@
         "background": "#242829",
         "text_color": "#ffffff",
         "heading_color": "#ffffff",
-        "accent_color": "#F39200",
+        "accent_color": "#f39200",
         "panel_color": "#0b171d",
         "panel_text_color": "#ffffff",
         "overlay_color": "#071217",
@@ -489,7 +490,7 @@
             "button_image_position": "inherit",
             "button_image_text_color": "",
             "button_label": "Quiero personalizar",
-            "button_link": "",
+            "button_link": "https://wa.me/5491140294853?text=Hola!%20Me%20interesa%20personalizar%20un%20pedido!",
             "button_style_secondary": false,
             "font_size_desktop": 15,
             "font_size_mobile": 15,
@@ -515,7 +516,7 @@
         "background": "#ffffff",
         "text_color": "#59636b",
         "heading_color": "#111b22",
-        "accent_color": "#F39200",
+        "accent_color": "#f39200",
         "overlay_color": "#ffffff",
         "overlay_opacity": 85,
         "custom_font": false,
@@ -571,8 +572,8 @@
         "benefit_NzXh6Y": {
           "type": "benefit",
           "settings": {
-            "title": "Precios competitivos",
-            "description": "Directo de fábrica",
+            "title": "Descuentos por volumen",
+            "description": "Importador directo",
             "icon": "tag",
             "image": "shopify://shop_images/price-tag_a325f66d-6b14-4c1e-91d8-e10cbcb9b192.png",
             "tint_icon": true,
@@ -652,7 +653,7 @@
         "muted_text": "#59636b",
         "lower_background": "#242829",
         "lower_text": "#ffffff",
-        "accent_color": "#F39200",
+        "accent_color": "#f39200",
         "divider_color": "#e5e7eb",
         "input_background": "#ffffff",
         "input_text": "#343d45",
@@ -670,7 +671,7 @@
   "order": [
     "image_banner",
     "image_categories_6yG4Ab",
-    "featured_collection",
+    "featured_collection_r6pKtH",
     "marketing_block_Jx93bt",
     "personalization_block_jiaKWj",
     "newsletter_RnwMGq"

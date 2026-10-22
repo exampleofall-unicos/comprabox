@@ -110,8 +110,8 @@
     "brand_headline": "",
     "brand_description": "<p></p>",
     "brand_image_width": 100,
-    "social_facebook_link": "",
-    "social_instagram_link": "",
+    "social_facebook_link": "https://www.facebook.com/people/CompraBox-Mayorista/100077064516551/",
+    "social_instagram_link": "https://www.instagram.com/compraboxmayorista/",
     "social_youtube_link": "",
     "social_tiktok_link": "",
     "social_twitter_link": "",
@@ -223,13 +223,13 @@
       },
       "scheme-69c1b8b1-0dc2-4d0e-8fcf-657bf58dc41a": {
         "settings": {
-          "background": "#FAFAFA",
+          "background": "#fafafa",
           "background_gradient": "",
           "text": "#121212",
-          "button": "#F39200",
+          "button": "#f39200",
           "button_label": "#ffffff",
-          "secondary_button_label": "#F39200",
-          "shadow": "#F39200"
+          "secondary_button_label": "#f39200",
+          "shadow": "#f39200"
         }
       }
     }

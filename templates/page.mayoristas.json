@@ -82,10 +82,10 @@
             "button_image_2_position": "inherit",
             "button_image_2_text_color": "",
             "button_label_1": "Solicitar cotización",
-            "button_link_1": "shopify://collections/all",
+            "button_link_1": "https://wa.me/5491140294853?text=Hola!%20Me%20interesa%20consultar%20disponibilidad%20y%20cotizar%20un%20pedido!",
             "button_style_secondary_1": false,
             "button_label_2": "Ver catálogo",
-            "button_link_2": "shopify://collections/frontpage",
+            "button_link_2": "shopify://collections/all",
             "button_style_secondary_2": true
           }
         }
@@ -159,6 +159,7 @@
         },
         "benefit_y9GUxg": {
           "type": "benefit",
+          "disabled": true,
           "settings": {
             "title": "Factura A y B",
             "description": "Para empresas y comercios",
@@ -322,7 +323,7 @@
         "heading": "¿Cómo comprar?",
         "subtitle": "Un proceso simple, rápido y seguro.",
         "button_label": "Solicitar cotización por WhatsApp",
-        "button_link": "https://api.whatsapp.com/send/?phone=5491140294853&text&type=phone_number&app_absent=0",
+        "button_link": "https://wa.me/5491140294853?text=Hola! Me interesa consultar disponibilidad y cotizar un pedido!",
         "button_secondary": true,
         "button_icon": "whatsapp",
         "button_arrow": true,
@@ -385,7 +386,7 @@
         "muted_text": "#59636b",
         "lower_background": "#242829",
         "lower_text": "#ffffff",
-        "accent_color": "#F39200",
+        "accent_color": "#f39200",
         "divider_color": "#e5e7eb",
         "input_background": "#ffffff",
         "input_text": "#343d45",

@@ -131,6 +131,125 @@
         "show_text_below": false
       }
     },
+    "image_categories_L4mb6V": {
+      "type": "image-categories",
+      "blocks": {
+        "category_8iJpzY": {
+          "type": "category",
+          "name": "Termos",
+          "settings": {
+            "image": "shopify://shop_images/Termos.png",
+            "title": "Termos",
+            "link": "shopify://collections/termos"
+          }
+        },
+        "category_UrMeqG": {
+          "type": "category",
+          "name": "Mates",
+          "settings": {
+            "image": "shopify://shop_images/Mates.png",
+            "title": "Mates",
+            "link": "shopify://collections/mates"
+          }
+        },
+        "category_P4JRMR": {
+          "type": "category",
+          "name": "Autocebantes",
+          "settings": {
+            "image": "shopify://shop_images/Autocebantes.png",
+            "title": "Autocebantes",
+            "link": "shopify://collections/autocebantes"
+          }
+        },
+        "category_QxBArG": {
+          "type": "category",
+          "name": "Botellas",
+          "settings": {
+            "image": "shopify://shop_images/Botellas.png",
+            "title": "Botellas",
+            "link": "shopify://collections/botellas"
+          }
+        },
+        "category_cwzJLH": {
+          "type": "category",
+          "name": "Botellas Deportivas",
+          "settings": {
+            "image": "shopify://shop_images/Botellas_Deportivas.png",
+            "title": "Botellas Deportivas",
+            "link": "shopify://collections/botellas-deportivas"
+          }
+        },
+        "category_LeCgq6": {
+          "type": "category",
+          "name": "Vasos",
+          "settings": {
+            "image": "shopify://shop_images/Vasos_8abc3a2b-f290-48e2-b753-cf523c6d254b.png",
+            "title": "Vasos",
+            "link": "shopify://collections/vasos"
+          }
+        },
+        "category_DF7PUr": {
+          "type": "category",
+          "name": "Tazas",
+          "settings": {
+            "image": "shopify://shop_images/Tazas_d3effaa8-fcf2-45e8-8279-17fa7b6e21ea.png",
+            "title": "Tazas",
+            "link": "shopify://collections/tazas"
+          }
+        },
+        "category_fJFkgw": {
+          "type": "category",
+          "name": "Sets",
+          "settings": {
+            "image": "shopify://shop_images/Combos.png",
+            "title": "Sets y Combos",
+            "link": "shopify://collections/sets-y-combos"
+          }
+        }
+      },
+      "block_order": [
+        "category_8iJpzY",
+        "category_UrMeqG",
+        "category_P4JRMR",
+        "category_QxBArG",
+        "category_cwzJLH",
+        "category_LeCgq6",
+        "category_DF7PUr",
+        "category_fJFkgw"
+      ],
+      "name": "Categorías en imágenes",
+      "settings": {
+        "section_button_icon_image_position": "inherit",
+        "section_button_icon_image_text_color": "",
+        "section_button_icon_size": 18,
+        "navigation_label": "Categorías de productosasd",
+        "caption": "",
+        "show_arrows": false,
+        "background": "#242829",
+        "text_color": "#ffffff",
+        "accent_color": "#9dd8d8",
+        "icon_color": "#ffffff",
+        "hover_color": "#f39200",
+        "icon_size": 110,
+        "item_width": 64,
+        "gap": 2,
+        "font_size": 12,
+        "icon_size_mobile": 80,
+        "item_width_mobile": 112,
+        "gap_mobile": 8,
+        "font_size_mobile": 11,
+        "use_custom_font": true,
+        "font": "archivo_n5",
+        "text_transform": "none",
+        "letter_spacing": 0.5,
+        "caption_size": 10,
+        "caption_spacing": 3,
+        "caption_gap": 20,
+        "max_width": 1200,
+        "padding_top": 10,
+        "padding_bottom": 10
+      }
+    },
     "newsletter_AMcmTn": {
       "type": "newsletter",
       "blocks": {
@@ -225,125 +344,6 @@
         "font": "assistant_n4"
       }
     },
-    "image_categories_xxkHgc": {
-      "type": "image-categories",
-      "blocks": {
-        "category_DhaQpM": {
-          "type": "category",
-          "name": "Termos",
-          "settings": {
-            "image": "shopify://shop_images/Termos.png",
-            "title": "Termos",
-            "link": "shopify://collections/all"
-          }
-        },
-        "category_ctftx3": {
-          "type": "category",
-          "name": "Mates",
-          "settings": {
-            "image": "shopify://shop_images/Mates.png",
-            "title": "Mates",
-            "link": "shopify://collections"
-          }
-        },
-        "category_p9wn94": {
-          "type": "category",
-          "name": "Autocebantes",
-          "settings": {
-            "image": "shopify://shop_images/Autocebantes.png",
-            "title": "Autocebantes",
-            "link": "shopify://collections"
-          }
-        },
-        "category_BFWe4b": {
-          "type": "category",
-          "name": "Botellas",
-          "settings": {
-            "image": "shopify://shop_images/Botellas.png",
-            "title": "Botellas",
-            "link": "shopify://collections"
-          }
-        },
-        "category_bHAWLj": {
-          "type": "category",
-          "name": "Botellas Deportivas",
-          "settings": {
-            "image": "shopify://shop_images/Botellas_Deportivas.png",
-            "title": "Botellas Deportivas",
-            "link": "shopify://collections"
-          }
-        },
-        "category_EpcReL": {
-          "type": "category",
-          "name": "Vasos",
-          "settings": {
-            "image": "shopify://shop_images/Vasos_8abc3a2b-f290-48e2-b753-cf523c6d254b.png",
-            "title": "Vasos",
-            "link": "shopify://collections"
-          }
-        },
-        "category_XGrDfa": {
-          "type": "category",
-          "name": "Tazas",
-          "settings": {
-            "image": "shopify://shop_images/Tazas_d3effaa8-fcf2-45e8-8279-17fa7b6e21ea.png",
-            "title": "Tazas",
-            "link": "shopify://collections"
-          }
-        },
-        "category_3abJNi": {
-          "type": "category",
-          "name": "Sets",
-          "settings": {
-            "image": "shopify://shop_images/Combos.png",
-            "title": "Sets y Combos",
-            "link": "shopify://collections"
-          }
-        }
-      },
-      "block_order": [
-        "category_DhaQpM",
-        "category_ctftx3",
-        "category_p9wn94",
-        "category_BFWe4b",
-        "category_bHAWLj",
-        "category_EpcReL",
-        "category_XGrDfa",
-        "category_3abJNi"
-      ],
-      "name": "Categorías en imágenes",
-      "settings": {
-        "section_button_icon_image_position": "inherit",
-        "section_button_icon_image_text_color": "",
-        "section_button_icon_size": 18,
-        "navigation_label": "Categorías de productosasd",
-        "caption": "",
-        "show_arrows": true,
-        "background": "#242829",
-        "text_color": "#ffffff",
-        "accent_color": "#9dd8d8",
-        "icon_color": "#ffffff",
-        "hover_color": "#f39200",
-        "icon_size": 110,
-        "item_width": 64,
-        "gap": 2,
-        "font_size": 12,
-        "icon_size_mobile": 80,
-        "item_width_mobile": 112,
-        "gap_mobile": 8,
-        "font_size_mobile": 11,
-        "use_custom_font": true,
-        "font": "archivo_n5",
-        "text_transform": "none",
-        "letter_spacing": 0.5,
-        "caption_size": 10,
-        "caption_spacing": 3,
-        "caption_gap": 20,
-        "max_width": 1200,
-        "padding_top": 10,
-        "padding_bottom": 10
-      }
-    },
     "main_collection_product_grid2_MUpwtQ": {
       "type": "main-collection-product-grid2",
       "name": "Grilla de productos 2",
@@ -409,7 +409,7 @@
         "muted_text": "#59636b",
         "lower_background": "#242829",
         "lower_text": "#ffffff",
-        "accent_color": "#F39200",
+        "accent_color": "#f39200",
         "divider_color": "#e5e7eb",
         "input_background": "#ffffff",
         "input_text": "#343d45",
@@ -429,7 +429,7 @@
     "product-grid",
     "image_banner_GxNniH",
     "newsletter_AMcmTn",
-    "image_categories_xxkHgc",
+    "image_categories_L4mb6V",
     "main_collection_product_grid2_MUpwtQ",
     "newsletter_UkAxpm"
   ]

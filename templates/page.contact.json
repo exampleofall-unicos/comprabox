@@ -233,7 +233,7 @@
             "icon": "pin",
             "image": "shopify://shop_images/map-pin.svg",
             "title": "Dirección",
-            "value": "Buenos Aires, Argentina",
+            "value": "Castelar, Buenos Aires, Argentina",
             "link": "",
             "text": "<p>Coordinamos visitas con cita previa</p>",
             "tint_icon": true
@@ -245,7 +245,7 @@
             "icon": "clock",
             "image": "shopify://shop_images/clock.svg",
             "title": "Horarios de atención",
-            "value": "Lunes a viernes de 9:00 a 18:00 hs",
+            "value": "Lunes a viernes de 9:00 a 17:00 hs",
             "link": "",
             "text": "<p>Sábados de 9:00 a 13:00 hs</p>",
             "tint_icon": true
@@ -281,7 +281,7 @@
         "show_sidebar": true,
         "whatsapp_heading": "Hablá directamente por WhatsApp",
         "whatsapp_text": "<p>Conversá con nuestro equipo comercial.</p>",
-        "whatsapp_link": "shopify://pages/mayoristas",
+        "whatsapp_link": "https://wa.me/5491140294853",
         "whatsapp_label": "Iniciar conversación",
         "whatsapp_icon_position": "inherit",
         "whatsapp_icon_text_color": "",

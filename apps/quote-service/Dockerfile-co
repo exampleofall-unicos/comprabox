@@ -1,0 +1,8 @@
+FROM node:24-bookworm-slim
+WORKDIR /app
+COPY --chown=node:node package.json core-co.mjs shopify-co.mjs server-co.mjs ./
+RUN mkdir /app/data && chown node:node /app/data
+USER node
+ENV PORT=3000 DATABASE_PATH=/app/data/quotes-co.sqlite
+EXPOSE 3000
+CMD ["node", "server-co.mjs"]

@@ -1,0 +1,97 @@
+{%- render 'section-button-icons', section: section -%}
+{{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign form_id = 'ContactForm-' | append: section.id
+  assign provinces = section.settings.provinces | default: 'Otra provincia' | newline_to_br | split: '<br />'
+  assign products = section.settings.products | default: 'Otro producto' | newline_to_br | split: '<br />'
+  assign personalization_options = 'Sí|No|Necesito asesoramiento' | split: '|'
+-%}
+{% style %}
+  #Quote-{{ section.id }} {
+    --quote-accent: {{ section.settings.accent_color }};
+    --quote-panel: {{ section.settings.panel_color }};
+    --quote-whatsapp: {{ section.settings.whatsapp_color }};
+    --quote-field-size: {{ section.settings.field_icon_size }}px;
+    --quote-icon-size: {{ section.settings.contact_icon_size }}px;
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media (min-width: 750px) {
+    #Quote-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; }
+  }
+{% endstyle %}
+<div id="Quote-{{ section.id }}" class="quote-contact color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width quote-layout{% unless section.settings.show_sidebar %} quote-layout--single{% endunless %}">
+    <div class="quote-panel">
+      {% if section.settings.eyebrow != blank %}<p class="quote-eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}
+      {% if section.settings.heading != blank %}<h2 class="{{ section.settings.heading_size }} quote-heading">{{ section.settings.heading }}</h2>{% else %}<h2 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h2>{% endif %}
+      {% if section.settings.description != blank %}<div class="quote-description rte">{{ section.settings.description }}</div>{% endif %}
+      {% if cart_preview %}{% render 'cart-request-preview' %}{% endif %}
+      {% form 'contact', id: form_id, class: 'quote-form' %}
+        {% if cart_preview %}<textarea name="contact[Detalle del pedido]" data-cart-request-details hidden></textarea>{% endif %}
+        {% if form.posted_successfully? %}
+          <div class="form-status form__message" role="status" tabindex="-1" autofocus><span class="quote-status-icon">{% render 'contact-quote-icon', icon: 'success', image: section.settings.success_icon %}</span>{{ 'templates.contact.form.post_success' | t }}</div>
+        {% elsif form.errors %}
+          <div class="quote-error-summary" role="alert" tabindex="-1" autofocus>
+            <h3 class="h3">{{ 'templates.contact.form.error_heading' | t }}</h3>
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+        {% liquid
+          assign name_value = form.name | default: customer.name
+          assign email_value = form.email | default: customer.email
+          assign phone_value = form.phone | default: customer.phone
+          assign email_error = form.errors.messages.email
+        %}
+        <div class="quote-fields">
+          {% render 'contact-quote-field', form_id: form_id, key: 'name', label: 'Nombre y apellido', placeholder: 'Ej. Juan Pérez', required: true, autocomplete: 'name', icon: 'person', value: name_value, image: section.settings.field_icon_name %}
+          {% render 'contact-quote-field', form_id: form_id, key: 'Empresa', label: 'Empresa / Negocio', placeholder: 'Ej. Distribuidora Norte', required: true, autocomplete: 'organization', icon: 'business', value: form.Empresa, image: section.settings.field_icon_empresa %}
+          {% render 'contact-quote-field', form_id: form_id, key: 'CUIT', label: 'CUIT (opcional)', placeholder: 'XX-XXXXXXXX-X', icon: 'document', value: form.CUIT, image: section.settings.field_icon_cuit %}
+          {% render 'contact-quote-field', form_id: form_id, key: 'Provincia', label: 'Provincia', placeholder: 'Seleccioná tu provincia', required: true, autocomplete: 'address-level1', icon: 'pin', options: provinces, value: form.Provincia, image: section.settings.field_icon_provincia %}
+          {% render 'contact-quote-field', form_id: form_id, key: 'phone', label: 'WhatsApp', placeholder: 'Ej. +54 9 11 1234 5678', type: 'tel', required: true, autocomplete: 'tel', icon: 'whatsapp', value: phone_value, image: section.settings.field_icon_phone %}
+          {% if cart_preview %}
+            <input type="hidden" name="contact[Producto]">
+            <input type="hidden" name="contact[Cantidad]">
+          {% else %}
+          {% render 'contact-quote-field', form_id: form_id, key: 'Producto', label: 'Producto de interés', placeholder: 'Seleccioná un producto', required: true, icon: 'box', options: products, value: form.Producto, image: section.settings.field_icon_producto %}
+          {% render 'contact-quote-field', form_id: form_id, key: 'Cantidad', label: 'Cantidad estimada', placeholder: 'Ej. 50', type: 'number', required: true, icon: 'quantity', value: form.Cantidad, image: section.settings.field_icon_cantidad %}
+          {% endif %}
+          {% render 'contact-quote-field', form_id: form_id, key: 'Personalizacion', label: '¿Requiere personalización?', placeholder: 'Seleccioná una opción', icon: 'edit', options: personalization_options, value: form.Personalizacion, image: section.settings.field_icon_personalizacion %}
+          {% render 'contact-quote-field', form_id: form_id, key: 'email', label: 'Correo electrónico', placeholder: 'nombre@empresa.com', type: 'email', required: true, autocomplete: 'email', icon: 'email', wide: true, value: email_value, error: email_error, image: section.settings.field_icon_email %}
+          {% render 'contact-quote-field', form_id: form_id, key: 'body', label: 'Mensaje adicional (opcional)', placeholder: 'Contanos detalles de tu pedido, colores, grabados, fecha estimada, etc.', type: 'textarea', icon: 'document', wide: true, value: form.body, image: section.settings.field_icon_body %}
+        </div>
+        <p class="quote-required-note">Los campos con * son obligatorios.</p>
+        <button type="submit" class="button button--primary quote-submit" {% if cart_preview %}disabled{% endif %} {% render 'button-icon-attributes', image: section.settings.submit_icon , position: section.settings.submit_icon_position, text_color: section.settings.submit_icon_text_color %}>{{ section.settings.submit_label | escape }}</button>
+        {% if section.settings.privacy_text != blank %}<p class="quote-privacy"><span>{% render 'contact-quote-icon', icon: 'lock', image: section.settings.privacy_icon %}</span>{{ section.settings.privacy_text | escape }}</p>{% endif %}
+      {% endform %}
+    </div>
+    {% if section.settings.show_sidebar %}
+      <aside class="quote-sidebar" aria-label="{{ section.settings.contact_heading | escape }}">
+        <div class="quote-whatsapp{% if section.settings.whatsapp_art != blank %} quote-whatsapp--illustrated{% endif %}">
+          <span class="quote-contact-icon quote-whatsapp-badge{% if section.settings.whatsapp_badge == blank %} quote-whatsapp-badge--default{% endif %}">{% render 'contact-quote-icon', icon: 'whatsapp', image: section.settings.whatsapp_badge %}</span>
+          <div>
+            <h3 class="h3">{{ section.settings.whatsapp_heading | escape }}</h3>
+            <div class="rte quote-description">{{ section.settings.whatsapp_text }}</div>
+            {% if section.settings.whatsapp_link != blank %}<a class="button button--primary" href="{{ section.settings.whatsapp_link }}" {% render 'button-icon-attributes', image: section.settings.whatsapp_icon , position: section.settings.whatsapp_icon_position, text_color: section.settings.whatsapp_icon_text_color %}>{{ section.settings.whatsapp_label | escape }}</a>{% elsif request.design_mode %}<p class="quote-description">Agregá el enlace de WhatsApp en los ajustes de esta sección.</p>{% endif %}
+          </div>
+          {% if section.settings.whatsapp_art != blank %}<div class="quote-whatsapp-art">{{ section.settings.whatsapp_art | image_url: width: 240 | image_tag: loading: 'lazy', alt: '' }}</div>{% endif %}
+        </div>
+        {% if section.blocks.size > 0 %}
+          <div class="quote-panel quote-details">
+            <h3 class="h2">{{ section.settings.contact_heading | escape }}</h3>
+            {% for block in section.blocks %}
+              <div class="quote-detail" {{ block.shopify_attributes }}>
+                <span class="quote-contact-icon">{% render 'contact-quote-icon', icon: block.settings.icon, image: block.settings.image, tint: block.settings.tint_icon %}</span>
+                <div><h4>{{ block.settings.title | escape }}</h4>
+                  {% if block.settings.value != blank %}{% if block.settings.link != blank %}<a class="quote-detail-value link" href="{{ block.settings.link }}">{{ block.settings.value | escape }}</a>{% else %}<p class="quote-detail-value">{{ block.settings.value | escape }}</p>{% endif %}{% endif %}
+                  {% if block.settings.text != blank %}<div class="quote-description rte">{{ block.settings.text }}</div>{% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </aside>
+    {% endif %}
+  </div>
+</div>
+

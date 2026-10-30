@@ -1,0 +1,20 @@
+# Copy to shopify.app.toml after creating the app in the merchant's organization.
+# Replace placeholders; do not put secrets in this file.
+client_id = "REPLACE_CLIENT_ID"
+name = "Comprabox Cotizaciones Co"
+application_url = "https://REPLACE_HOST/health"
+embedded = false
+
+[access_scopes]
+scopes = "read_products,read_publications,write_draft_orders,write_app_proxy"
+
+[auth]
+redirect_urls = []
+
+[webhooks]
+api_version = "2026-10"
+
+[app_proxy]
+url = "https://REPLACE_HOST/proxy"
+subpath = "comprabox-quotes"
+prefix = "apps"

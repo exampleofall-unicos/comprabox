@@ -1,0 +1,4 @@
+apps/**
+docs/**
+tests/**
+.env*

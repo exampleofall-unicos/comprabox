@@ -1,0 +1,111 @@
+{
+  "sections": {
+    "preview": {
+      "type": "cart-preview-co",
+      "blocks": {
+        "contact_detail_EJ9aTc": {
+          "type": "contact_detail",
+          "settings": {
+            "icon": "phone",
+            "image": "shopify://shop_images/whatsapp.png",
+            "title": "Teléfono",
+            "value": "+54 11 4029 4853",
+            "link": "",
+            "text": "<p>Lunes a viernes de 9 a 18 hs</p>",
+            "tint_icon": true
+          }
+        },
+        "contact_detail_HiCHCB": {
+          "type": "contact_detail",
+          "settings": {
+            "icon": "email",
+            "image": "shopify://shop_images/mail.svg",
+            "title": "Email",
+            "value": "ventas@comprabox.com.ar",
+            "link": "",
+            "text": "<p>Te respondemos en menos de 24hs</p>",
+            "tint_icon": true
+          }
+        },
+        "contact_detail_aFCtqV": {
+          "type": "contact_detail",
+          "settings": {
+            "icon": "pin",
+            "image": "shopify://shop_images/map-pin.svg",
+            "title": "Dirección",
+            "value": "Castelar, Buenos Aires, Argentina",
+            "link": "",
+            "text": "<p>Coordinamos visitas con cita previa</p>",
+            "tint_icon": true
+          }
+        },
+        "contact_detail_9jrY7D": {
+          "type": "contact_detail",
+          "settings": {
+            "icon": "clock",
+            "image": "shopify://shop_images/clock.svg",
+            "title": "Horarios de atención",
+            "value": "Lunes a viernes de 9:00 a 17:00 hs",
+            "link": "",
+            "text": "<p>Sábados de 9:00 a 13:00 hs</p>",
+            "tint_icon": true
+          }
+        }
+      },
+      "block_order": [
+        "contact_detail_EJ9aTc",
+        "contact_detail_HiCHCB",
+        "contact_detail_aFCtqV",
+        "contact_detail_9jrY7D"
+      ],
+      "name": "t:sections.contact-form.presets.name",
+      "settings": {
+        "section_button_icon_image": "shopify://shop_images/whatsapps.png",
+        "section_button_icon_image_position": "inherit",
+        "section_button_icon_image_text_color": "",
+        "section_button_icon_size": 18,
+        "heading": "Revisá tu pedido y completá tus datos",
+        "heading_size": "h0",
+        "color_scheme": "scheme-aa1ef54c-dbd2-42e0-9508-a1444aea4051",
+        "padding_top": 0,
+        "padding_bottom": 36,
+        "eyebrow": "SOLICITÁ TU COTIZACIÓN",
+        "description": "<p>Cuanta más información nos brindes, más precisa será tu cotización.</p>",
+        "provinces": "Ciudad Autónoma de Buenos Aires\nBuenos Aires\nCatamarca\nChaco\nChubut\nCórdoba\nCorrientes\nEntre Ríos\nFormosa\nJujuy\nLa Pampa\nLa Rioja\nMendoza\nMisiones\nNeuquén\nRío Negro\nSalta\nSan Juan\nSan Luis\nSanta Cruz\nSanta Fe\nSantiago del Estero\nTierra del Fuego\nTucumán",
+        "products": "Termos\nMates\nBotellas\nVasos\nTazas\nJarros\nShakers\nSets y combos\nOtro",
+        "submit_label": "Enviar solicitud de cotización",
+        "submit_icon": "shopify://shop_images/whatsapps.png",
+        "submit_icon_position": "inherit",
+        "submit_icon_text_color": "#f39200",
+        "privacy_text": "Usaremos tus datos para responder tu consulta.",
+        "show_sidebar": true,
+        "whatsapp_heading": "Hablá directamente por WhatsApp",
+        "whatsapp_text": "<p>Conversá con nuestro equipo comercial.</p>",
+        "whatsapp_link": "https://wa.me/5491140294853",
+        "whatsapp_label": "Iniciar conversación",
+        "whatsapp_icon_position": "inherit",
+        "whatsapp_icon_text_color": "",
+        "contact_heading": "Otros medios de contacto",
+        "accent_color": "#f39200",
+        "panel_color": "#f8f9fa",
+        "whatsapp_color": "#fff1e5",
+        "contact_icon_size": 32,
+        "field_icon_name": "shopify://shop_images/circle-user-round.svg",
+        "field_icon_empresa": "shopify://shop_images/briefcase-business.svg",
+        "field_icon_cuit": "shopify://shop_images/file-text.svg",
+        "field_icon_provincia": "shopify://shop_images/map-pin.svg",
+        "field_icon_phone": "shopify://shop_images/whatsapp.png",
+        "field_icon_producto": "shopify://shop_images/box.svg",
+        "field_icon_cantidad": "shopify://shop_images/calculator.svg",
+        "field_icon_personalizacion": "shopify://shop_images/pencil.svg",
+        "field_icon_email": "shopify://shop_images/mail.svg",
+        "field_icon_body": "shopify://shop_images/message-square-more.svg",
+        "field_icon_size": 18,
+        "whatsapp_badge": "shopify://shop_images/Marca_Origial22_c7adf584-262f-40fc-af12-19eb5a0961f1.png"
+      }
+    }
+  },
+  "order": [
+    "preview"
+  ]
+}

@@ -34,7 +34,7 @@
     endif
 
     assign option_disabled = true
-    if value.available
+    if value.available or request_mode
       assign option_disabled = false
     endif
   -%}
@@ -64,7 +64,7 @@
   {%- if picker_type == 'swatch' -%}
     {%- capture help_text -%}
       <span class="visually-hidden">{{ escaped_value }}</span>
-      {{ label_unavailable }}
+      {% unless request_mode %}{{ label_unavailable }}{% endunless %}
     {%- endcapture -%}
 
     {%
@@ -97,7 +97,7 @@
     >
     <label for="{{ input_id }}">
       {{ value -}}
-      {{ label_unavailable }}
+      {% unless request_mode %}{{ label_unavailable }}{% endunless %}
     </label>
   {%- elsif picker_type == 'dropdown' or picker_type == 'swatch_dropdown' -%}
     <option

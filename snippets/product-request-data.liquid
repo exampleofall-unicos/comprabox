@@ -1,0 +1,18 @@
+{% assign variant = product.selected_or_first_available_variant %}
+{% capture request_json %}
+  {% if variant != blank %}
+    {
+      "key": "product:{{ variant.id }}",
+      "variantId": {{ variant.id | append: '' | json }},
+      "title": {{ product.title | json }},
+      "variant": {{ variant.title | json }},
+      "sku": {{ variant.sku | json }},
+      "price": {{ variant.price | json }},
+      "currency": {{ cart.currency.iso_code | default: shop.currency | json }},
+      "quantity": 1,
+      "image": {% assign request_image = variant.featured_image | default: product.featured_image %}{% if request_image %}{{ request_image | image_url: width: 300 | json }}{% else %}null{% endif %},
+      "url": {{ product.url | json }}
+    }
+  {% else %}null{% endif %}
+{% endcapture %}
+<div id="ProductRequestData-{{ section_id }}" hidden data-product-request-data="{{ request_json | escape }}"></div>

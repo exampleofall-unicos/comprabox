@@ -20,13 +20,38 @@ venta, cantidades, notas y precios de referencia en `contact[Detalle del pedido]
 No crea una orden ni cobra al cliente. Los descuentos y los precios finales deben
 confirmarse al cotizar; los importes mostrados usan el precio unitario original.
 
+## Producto con cantidades independientes del stock
+
+`sections/main-product-co.liquid` copia la sección original y mantiene sus IDs de
+ajustes y bloques. La plantilla alternativa `templates/product.co.json` conserva
+la configuración de `product.json`, cambiando únicamente la sección principal.
+Se puede asignar la plantilla **co** a un producto o probar su URL con `?view=co`.
+
+El selector acepta enteros positivos aunque la variante esté agotada. **Agregar
+al carrito** guarda la selección en el navegador y abre `/cart`, donde
+`main-cart-items.liquid` muestra los artículos, permite cambiar sus cantidades o
+quitarlos y actualiza los totales de referencia. **Revisar pedido** guarda la
+selección y abre `/cart?view=preview-co`. Las selecciones de producto se guardan
+aparte de las líneas de Shopify, por lo que no necesitan agregarse al carrito de
+inventario. Agregar nuevamente la misma variante reemplaza su cantidad solicitada.
+El carrito principal y la revisión combinan estas selecciones con las líneas
+existentes. Las cantidades cambiadas en el carrito se conservan al recargar y
+al continuar al formulario, incluso cuando no hay líneas de inventario en Shopify.
+
+`assets/product-request-co.js` extiende las interacciones originales de Dawn para
+mantener galería, variantes y actualización de información. Cambiar de variante
+conserva la cantidad ingresada y los enlaces conservan la vista **co** y el
+parámetro `preview_theme_id`. `main-product.liquid` y su plantilla original no se
+modifican; los selectores compartidos solo permiten opciones sin stock cuando la
+nueva sección solicita expresamente ese comportamiento.
+
 ## Verificación
 
 Desde la raíz del tema, con las dependencias locales de `apps/quote-service`
 instaladas:
 
 ```powershell
-node --test tests/cart-request.test.cjs
+node --test tests/cart-request.test.cjs tests/product-request-co.test.cjs
 shopify theme check
 ```
 
@@ -40,8 +65,8 @@ Para comprobarlo en una vista previa real del tema:
 6. Completar el formulario y comprobar la recepción del detalle por el canal de
    contacto configurado en Shopify.
 
-El navegador debe permitir JavaScript y almacenamiento local. La carga inicial de
-productos y el carrito lateral conservan las reglas de inventario de Shopify;
-este cambio aplica a las cantidades solicitadas en el carrito principal y a su
-revisión. No se ha publicado el tema ni enviado formularios reales desde estas
-pruebas locales.
+El navegador debe permitir JavaScript y almacenamiento local. La ficha original
+de producto y el carrito lateral conservan las reglas de inventario de Shopify;
+las cantidades independientes del stock funcionan en la ficha **co**, el carrito
+principal y su revisión. No se ha publicado el tema ni enviado formularios reales
+desde estas pruebas locales.

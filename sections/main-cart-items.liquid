@@ -27,7 +27,7 @@
 
 
 <cart-items
-  class="gradient color-{{ section.settings.color_scheme }} isolate{% if cart == empty %} is-empty{% else %} section-{{ section.id }}-padding{% endif %}"
+  class="gradient color-{{ section.settings.color_scheme }} isolate section-{{ section.id }}-padding{% if cart == empty %} is-empty{% endif %}"
   view-event-payload="{{ cart | standard_event_data: 'view', context: 'page' | escape }}"
 >
   <div class="page-width">
@@ -59,7 +59,6 @@
       <div class="cart__items" id="main-cart-items" data-id="{{ section.id }}">
         <div class="js-contents">
           {% render 'cart-request-data' %}
-          {%- if cart != empty -%}
             <table class="cart-items">
               <caption class="visually-hidden">
                 {{ 'sections.cart.title' | t }}
@@ -266,8 +265,9 @@
                   </tr>
                 {%- endfor -%}
               </tbody>
+              <tbody data-cart-request-product-rows></tbody>
             </table>
-          {%- endif -%}
+          {% render 'cart-request-product-row' %}
         </div>
       </div>
 

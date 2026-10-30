@@ -1,0 +1,40 @@
+{% comment %}Client-rendered cart lines for quantities independent of Shopify inventory.{% endcomment %}
+<template data-cart-request-product-template>
+  <tr class="cart-item">
+    <td class="cart-item__media">
+      <div class="cart-item__image-container gradient global-media-settings">
+        <img data-request-image class="cart-item__image" loading="lazy" width="150" height="150" alt="" hidden>
+      </div>
+    </td>
+    <td class="cart-item__details">
+      <a data-request-title class="cart-item__name h4 break"></a>
+      <p data-request-options class="product-option"></p>
+      <div data-request-unit-price class="product-option"></div>
+    </td>
+    <td class="cart-item__totals right medium-hide large-up-hide">
+      <span class="price price--end" data-request-total></span>
+    </td>
+    <td class="cart-item__quantity">
+      <div class="cart-item__quantity-wrapper">
+        <quantity-input class="quantity cart-quantity">
+          <button class="quantity__button" name="minus" type="button">
+            <span class="visually-hidden">Disminuir cantidad</span>
+            <span class="svg-wrapper">{{ 'icon-minus.svg' | inline_asset_content }}</span>
+          </button>
+          <input class="quantity__input" type="number" min="1" data-min="1" step="1" value="1" required data-cart-request-quantity>
+          <button class="quantity__button" name="plus" type="button">
+            <span class="visually-hidden">Aumentar cantidad</span>
+            <span class="svg-wrapper">{{ 'icon-plus.svg' | inline_asset_content }}</span>
+          </button>
+        </quantity-input>
+        <button type="button" class="button button--tertiary" data-remove-product-request>
+          <span class="visually-hidden">Quitar producto</span>
+          <span class="svg-wrapper">{{ 'icon-remove.svg' | inline_asset_content }}</span>
+        </button>
+      </div>
+    </td>
+    <td class="cart-item__totals right small-hide">
+      <span class="price price--end" data-request-total></span>
+    </td>
+  </tr>
+</template>

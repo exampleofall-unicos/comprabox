@@ -1,8 +1,6 @@
 <div class="cart-request-preview">
   <h3 class="h2">Artículos solicitados</h3>
-  {% if cart == empty %}
-    <p>Tu carrito está vacío. Agregá artículos antes de enviar una solicitud.</p>
-  {% else %}
+    <p data-cart-request-empty {% unless cart == empty %}hidden{% endunless %}>Tu solicitud está vacía. Agregá artículos antes de enviarla.</p>
     <ul data-cart-request-summary>
       {% for item in cart.items %}
         <li>{{ item.title | escape }}: {{ item.quantity }} unidades</li>
@@ -10,7 +8,6 @@
     </ul>
     <p><strong>Total de referencia: <span data-cart-request-total>{{ cart.original_total_price | money_with_currency }}</span></strong></p>
     <p class="quote-description">Disponibilidad, precios y envío a confirmar al cotizar.</p>
-  {% endif %}
   <p><a href="{{ routes.cart_url }}" class="underlined-link">Volver al carrito y editar cantidades</a></p>
   <p data-cart-request-error role="alert"></p>
   <noscript>Activá JavaScript para recuperar las cantidades solicitadas y enviar el pedido.</noscript>

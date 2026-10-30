@@ -1,0 +1,16 @@
+<div id="Quantity-Form-{{ section_id }}" class="product-form__input product-form__quantity" {{ block.shopify_attributes }}>
+  <label class="quantity__label form__label" for="Quantity-{{ section_id }}">Cantidad solicitada</label>
+  <quantity-input class="quantity">
+    <button class="quantity__button" name="minus" type="button">
+      <span class="visually-hidden">{{ 'products.product.quantity.decrease' | t: product: product.title | escape }}</span>
+      <span class="svg-wrapper">{{ 'icon-minus.svg' | inline_asset_content }}</span>
+    </button>
+    <input class="quantity__input" type="number" name="quantity" id="Quantity-{{ section_id }}"
+      min="1" data-min="1" step="1" value="1" required form="{{ product_form_id }}">
+    <button class="quantity__button" name="plus" type="button">
+      <span class="visually-hidden">{{ 'products.product.quantity.increase' | t: product: product.title | escape }}</span>
+      <span class="svg-wrapper">{{ 'icon-plus.svg' | inline_asset_content }}</span>
+    </button>
+  </quantity-input>
+  <p class="caption">Indicá las unidades que necesitás, independientemente del stock. Precio y disponibilidad a confirmar.</p>
+</div>

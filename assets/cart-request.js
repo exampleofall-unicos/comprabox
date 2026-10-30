@@ -11,8 +11,9 @@
     style: 'currency', currency: data.currency,
   }).format(cents / 100);
   const quantity = (item) => quantities[item.key] || item.quantity;
-  const describe = (item) => [item.title, item.variant === 'Default Title' ? '' : item.variant,
+  const describeOptions = (item) => [item.variant === 'Default Title' ? '' : item.variant,
     item.sku ? `SKU: ${item.sku}` : '', item.properties, item.sellingPlan].filter(Boolean).join(' — ');
+  const describe = (item) => [item.title, describeOptions(item)].filter(Boolean).join(' — ');
   const productUrl = (item) => {
     try {
       const url = new URL(item.url, location.origin);
@@ -43,6 +44,7 @@
   }
 
   function render() {
+    document.dispatchEvent(new CustomEvent('comprabox:cart-change', { detail: { hasItems: data.items.length > 0 } }));
     document.querySelectorAll('cart-items, #main-cart-footer').forEach((node) => {
       node.classList.toggle('is-empty', data.items.length === 0);
     });
@@ -62,26 +64,74 @@
     const summary = document.querySelector('[data-cart-request-summary]');
     if (summary) {
       summary.replaceChildren();
+      const action = (icon, label, href) => {
+        const control = document.createElement(href ? 'a' : 'button');
+        if (href) control.href = href;
+        else control.type = 'button';
+        control.className = 'preview-action';
+        control.dataset.buttonIcon = 'none';
+        control.setAttribute('aria-label', label);
+        control.title = label;
+        const template = document.querySelector(`[data-cart-preview-${icon}-icon]`);
+        if (template) control.append(template.content.cloneNode(true));
+        return control;
+      };
+      const storeUrl = (value) => {
+        if (!value) return null;
+        try {
+          const url = new URL(value, location.origin);
+          if (url.origin !== location.origin) return null;
+          const current = new URL(location.href);
+          if (current.searchParams.has('preview_theme_id')) url.searchParams.set('preview_theme_id', current.searchParams.get('preview_theme_id'));
+          return url.href;
+        } catch (_) { return null; }
+      };
       data.items.forEach((item) => {
-        const row = document.createElement('li');
-        row.textContent = `${describe(item)}: ${quantity(item)} unidades — ${money(item.price * quantity(item))}`;
-        if (item.key.startsWith('product:')) {
-          const edit = document.createElement('a');
-          const url = productUrl(item);
-          // Stored links can only lead to this store's product pages.
-          if (url) {
-            edit.href = url.href;
-            edit.textContent = 'Editar cantidad';
-            edit.className = 'underlined-link';
-            row.append(' — ', edit);
-          }
-          const remove = document.createElement('button');
-          remove.type = 'button';
-          remove.className = 'button button--tertiary';
-          remove.textContent = 'Quitar';
-          remove.dataset.removeProductRequest = item.key;
-          row.append(' ', remove);
+        const row = document.createElement('tr');
+        row.dataset.previewProductKey = item.key;
+        const cell = (label) => {
+          const td = document.createElement('td');
+          td.dataset.label = label;
+          row.append(td);
+          return td;
+        };
+        const product = cell('Producto');
+        const productName = document.createElement('strong');
+        productName.textContent = item.title;
+        product.append(productName);
+        const options = [item.variant === 'Default Title' ? '' : item.variant, item.properties, item.sellingPlan].filter(Boolean).join(' — ');
+        if (options) {
+          const details = document.createElement('span');
+          details.className = 'cart-preview-options';
+          details.textContent = options;
+          product.append(details);
         }
+        cell('SKU').textContent = item.sku || '—';
+        const units = document.createElement('div');
+        units.className = 'cart-preview-cell-actions';
+        const count = document.createElement('span');
+        count.textContent = `${quantity(item)} unidades`;
+        units.append(count);
+        const local = item.key.startsWith('product:');
+        const editUrl = local ? productUrl(item)?.href : storeUrl(item.editUrl || '/cart');
+        if (editUrl) {
+          const edit = action('edit', `Editar cantidad de ${item.title}`, editUrl);
+          edit.dataset.previewEdit = '';
+          units.append(edit);
+        }
+        cell('Cantidad').append(units);
+        const total = document.createElement('div');
+        total.className = 'cart-preview-cell-actions';
+        const amount = document.createElement('span');
+        amount.textContent = money(item.price * quantity(item));
+        total.append(amount);
+        const removeUrl = storeUrl(item.removeUrl);
+        if (local || removeUrl) {
+          const remove = action('remove', `Quitar ${item.title}`, local ? null : removeUrl);
+          if (local) remove.dataset.removeProductRequest = item.key;
+          total.append(remove);
+        }
+        cell('Total').append(total);
         summary.append(row);
       });
     }

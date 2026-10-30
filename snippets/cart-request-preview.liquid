@@ -1,11 +1,24 @@
 <div class="cart-request-preview">
   <h3 class="h2">Artículos solicitados</h3>
     <p data-cart-request-empty {% unless cart == empty %}hidden{% endunless %}>Tu solicitud está vacía. Agregá artículos antes de enviarla.</p>
-    <ul data-cart-request-summary>
+    <table class="cart-preview-table">
+      <caption class="visually-hidden">Artículos seleccionados</caption>
+      <thead><tr>
+        <th scope="col">PRODUCTO</th><th scope="col">SKU</th><th scope="col">CANTIDAD</th><th scope="col">TOTAL</th>
+      </tr></thead>
+      <tbody data-cart-request-summary>
       {% for item in cart.items %}
-        <li>{{ item.title | escape }}: {{ item.quantity }} unidades</li>
+        <tr>
+          <td data-label="Producto"><strong>{{ item.product.title | default: item.title | escape }}</strong></td>
+          <td data-label="SKU">{{ item.sku | default: '—' | escape }}</td>
+          <td data-label="Cantidad">{{ item.quantity }} unidades</td>
+          <td data-label="Total">{{ item.original_line_price | money }}</td>
+        </tr>
       {% endfor %}
-    </ul>
+      </tbody>
+    </table>
+    <template data-cart-preview-edit-icon>{% render 'cart-preview-action-icon', icon: 'edit' %}</template>
+    <template data-cart-preview-remove-icon>{% render 'cart-preview-action-icon', icon: 'remove' %}</template>
     <p><strong>Total de referencia: <span data-cart-request-total>{{ cart.original_total_price | money_with_currency }}</span></strong></p>
     <p class="quote-description">Disponibilidad, precios y envío a confirmar al cotizar.</p>
   <p><a href="{{ routes.cart_url }}" class="underlined-link">Volver al carrito y editar cantidades</a></p>

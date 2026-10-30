@@ -7,6 +7,9 @@ const dependencies = createRequire(resolve(__dirname, '../apps/quote-service/pac
 const { JSDOM } = dependencies('jsdom');
 const { Liquid } = dependencies('liquidjs');
 const rowTemplate = new Liquid().parseAndRenderSync(readFileSync(resolve(__dirname, '../snippets/cart-request-product-row.liquid'), 'utf8'));
+const previewMarkup = new Liquid({ root: resolve(__dirname, '../snippets'), extname: '.liquid' }).parseAndRenderSync(
+  readFileSync(resolve(__dirname, '../snippets/cart-request-preview.liquid'), 'utf8'),
+  { cart: { items: [], original_total_price: 0 }, routes: { cart_url: '/cart' } });
 const source = readFileSync(resolve(__dirname, '../assets/cart-request.js'), 'utf8');
 const key = 'comprabox.cart-request.v1:example.com';
 const item = { key: 'variant:properties', title: 'Termo <img src=x onerror=alert(1)>',
@@ -16,7 +19,7 @@ const payload = (items) => `<div hidden data-cart-request-data="${JSON.stringify
 }).replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;')}"></div>`;
 function browser({ preview = false, items = [item], stored, products, blocked = false } = {}) {
   const html = `${payload(items)}${preview
-    ? '<ul data-cart-request-summary></ul><form id="contact"><textarea data-cart-request-details name="contact[Detalle del pedido]" hidden></textarea><input name="contact[Producto]"><input name="contact[Cantidad]"><input name="contact[email]" type="email" required><button type="submit" disabled>Enviar</button></form>'
+    ? `${previewMarkup}<form id="contact"><textarea data-cart-request-details name="contact[Detalle del pedido]" hidden></textarea><input name="contact[Producto]"><input name="contact[Cantidad]"><input name="contact[email]" type="email" required><button type="submit" disabled>Enviar</button></form>`
     : `<cart-items class="${items.length ? '' : 'is-empty'}"><form id="cart"><table class="cart-items"><tbody>${items.length ? `<tr><td><quantity-input><button class="quantity__button" name="minus" type="button">-</button><input id="Quantity-1" type="number" min="1" step="1" value="1" data-cart-request-quantity data-quantity-line-key="${item.key}"><button class="quantity__button" name="plus" type="button">+</button></quantity-input></td></tr>` : ''}</tbody><tbody data-cart-request-product-rows></tbody></table>${rowTemplate}</form></cart-items><span data-cart-request-line-total="${item.key}"></span><div id="main-cart-footer" class="${items.length ? '' : 'is-empty'}"><button data-cart-request-continue form="cart" disabled>Revisar</button></div>`}
     <span data-cart-request-total></span><p data-cart-request-error></p>`;
   const dom = new JSDOM(html, { url: `https://example.com/cart${preview ? '?view=preview-co' : ''}`, runScripts: 'outside-only' });
@@ -65,6 +68,10 @@ test('reload and preview restore quantities, retain variant details, and safely 
       if (!preview) assert.equal(doc.querySelector('input').value, '1250');
       else {
         assert.match(doc.querySelector('[data-cart-request-summary]').textContent, /1250 unidades/);
+        assert.equal(doc.querySelector('[data-cart-request-summary] strong').textContent, item.title);
+        assert.equal(doc.querySelector('[data-label="SKU"]').textContent, 'TER-NEG');
+        assert.equal(doc.querySelectorAll('[data-cart-request-summary] td').length, 4);
+        assert.ok(doc.querySelector('[data-preview-edit] svg.lucide-pencil'));
         assert.equal(doc.querySelectorAll('img').length, 0);
         const form = doc.querySelector('form'), fields = new dom.window.FormData(form);
         assert.equal(fields.get('contact[Cantidad]'), '1250');
@@ -134,12 +141,13 @@ test('preview combines a stock-independent product selection with the native car
       const doc = dom.window.document;
       assert.match(doc.querySelector('[data-cart-request-summary]').textContent, /9000 unidades/);
       assert.equal(doc.querySelector('form button').disabled, false);
-      assert.equal(doc.querySelector('a').getAttribute('href'), 'https://example.com/products/termo?view=co&variant=123');
+      assert.equal(doc.querySelector('[data-preview-product-key="product:123"] [data-preview-edit]').getAttribute('href'), 'https://example.com/products/termo?view=co&variant=123');
+      assert.ok(doc.querySelector('[data-remove-product-request] svg.lucide-trash'));
       const details = doc.querySelector('[data-cart-request-details]').value;
       assert.match(details, /Cantidad solicitada: 9000/);
       doc.querySelector('[data-remove-product-request]').click();
       assert.equal(JSON.parse(dom.window.localStorage.getItem(`${key}:products`)).length, 0);
-      assert.equal(doc.querySelectorAll('[data-cart-request-summary] li').length, items.length);
+      assert.equal(doc.querySelectorAll('[data-cart-request-summary] tr').length, items.length);
       assert.equal(doc.querySelector('form button').disabled, items.length === 0);
     } finally { dom.window.close(); }
   }
@@ -175,6 +183,27 @@ test('CO products appear in main cart when Shopify is empty, support quantity ed
       assert.equal(doc.querySelectorAll('[data-cart-request-product-rows] tr').length, 0);
       assert.equal(doc.querySelector('cart-items').classList.contains('is-empty'), items.length === 0);
       assert.equal(doc.querySelector('[data-cart-request-continue]').disabled, items.length === 0);
+    } finally { dom.window.close(); }
+  }
+});
+test('preview puts the bold product list inside the form and removes the sidebar without changing the contact page', async () => {
+  const cart = { items: [{ title: 'Termo seleccionado', quantity: 5000 }], original_total_price: 1000 };
+  const engine = new Liquid({ root: resolve(__dirname, '../snippets'), extname: '.liquid', globals: { cart } });
+  const content = readFileSync(resolve(__dirname, '../snippets/contact-quote-content.liquid'), 'utf8')
+    .replace(/{% style %}/g, '<style>').replace(/{% endstyle %}/g, '</style>')
+    .replace(/{% form 'contact', id: form_id, class: 'quote-form' %}/g, '<form class="quote-form">')
+    .replace(/{% endform %}/g, '</form>');
+  for (const cart_preview of [false, true]) {
+    const html = await engine.parseAndRender(content, {
+      cart_preview, section: { id: 'preview', settings: { show_sidebar: true }, blocks: [] },
+      cart: { items: [{ title: 'Termo seleccionado', quantity: 5000 }], original_total_price: 1000 }, form: {},
+    });
+    const dom = new JSDOM(html);
+    try {
+      assert.equal(dom.window.document.querySelectorAll('aside.quote-sidebar').length, cart_preview ? 0 : 1);
+      assert.equal(Boolean(dom.window.document.querySelector('.quote-layout--single')), cart_preview);
+      assert.equal(Boolean(dom.window.document.querySelector('.quote-layout--cart-preview')), cart_preview);
+      if (cart_preview) assert.equal(dom.window.document.querySelector('form [data-cart-request-summary] strong').textContent, 'Termo seleccionado');
     } finally { dom.window.close(); }
   }
 });

@@ -7,6 +7,8 @@
       {% for item in cart.items %}
         {
           "key": {{ item.key | json }},
+          "editUrl": {{ routes.cart_url | append: '#Quantity-' | append: forloop.index | json }},
+          "removeUrl": {{ item.url_to_remove | json }},
           "title": {{ item.product.title | json }},
           "variant": {{ item.variant.title | json }},
           "sku": {{ item.sku | json }},

@@ -1,0 +1,8 @@
+{% if cart == empty %}
+  <span class="svg-wrapper">{{ 'icon-cart-empty.svg' | inline_asset_content }}</span>
+{% else %}
+  <span class="svg-wrapper">{{ 'icon-cart.svg' | inline_asset_content }}</span>
+{% endif %}
+<span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+<span class="cart-bag-dot" data-cart-bag-dot data-native-cart-count="{{ cart.item_count }}" {% if cart == empty %}hidden{% endif %} aria-hidden="true"></span>
+<span class="visually-hidden" data-cart-bag-status aria-live="polite">{% unless cart == empty %}Hay productos en tu carrito{% endunless %}</span>

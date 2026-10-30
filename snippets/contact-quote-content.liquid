@@ -5,6 +5,10 @@
   assign provinces = section.settings.provinces | default: 'Otra provincia' | newline_to_br | split: '<br />'
   assign products = section.settings.products | default: 'Otro producto' | newline_to_br | split: '<br />'
   assign personalization_options = 'Sí|No|Necesito asesoramiento' | split: '|'
+  assign show_sidebar = section.settings.show_sidebar
+  if cart_preview
+    assign show_sidebar = false
+  endif
 -%}
 {% style %}
   #Quote-{{ section.id }} {
@@ -21,13 +25,13 @@
   }
 {% endstyle %}
 <div id="Quote-{{ section.id }}" class="quote-contact color-{{ section.settings.color_scheme }} gradient">
-  <div class="page-width quote-layout{% unless section.settings.show_sidebar %} quote-layout--single{% endunless %}">
+  <div class="page-width quote-layout{% unless show_sidebar %} quote-layout--single{% endunless %}{% if cart_preview %} quote-layout--cart-preview{% endif %}">
     <div class="quote-panel">
       {% if section.settings.eyebrow != blank %}<p class="quote-eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}
       {% if section.settings.heading != blank %}<h2 class="{{ section.settings.heading_size }} quote-heading">{{ section.settings.heading }}</h2>{% else %}<h2 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h2>{% endif %}
       {% if section.settings.description != blank %}<div class="quote-description rte">{{ section.settings.description }}</div>{% endif %}
-      {% if cart_preview %}{% render 'cart-request-preview' %}{% endif %}
       {% form 'contact', id: form_id, class: 'quote-form' %}
+        {% if cart_preview %}{% render 'cart-request-preview' %}{% endif %}
         {% if cart_preview %}<textarea name="contact[Detalle del pedido]" data-cart-request-details hidden></textarea>{% endif %}
         {% if form.posted_successfully? %}
           <div class="form-status form__message" role="status" tabindex="-1" autofocus><span class="quote-status-icon">{% render 'contact-quote-icon', icon: 'success', image: section.settings.success_icon %}</span>{{ 'templates.contact.form.post_success' | t }}</div>
@@ -65,7 +69,7 @@
         {% if section.settings.privacy_text != blank %}<p class="quote-privacy"><span>{% render 'contact-quote-icon', icon: 'lock', image: section.settings.privacy_icon %}</span>{{ section.settings.privacy_text | escape }}</p>{% endif %}
       {% endform %}
     </div>
-    {% if section.settings.show_sidebar %}
+    {% if show_sidebar %}
       <aside class="quote-sidebar" aria-label="{{ section.settings.contact_heading | escape }}">
         <div class="quote-whatsapp{% if section.settings.whatsapp_art != blank %} quote-whatsapp--illustrated{% endif %}">
           <span class="quote-contact-icon quote-whatsapp-badge{% if section.settings.whatsapp_badge == blank %} quote-whatsapp-badge--default{% endif %}">{% render 'contact-quote-icon', icon: 'whatsapp', image: section.settings.whatsapp_badge %}</span>

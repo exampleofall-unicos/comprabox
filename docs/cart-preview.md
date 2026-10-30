@@ -13,6 +13,18 @@ La nueva sección y `contact-form.liquid` reutilizan
 `snippets/contact-quote-content.liquid`. Se mantienen todos los IDs de ajustes del
 formulario original. La plantilla nueva parte de los ajustes de contacto actuales
 y se puede personalizar desde el editor del tema de manera independiente.
+La revisión muestra el formulario centrado en una sola columna al ancho configurado
+en el tema, sin la barra lateral de contacto. Solo los nombres de los productos aparecen en negrita dentro del
+formulario. Los artículos se organizan en columnas de producto, SKU, cantidad y
+total, con un lápiz para editar y una papelera para quitar. Los iconos tienen
+etiquetas accesibles y la tabla se adapta a pantallas móviles. La página de
+contacto conserva su configuración de columnas.
+
+El icono de la bolsa del encabezado muestra un círculo rojo mientras haya
+productos en el carrito, incluidas las selecciones locales sin stock. El círculo
+se sitúa arriba a la derecha de la bolsa y emite un anillo de pulso cada tres
+segundos, manteniendo el punto central circular y visible. Desaparece al vaciar el carrito. Si el
+dispositivo solicita reducir movimiento, la notificación permanece estática.
 
 En la revisión, producto y cantidad se completan desde el carrito. El formulario
 de contacto de Shopify recibe las variantes, SKU, propiedades visibles, planes de
@@ -51,7 +63,7 @@ Desde la raíz del tema, con las dependencias locales de `apps/quote-service`
 instaladas:
 
 ```powershell
-node --test tests/cart-request.test.cjs tests/product-request-co.test.cjs
+node --test tests/cart-request.test.cjs tests/product-request-co.test.cjs tests/cart-bag-indicator.test.cjs
 shopify theme check
 ```
 

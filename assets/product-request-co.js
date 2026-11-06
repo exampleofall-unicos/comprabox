@@ -2,30 +2,47 @@
 (() => {
   if (customElements.get('product-info-co')) return;
   const Base = customElements.get('product-info');
+  const pricing = window.compraboxQuotePricing;
   customElements.define('product-info-co', class extends Base {
+    rate = pricing.fallbackRate;
+
     connectedCallback() {
       super.connectedCallback();
       this.submitRequest = this.submitRequest || this.saveRequest.bind(this);
       this.addEventListener('submit', this.submitRequest);
-      this.validateRequestQuantity = this.validateRequestQuantity || (() => {
-        const units = Number(this.quantityInput?.value);
-        this.quantityInput?.setCustomValidity(Number.isSafeInteger(units) && units > 0 ? '' : 'Ingresá una cantidad entera mayor que cero.');
+      this.updateRequestQuantity = this.updateRequestQuantity || ((event) => {
+        if (event.target !== this.quantityInput) return;
+        if (event.type === 'change' && Number.isSafeInteger(this.requestQuantity) && this.requestQuantity < pricing.minimum) {
+          this.quantityInput.value = pricing.minimum;
+        }
+        this.refreshRequest();
       });
-      this.addEventListener('input', this.validateRequestQuantity);
-      this.addEventListener('change', this.validateRequestQuantity);
+      this.selectPreset = this.selectPreset || ((event) => {
+        const button = event.target.closest('[data-quote-preset]');
+        if (!button || button.disabled || !this.quantityInput) return;
+        this.quantityInput.value = button.value;
+        this.quantityInput.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      this.addEventListener('input', this.updateRequestQuantity);
+      this.addEventListener('change', this.updateRequestQuantity);
+      this.addEventListener('click', this.selectPreset);
       const savedKey = `comprabox.cart-request.v1:${location.host}:products`;
       try {
         const saved = JSON.parse(localStorage.getItem(savedKey))?.find((item) => item.key === this.requestVariant?.key);
-        if (this.quantityInput && !this.quantityInput.hasAttribute('data-preserve-request-quantity') && Number.isSafeInteger(saved?.quantity) && saved.quantity > 0) this.quantityInput.value = saved.quantity;
+        if (this.quantityInput && !this.quantityInput.hasAttribute('data-preserve-request-quantity') && Number.isSafeInteger(saved?.quantity)) {
+          this.quantityInput.value = Math.max(pricing.minimum, saved.quantity);
+        }
       } catch (_) { /* Storage errors are reported when saving. */ }
-      this.refreshRequestButtons();
+      this.quantityInput?.closest('quantity-input')?.validateQtyRules();
+      this.refreshRequest();
     }
 
     disconnectedCallback() {
       super.disconnectedCallback();
       this.removeEventListener('submit', this.submitRequest);
-      this.removeEventListener('input', this.validateRequestQuantity);
-      this.removeEventListener('change', this.validateRequestQuantity);
+      this.removeEventListener('input', this.updateRequestQuantity);
+      this.removeEventListener('change', this.updateRequestQuantity);
+      this.removeEventListener('click', this.selectPreset);
     }
 
     // Dawn normally derives bounds from inventory and resets the value on variant changes.
@@ -37,7 +54,8 @@
 
     setQuantityBoundries() {
       if (!this.quantityInput) return;
-      this.quantityInput.min = '1';
+      this.quantityInput.min = pricing.minimum;
+      this.quantityInput.dataset.min = pricing.minimum;
       this.quantityInput.step = '1';
       this.quantityInput.removeAttribute('max');
       this.quantityInput.removeAttribute('data-max');
@@ -65,6 +83,7 @@
     }
 
     resetProductFormState() {
+      this.variantUpdating = true;
       this.querySelectorAll('[data-product-request-button]').forEach((button) => { button.disabled = true; });
     }
 
@@ -75,7 +94,8 @@
         const source = html.querySelector('[data-product-request-data]');
         const target = this.querySelector('[data-product-request-data]');
         if (target) target.dataset.productRequestData = source?.dataset.productRequestData || 'null';
-        this.refreshRequestButtons();
+        this.variantUpdating = false;
+        this.refreshRequest();
       };
     }
 
@@ -97,9 +117,56 @@
       };
     }
 
-    refreshRequestButtons() {
-      const valid = Boolean(this.requestVariant);
-      this.querySelectorAll('[data-product-request-button]').forEach((button) => { button.disabled = !valid; });
+    refreshRequest() {
+      const item = this.requestVariant;
+      const quantity = this.requestQuantity;
+      const validQuantity = Number.isSafeInteger(quantity) && quantity >= pricing.minimum;
+      const tiered = pricing.usesTiers(item?.pricing);
+      if (tiered && !this.rateRequested) {
+        this.rateRequested = true;
+        pricing.getRate().then((rate) => {
+          this.rate = rate;
+          if (this.isConnected) this.refreshRequest();
+        });
+      }
+      const quote = item && validQuantity ? pricing.calculate(item, quantity, this.rate) : null;
+      const error = !validQuantity ? `Ingresá una cantidad entera de al menos ${pricing.minimum} unidades.`
+        : item && !quote ? 'La cantidad supera el máximo que podemos cotizar.' : '';
+      this.quantityInput?.setCustomValidity(error);
+      this.querySelectorAll('[data-product-request-button]').forEach((button) => {
+        button.disabled = this.variantUpdating || !quote;
+      });
+
+      const box = pricing.boxUnits(item?.pricing);
+      const half = Math.ceil(box / 2);
+      const presets = { minimum: pricing.minimum, half, full: box };
+      this.querySelectorAll('[data-quote-preset]').forEach((button) => {
+        const units = presets[button.dataset.quotePreset];
+        button.hidden = button.dataset.quotePreset !== 'minimum' && (units <= pricing.minimum ||
+          (button.dataset.quotePreset === 'half' && half === box));
+        button.disabled = !item || !this.quantityInput || button.hidden;
+        button.value = units;
+        button.textContent = `X ${units}`;
+        button.setAttribute('aria-pressed', String(units === quantity));
+      });
+
+      const unit = this.querySelector('[data-quote-unit]');
+      const total = this.querySelector('[data-quote-total]');
+      if (unit) unit.textContent = `Desde ${quote ? pricing.money(quote.unitPrice, quote.currency) : '—'}`;
+      if (total) total.textContent = quote ? pricing.money(quote.total, quote.currency) : '—';
+      const hint = this.querySelector('[data-quote-quantity-hint]');
+      if (hint) {
+        const remaining = box - quantity;
+        const boxQuote = tiered && remaining > 0 ? pricing.calculate(item, box, this.rate) : null;
+        hint.hidden = !(quote && boxQuote && quote.unitPrice > boxQuote.unitPrice);
+        hint.textContent = hint.hidden ? '' : remaining === 1 ? '¡Sumando 1 unidad accedés al precio por caja!'
+          : `¡Sumando ${remaining} unidades accedés al precio por caja!`;
+      }
+      return quote;
+    }
+
+    get requestQuantity() {
+      return Number(this.quantityInput?.value ?? pricing.minimum);
     }
 
     get requestVariant() {
@@ -110,10 +177,9 @@
       if (!event.target.matches('[data-product-request-form]')) return;
       event.preventDefault();
       const item = this.requestVariant;
-      const input = this.quantityInput;
-      const units = Number(input?.value ?? 1);
-      input?.setCustomValidity(Number.isSafeInteger(units) && units > 0 ? '' : 'Ingresá una cantidad entera mayor que cero.');
-      if (!item || !event.target.reportValidity() || !Number.isSafeInteger(units) || units < 1) return;
+      const units = this.requestQuantity;
+      const quote = this.refreshRequest();
+      if (this.variantUpdating || !event.target.reportValidity() || !quote) return;
       const status = this.querySelector('[data-product-request-status]');
       try {
         const key = `comprabox.cart-request.v1:${location.host}:products`;
@@ -123,7 +189,7 @@
         const url = new URL(item.url, location.origin);
         url.searchParams.set('view', 'co');
         url.searchParams.set('variant', item.variantId);
-        const selection = { ...item, quantity: units, url: url.pathname + url.search };
+        const selection = { ...item, quantity: units, exchangeRate: this.rate, url: url.pathname + url.search };
         localStorage.setItem(key, JSON.stringify([...items.filter((entry) => entry.key !== item.key), selection]));
         status.textContent = `Se agregaron ${units} unidades al carrito.`;
         {

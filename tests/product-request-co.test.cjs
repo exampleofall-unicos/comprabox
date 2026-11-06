@@ -12,9 +12,11 @@ const escaped = (value) => JSON.stringify(value).replaceAll('&', '&amp;').replac
 const fixture = (item = product) => `<product-info-co id="MainProduct-co" data-section="co" data-url="/products/termo" data-update-url="true">
   <div hidden data-product-request-data="${escaped(item)}"></div>
   <variant-selects><script data-selected-variant type="application/json">${JSON.stringify(item ? { id: item.variantId, available: false } : null)}</script></variant-selects>
+  <button type="button" data-quote-preset="minimum"></button><button type="button" data-quote-preset="half"></button><button type="button" data-quote-preset="full"></button>
+  <div id="price-co"><p data-quote-unit></p><p data-quote-total></p></div>
   <div class="product-form__quantity"><quantity-input>
     <button type="button" class="quantity__button" name="minus">-</button>
-    <input class="quantity__input" name="quantity" type="number" min="1" step="1" value="1" required form="product-form-co">
+    <input class="quantity__input" name="quantity" type="number" min="3" step="1" value="3" required form="product-form-co">
     <button type="button" class="quantity__button" name="plus">+</button>
   </quantity-input></div>
   <form id="product-form-co" data-product-request-form data-cart-url="/es/cart">
@@ -24,10 +26,10 @@ const fixture = (item = product) => `<product-info-co id="MainProduct-co" data-s
     <p data-product-request-status></p>
   </form>
 </product-info-co>`;
-function browser({ stored, blocked = false } = {}) {
+function browser({ stored, blocked = false, item = product, fetchRate } = {}) {
   const virtualConsole = new VirtualConsole();
   virtualConsole.on('jsdomError', (error) => { throw error; });
-  const dom = new JSDOM(fixture(), { url: 'https://example.com/products/termo?view=co&preview_theme_id=99', runScripts: 'outside-only', virtualConsole });
+  const dom = new JSDOM(fixture(item), { url: 'https://example.com/products/termo?view=co&preview_theme_id=99', runScripts: 'outside-only', virtualConsole });
   const { window } = dom;
   window.subscribe = () => () => {};
   window.publish = () => {};
@@ -37,16 +39,58 @@ function browser({ stored, blocked = false } = {}) {
   window.customElements.define('variant-selects', class extends window.HTMLElement {
     resolvePendingSelectPromise() {}
   });
-  window.fetch = () => assert.fail('Stock endpoints must never receive requested quantities');
+  window.fetch = fetchRate || (() => assert.fail('Stock endpoints must never receive requested quantities'));
   if (stored) window.localStorage.setItem('comprabox.cart-request.v1:example.com:products', JSON.stringify(stored));
   if (blocked) window.Storage.prototype.setItem = () => { throw new Error('Blocked'); };
   window.eval(read('assets/global.js').split('class QuantityInput')[1].split('function debounce')[0].replace(/^/, 'class QuantityInput'));
   window.eval(read('assets/product-info.js'));
+  window.eval(read('assets/quote-pricing.js'));
   window.eval(read('assets/product-request-co.js'));
   const section = window.document.querySelector('product-info-co');
   section.navigateToPreview = (url) => { window.previewTarget = url; };
   return { dom, section, window, doc: window.document };
 }
+test('presets, manual edits and saved quote use the same half-box and full-box thresholds', async () => {
+  const pricing = { baseUsd: 6.30, quarterUsd: 1.2, halfUsd: 0.5, boxUnits: 35 };
+  const { dom, section, window, doc } = browser({
+    item: { ...product, pricing },
+    fetchRate: async () => ({ ok: true, json: async () => ({ blue: { value_sell: 1550 } }) }),
+  });
+  try {
+    await window.compraboxQuotePricing.getRate();
+    const input = section.quantityInput;
+    const price = (selector) => doc.querySelector(selector).textContent.replace(/\s+/g, ' ');
+    assert.equal(input.value, '3');
+    assert.equal(price('[data-quote-unit]'), 'Desde $ 11.625,00');
+    assert.equal(price('[data-quote-total]'), '$ 34.875,00');
+    doc.querySelector('[name="minus"]').click();
+    assert.equal(input.value, '3');
+    for (const [preset, value, unit] of [['half', '18', '10.540,00'], ['full', '35', '9.765,00']]) {
+      const button = doc.querySelector(`[data-quote-preset="${preset}"]`);
+      assert.equal(button.textContent, `X ${value}`);
+      button.click();
+      assert.equal(input.value, value);
+      assert.equal(price('[data-quote-unit]'), `Desde $ ${unit}`);
+    }
+    for (const [value, unit] of [[17, '11.625,00'], [18, '10.540,00'], [34, '10.540,00'], [35, '9.765,00']]) {
+      input.value = value;
+      input.dispatchEvent(new window.Event('input', { bubbles: true }));
+      assert.equal(price('[data-quote-unit]'), `Desde $ ${unit}`);
+    }
+    input.value = '2';
+    input.dispatchEvent(new window.Event('change', { bubbles: true }));
+    assert.equal(input.value, '3');
+    input.value = '39';
+    input.dispatchEvent(new window.Event('input', { bubbles: true }));
+    assert.equal(price('[data-quote-total]'), '$ 380.835,00');
+    doc.querySelector('[name="review"]').click();
+    const [saved] = JSON.parse(window.localStorage.getItem('comprabox.cart-request.v1:example.com:products'));
+    assert.equal(saved.quantity, 39);
+    assert.equal(saved.exchangeRate, 1550);
+    assert.deepEqual(saved.pricing, pricing);
+    assert.match(window.previewTarget, /view=preview-co/);
+  } finally { dom.window.close(); }
+});
 test('zero-stock product accepts large quantities, plus/minus, and sends the selection to preview', () => {
   const { dom, section, window, doc } = browser();
   try {

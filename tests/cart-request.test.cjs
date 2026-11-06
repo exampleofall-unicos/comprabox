@@ -11,6 +11,7 @@ const previewMarkup = new Liquid({ root: resolve(__dirname, '../snippets'), extn
   readFileSync(resolve(__dirname, '../snippets/cart-request-preview.liquid'), 'utf8'),
   { cart: { items: [], original_total_price: 0 }, routes: { cart_url: '/cart' } });
 const source = readFileSync(resolve(__dirname, '../assets/cart-request.js'), 'utf8');
+const pricingSource = readFileSync(resolve(__dirname, '../assets/quote-pricing.js'), 'utf8');
 const key = 'comprabox.cart-request.v1:example.com';
 const item = { key: 'variant:properties', title: 'Termo <img src=x onerror=alert(1)>',
   variant: 'Negro', sku: 'TER-NEG', price: 150000, quantity: 1, properties: 'Grabado: Logo', sellingPlan: '' };
@@ -33,6 +34,7 @@ function browser({ preview = false, items = [item], stored, products, blocked = 
   dom.window.eval(readFileSync(resolve(__dirname, '../assets/global.js'), 'utf8').split('class QuantityInput')[1]
     .split('function debounce')[0].replace(/^/, 'class QuantityInput'));
   if (!preview) dom.window.document.querySelector('cart-items').addEventListener('change', () => assert.fail('Dawn cart handler received a quote quantity'));
+  dom.window.eval(pricingSource);
   dom.window.eval(source);
   const close = dom.window.close.bind(dom.window);
   dom.window.close = () => { dom.window.dispatchEvent(new dom.window.Event('pagehide')); close(); };
@@ -106,11 +108,14 @@ test('empty preview and unavailable browser storage block sending incomplete req
   }
 });
 test('Liquid request data remains valid JSON even with script-like product names and custom properties', async () => {
-  const engine = new Liquid();
+  const engine = new Liquid({ root: resolve(__dirname, '../snippets'), extname: '.liquid' });
   engine.registerFilter('json', (value) => JSON.stringify(value ?? null));
   const html = await engine.parseAndRender(readFileSync(resolve(__dirname, '../snippets/cart-request-data.liquid'), 'utf8'), {
     shop: { currency: 'ARS' }, cart: { currency: { iso_code: 'ARS' }, items: [{
-      key: '123:abc', product: { title: '</script><img src=x>' }, variant: { title: 'Negro' },
+      key: '123:abc', product: { title: '</script><img src=x>', metafields: { custom: {
+        precio_usd: { value: 6.3 }, cargo_1_4_bulto: { value: 1.2 }, cargo_1_2_bulto: { value: 0.5 },
+        unidades_por_caja: { value: 35 },
+      } } }, variant: { title: 'Negro' },
       sku: 'SKU', quantity: 1, original_price: 100, properties: { Grabado: '</script>', _hidden: 'secret' },
     }] },
   });
@@ -118,6 +123,7 @@ test('Liquid request data remains valid JSON even with script-like product names
   const data = JSON.parse(dom.window.document.querySelector('[data-cart-request-data]').dataset.cartRequestData);
   assert.equal(data.items[0].title, '</script><img src=x>');
   assert.equal(data.items[0].properties, 'Grabado: </script>;');
+  assert.deepEqual(data.items[0].pricing, { baseUsd: 6.3, quarterUsd: 1.2, halfUsd: 0.5, boxUnits: 35 });
   assert.equal(dom.window.document.querySelectorAll('img').length, 0);
   dom.window.close();
 });
@@ -185,6 +191,38 @@ test('CO products appear in main cart when Shopify is empty, support quantity ed
       assert.equal(doc.querySelector('[data-cart-request-continue]').disabled, items.length === 0);
     } finally { dom.window.close(); }
   }
+});
+test('changing quantity across price tiers updates the cart, the preview and the submitted totals', () => {
+  const product = { ...item, key: 'product:123', variantId: '123', quantity: 3, currency: 'ARS',
+    url: '/products/termo?view=co&variant=123', exchangeRate: 1550,
+    pricing: { baseUsd: 6.30, quarterUsd: 1.2, halfUsd: 0.5, boxUnits: 35 } };
+  const dom = browser({ items: [], products: [product] });
+  try {
+    const doc = dom.window.document;
+    const input = doc.querySelector('[data-cart-request-quantity]');
+    const readPrice = (selector) => doc.querySelector(selector).textContent.replace(/\s+/g, ' ');
+    assert.equal(input.min, '3');
+    assert.equal(readPrice('[data-request-unit-price]'), '$ 11.625,00');
+    assert.equal(readPrice('[data-cart-request-total]'), '$ 34.875,00');
+    input.value = '20';
+    input.dispatchEvent(new dom.window.Event('input', { bubbles: true }));
+    assert.equal(readPrice('[data-request-unit-price]'), '$ 10.540,00');
+    assert.equal(readPrice('[data-request-total]'), '$ 210.800,00');
+    input.value = '39';
+    input.dispatchEvent(new dom.window.Event('change', { bubbles: true }));
+    assert.equal(readPrice('[data-request-unit-price]'), '$ 9.765,00');
+    assert.equal(readPrice('[data-cart-request-total]'), '$ 380.835,00');
+
+    const products = JSON.parse(dom.window.localStorage.getItem(`${key}:products`));
+    const preview = browser({ preview: true, items: [], products });
+    try {
+      const review = preview.window.document;
+      const submitted = new preview.window.FormData(review.querySelector('form'));
+      assert.equal(submitted.get('contact[Cantidad]'), '39');
+      assert.match(submitted.get('contact[Detalle del pedido]'), /Cantidad solicitada: 39.*9\.765,00.*380\.835,00/);
+      assert.match(review.querySelector('[data-cart-request-summary] [data-label="Total"]').textContent, /380\.835,00/);
+    } finally { preview.window.close(); }
+  } finally { dom.window.close(); }
 });
 test('preview puts the bold product list inside the form and removes the sidebar without changing the contact page', async () => {
   const cart = { items: [{ title: 'Termo seleccionado', quantity: 5000 }], original_total_price: 1000 };

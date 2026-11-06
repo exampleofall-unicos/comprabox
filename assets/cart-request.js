@@ -2,15 +2,19 @@
 (() => {
   if (window.compraboxCartRequest) return;
   window.compraboxCartRequest = true;
+  const pricing = window.compraboxQuotePricing;
   let data, quantities, storageKey, lastPayload, lastTotal;
   let storageError = false;
   let note = '';
   let productItems = [];
+  let rate = pricing.fallbackRate;
+  let rateRequested = false;
   const valid = (value) => Number.isSafeInteger(Number(value)) && Number(value) > 0;
-  const money = (cents) => new Intl.NumberFormat(document.documentElement.lang || 'es-AR', {
-    style: 'currency', currency: data.currency,
-  }).format(cents / 100);
   const quantity = (item) => quantities[item.key] || item.quantity;
+  const minimum = (item) => item.key.startsWith('product:') || pricing.usesTiers(item.pricing) ? pricing.minimum : 1;
+  const lineQuote = (item, units = quantity(item)) => pricing.calculate(item, units,
+    pricing.validRate(item.exchangeRate) ? item.exchangeRate : rate);
+  const formatQuote = (quote, field) => quote ? pricing.money(quote[field], quote.currency) : '—';
   const describeOptions = (item) => [item.variant === 'Default Title' ? '' : item.variant,
     item.sku ? `SKU: ${item.sku}` : '', item.properties, item.sellingPlan].filter(Boolean).join(' — ');
   const describe = (item) => [item.title, describeOptions(item)].filter(Boolean).join(' — ');
@@ -48,18 +52,33 @@
     document.querySelectorAll('cart-items, #main-cart-footer').forEach((node) => {
       node.classList.toggle('is-empty', data.items.length === 0);
     });
-    let total = 0;
-    data.items.forEach((item) => {
-      const amount = item.price * quantity(item);
-      total += amount;
-      document.querySelectorAll('[data-cart-request-line-total]').forEach((node) => {
-        if (node.dataset.cartRequestLineTotal === item.key) node.textContent = money(amount);
-      });
+    const quotes = new Map(data.items.map((item) => [item.key, lineQuote(item)]));
+    const totals = new Map();
+    let ready = data.items.length > 0;
+    quotes.forEach((quote) => {
+      if (!quote) {
+        ready = false;
+        return;
+      }
+      const total = (totals.get(quote.currency) || 0) + quote.total;
+      totals.set(quote.currency, total);
+      if (!Number.isSafeInteger(total)) ready = false;
     });
-    document.querySelectorAll('[data-cart-request-total]').forEach((node) => { node.textContent = money(total); });
+    const totalLabel = !data.items.length ? pricing.money(0, data.currency) : !ready ? '—'
+      : Array.from(totals, ([currency, total]) => {
+        const label = pricing.money(total, currency);
+        return totals.size > 1 ? `${label} ${currency}` : label;
+      }).join(' + ');
+    document.querySelectorAll('[data-cart-request-line-total]').forEach((node) => {
+      node.textContent = formatQuote(quotes.get(node.dataset.cartRequestLineTotal), 'total');
+    });
+    document.querySelectorAll('[data-cart-request-unit-price]').forEach((node) => {
+      node.textContent = formatQuote(quotes.get(node.dataset.cartRequestUnitPrice), 'unitPrice');
+    });
+    document.querySelectorAll('[data-cart-request-total]').forEach((node) => { node.textContent = totalLabel; });
     document.querySelectorAll('[data-cart-request-empty]').forEach((node) => { node.hidden = data.items.length > 0; });
     document.querySelectorAll('[data-cart-request-continue]').forEach((node) => {
-      node.disabled = data.items.length === 0;
+      node.disabled = !ready;
     });
     const summary = document.querySelector('[data-cart-request-summary]');
     if (summary) {
@@ -123,7 +142,7 @@
         const total = document.createElement('div');
         total.className = 'cart-preview-cell-actions';
         const amount = document.createElement('span');
-        amount.textContent = money(item.price * quantity(item));
+        amount.textContent = formatQuote(quotes.get(item.key), 'total');
         total.append(amount);
         const removeUrl = storeUrl(item.removeUrl);
         if (local || removeUrl) {
@@ -136,9 +155,10 @@
       });
     }
     const details = document.querySelector('[data-cart-request-details]');
-    if (details) details.value = data.items.map((item) =>
-      `${describe(item)} | Cantidad solicitada: ${quantity(item)} | Precio unitario de referencia: ${money(item.price)}`
-    ).concat(`Total de referencia: ${money(total)}`, note ? `Notas del pedido: ${note}` : '',
+    if (details) details.value = data.items.map((item) => {
+      const quote = quotes.get(item.key);
+      return `${describe(item)} | Cantidad solicitada: ${quantity(item)} | Precio unitario de referencia: ${formatQuote(quote, 'unitPrice')} | Subtotal: ${formatQuote(quote, 'total')}`;
+    }).concat(`Total de referencia: ${totalLabel}`, note ? `Notas del pedido: ${note}` : '',
       'Sujeto a confirmación de disponibilidad y precio.').filter(Boolean).join('\n');
     const form = details?.form;
     if (form) {
@@ -147,8 +167,9 @@
       if (product) product.value = data.items.map(describe).join('; ');
       if (units) units.value = data.items.reduce((sum, item) => sum + quantity(item), 0);
       const submit = form.querySelector('[type="submit"]');
-      if (submit) submit.disabled = data.items.length === 0;
+      if (submit) submit.disabled = !ready;
     }
+    return ready;
   }
 
   function renderProductRows() {
@@ -166,7 +187,7 @@
         item.variant === 'Default Title' ? '' : item.variant, item.sku ? `SKU: ${item.sku}` : '',
         item.properties, item.sellingPlan,
       ].filter(Boolean).join(' — ');
-      row.querySelector('[data-request-unit-price]').textContent = money(item.price);
+      row.querySelector('[data-request-unit-price]').dataset.cartRequestUnitPrice = item.key;
       const input = row.querySelector('[data-cart-request-quantity]');
       input.dataset.quantityLineKey = item.key;
       input.setAttribute('value', quantity(item));
@@ -198,6 +219,7 @@
     lastPayload = payload;
     lastTotal = total;
     data = JSON.parse(payload.dataset.cartRequestData);
+    data.items.forEach((item) => { item.currency ||= data.currency; });
     storageKey = `comprabox.cart-request.v1:${location.host}`;
     productItems = [];
     try {
@@ -208,6 +230,13 @@
         Number.isSafeInteger(item.price) && item.price >= 0 && item.currency === data.currency);
     } catch (_) { /* Invalid product selections do not affect the Shopify cart. */ }
     data.items.push(...productItems);
+    if (!rateRequested && data.items.some((item) => pricing.usesTiers(item.pricing) && !pricing.validRate(item.exchangeRate))) {
+      rateRequested = true;
+      pricing.getRate().then((currentRate) => {
+        rate = currentRate;
+        render();
+      });
+    }
     let saved = {};
     try { saved = JSON.parse(localStorage.getItem(storageKey)) || {}; } catch (_) { /* Recover corrupted storage. */ }
     note = data.note || '';
@@ -215,13 +244,20 @@
     if (!data.items.length) note = '';
     quantities = Object.create(null);
     data.items.forEach((item) => {
-      quantities[item.key] = item.key.startsWith('product:') ? item.quantity
+      const units = item.key.startsWith('product:') ? item.quantity
         : valid(saved[item.key]) ? Number(saved[item.key]) : item.quantity;
+      quantities[item.key] = Math.max(minimum(item), units);
+      if (item.key.startsWith('product:')) item.quantity = quantities[item.key];
     });
     renderProductRows();
     document.querySelectorAll('[data-cart-request-quantity]').forEach((input) => {
-      input.value = quantities[input.dataset.quantityLineKey];
-      input.dispatchEvent(new Event('change', { bubbles: true }));
+      const item = data.items.find((line) => line.key === input.dataset.quantityLineKey);
+      if (!item) return;
+      input.min = minimum(item);
+      input.dataset.min = input.min;
+      input.value = quantity(item);
+      input.setCustomValidity('');
+      input.closest('quantity-input')?.validateQtyRules?.();
     });
     persist();
     render();
@@ -230,13 +266,21 @@
   // Capture changes before Dawn's debounced cart handler can send them to Shopify.
   ['input', 'change'].forEach((type) => document.addEventListener(type, (event) => {
     const input = event.target;
-    if (!input.matches('[data-cart-request-quantity]')) return;
+    if (!data || !input.matches('[data-cart-request-quantity]')) return;
     event.stopImmediatePropagation();
-    input.setCustomValidity(valid(input.value) ? '' : 'Ingresá una cantidad entera mayor que cero.');
+    const item = data.items.find((line) => line.key === input.dataset.quantityLineKey);
+    if (!item) return;
+    const min = minimum(item);
+    if (type === 'change' && min > 1 && Number.isSafeInteger(Number(input.value)) && Number(input.value) < min) {
+      input.value = min;
+    }
+    const units = Number(input.value);
+    const error = !Number.isSafeInteger(units) || units < min ? `Ingresá una cantidad entera de al menos ${min} unidades.`
+      : !lineQuote(item, units) ? 'La cantidad supera el máximo que podemos cotizar.' : '';
+    input.setCustomValidity(error);
     if (!input.checkValidity()) return;
-    quantities[input.dataset.quantityLineKey] = Number(input.value);
-    const product = productItems.find((item) => item.key === input.dataset.quantityLineKey);
-    if (product) product.quantity = Number(input.value);
+    quantities[item.key] = units;
+    if (item.key.startsWith('product:')) item.quantity = units;
     input.closest('quantity-input')?.validateQtyRules?.();
     persist();
     render();
@@ -259,14 +303,13 @@
     if (event.target.id === 'cart' && document.querySelector('[data-cart-request-quantity]')) {
       event.preventDefault();
       note = document.getElementById('Cart-note')?.value ?? note;
-      if (event.target.reportValidity() && persist()) {
+      if (event.target.reportValidity() && render() && persist()) {
         const url = new URL(location.href);
         url.searchParams.set('view', 'preview-co');
         location.assign(url.href);
       }
     } else if (event.target.querySelector('[data-cart-request-details]')) {
-      render();
-      if (!data.items.length || !persist()) event.preventDefault();
+      if (!render() || !persist()) event.preventDefault();
     }
   }, true);
 

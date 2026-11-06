@@ -1,0 +1,12 @@
+{%- liquid
+  assign base_usd = product.metafields.custom.precio_usd.value
+  if base_usd == blank and currency == 'USD'
+    assign base_usd = variant.price | divided_by: 100.0
+  endif
+-%}
+{
+  "baseUsd": {{ base_usd | json }},
+  "quarterUsd": {{ product.metafields.custom.cargo_1_4_bulto.value | json }},
+  "halfUsd": {{ product.metafields.custom.cargo_1_2_bulto.value | json }},
+  "boxUnits": {{ product.metafields.custom.unidades_por_caja.value | json }}
+}

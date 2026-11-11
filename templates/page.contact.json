@@ -311,7 +311,7 @@
           "type": "heading",
           "settings": {
             "heading": "&nbsp;¿Por qué contactarnos?&nbsp;",
-            "heading_size": "h1",
+            "heading_size": "h-section",
             "custom_size": false,
             "size_desktop": 28,
             "size_mobile": 24
@@ -503,7 +503,7 @@
         "section_button_icon_size": 18,
         "caption": "",
         "heading": "Preguntas frecuentes",
-        "heading_size": "h1",
+        "heading_size": "h-section",
         "heading_alignment": "left",
         "layout": "none",
         "container_color_scheme": "scheme-69c1b8b1-0dc2-4d0e-8fcf-657bf58dc41a",

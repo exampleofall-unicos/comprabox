@@ -8,9 +8,28 @@ collection-component {
   --alpha-button-border: 1;
   --alpha-link: 0.85;
   --alpha-badge-border: 0.1;
+  --type-caption: 1.2rem;
+  --type-metadata: 1.3rem;
+  --type-label: 1.4rem;
+  --type-control: 1.6rem;
+  --type-unit-price: 1.8rem;
+  --type-quote-price: 2.6rem;
+  --type-card-title: calc(var(--font-heading-scale) * 1.4rem);
+  --type-panel-title: calc(var(--font-heading-scale) * 1.8rem);
+  --type-section-title: calc(var(--font-heading-scale) * 2.6rem);
   --focused-base-outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
   --focused-base-outline-offset: 0.3rem;
   --focused-base-box-shadow: 0 0 0 0.3rem rgb(var(--color-background)), 0 0 0.5rem 0.4rem rgba(var(--color-foreground), 0.3);
+}
+
+.h-section {
+  font-size: var(--type-section-title);
+}
+
+@media screen and (min-width: 750px) {
+  :root {
+    --type-section-title: calc(var(--font-heading-scale) * 3rem);
+  }
 }
 
 .product-card-wrapper .card,
@@ -2260,6 +2279,10 @@ input[type='checkbox'] {
 }
 
 .announcement-bar__message {
+  font-family: var(--font-body-family);
+  font-style: var(--font-body-style);
+  font-weight: var(--font-body-weight);
+  font-size: var(--type-metadata);
   text-align: center;
   padding: 1rem 0;
   margin: 0;

@@ -1,5 +1,18 @@
-<details class="cg2-filter" open>
-  <summary>{{ label | default: filter.label | escape }}<span aria-hidden="true">⌄</span></summary>
+{%- liquid
+  assign is_open = initially_open
+  if filter.active_values.size > 0
+    assign is_open = true
+  elsif filter.type == 'price_range'
+    if filter.min_value.value != nil or filter.max_value.value != nil
+      assign is_open = true
+    endif
+  endif
+-%}
+<details class="cg2-filter"{% if is_open %} open{% endif %}>
+  <summary>
+    {{ label | default: filter.label | escape }}
+    <span class="cg2-filter-chevron" aria-hidden="true">{{ 'icon-caret.svg' | inline_asset_content }}</span>
+  </summary>
   {%- case filter.type -%}
     {%- when 'list', 'boolean' -%}
       <ul role="list" class="cg2-filter-values">

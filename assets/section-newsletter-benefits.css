@@ -13,7 +13,7 @@
 .nl-intro > * { margin: 0; }
 .nl-intro > * + * { margin-top: 12px; }
 .nl-heading, .nl-form-heading { color: inherit; font-family: var(--nl-font, var(--font-heading-family)); font-weight: var(--nl-weight, var(--font-heading-weight)); font-style: var(--nl-style, var(--font-heading-style)); }
-.nl-eyebrow { color: var(--nl-accent); }
+.nl-eyebrow { color: var(--nl-accent); font-size: var(--type-caption); }
 .nl-paragraph { max-width: 72rem; margin-inline: auto; }
 .nl-paragraph > :first-child, .nl-description > :first-child { margin-top: 0; }
 .nl-paragraph > :last-child, .nl-description > :last-child { margin-bottom: 0; }
@@ -27,17 +27,17 @@
 .nl-icon--tinted { background: currentColor; -webkit-mask: var(--nl-mask) center / contain no-repeat; mask: var(--nl-mask) center / contain no-repeat; }
 .nl-icon--tinted img { opacity: 0; }
 .nl-benefit-copy { min-width: 0; }
-.nl-benefit-title { margin: 0; font-family: inherit; font-style: inherit; font-weight: var(--font-body-weight-bold, 700); color: inherit; line-height: 1.4; }
-.nl-benefit-description { color: var(--nl-muted); margin: 6px 0 0; line-height: 1.5; }
+.nl-benefit-title { margin: 0; font-family: inherit; font-style: inherit; font-size: var(--type-label); font-weight: var(--font-body-weight-bold, 700); color: inherit; line-height: 1.4; }
+.nl-benefit-description { color: var(--nl-muted); margin: 6px 0 0; font-size: var(--type-metadata); line-height: 1.5; }
 .nl-form-layout { display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; gap: 24px; }
 .nl-form-copy { display: flex; align-items: center; gap: 20px; min-width: 0; }
 .nl-form-copy > div { min-width: 0; }
 .nl-mail { flex: 0 0 var(--nl-mail-icon); width: var(--nl-mail-icon); height: var(--nl-mail-icon); }
-.nl-form-heading { margin: 0; line-height: 1.4; }
-.nl-description { margin-top: 6px; line-height: 1.5; }
+.nl-form-heading { margin: 0; font-size: var(--type-panel-title); line-height: 1.4; }
+.nl-description { margin-top: 6px; font-size: var(--type-metadata); line-height: 1.5; }
 .nl-form { min-width: 0; width: 100%; }
 .nl-fields { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
-.nl-input { flex: 1 1 auto; min-width: 0; width: 100%; min-height: 48px; padding: 12px 16px; font: inherit; font-size: 14px; background: var(--nl-input-bg); color: var(--nl-input-text); border: 1px solid var(--nl-divider); border-radius: var(--inputs-radius, 4px); box-sizing: border-box; }
+.nl-input { flex: 1 1 auto; min-width: 0; width: 100%; min-height: 48px; padding: 12px 16px; font: inherit; font-size: var(--type-control); background: var(--nl-input-bg); color: var(--nl-input-text); border: 1px solid var(--nl-divider); border-radius: var(--inputs-radius, 4px); box-sizing: border-box; }
 .nl-input::placeholder { color: inherit; opacity: 0.7; }
 .nl-input:focus-visible { outline: 2px solid var(--nl-accent); outline-offset: 3px; }
 .nl-submit { flex: 0 0 auto; gap: 10px; font-family: var(--font-body-family); font-weight: var(--font-body-weight); font-style: var(--font-body-style); white-space: normal; }

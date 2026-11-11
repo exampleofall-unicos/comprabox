@@ -443,7 +443,7 @@
 }
 
 .copyright__content {
-  font-size: 1.1rem;
+  font-size: var(--type-caption);
 }
 
 .copyright__content a {

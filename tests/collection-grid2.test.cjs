@@ -40,8 +40,7 @@ test('catalog cards quote the full box, share quantity tiers, and save to the re
   const virtualConsole = new VirtualConsole();
   virtualConsole.on('jsdomError', (error) => { throw error; });
   const dom = new JSDOM(`<collection-grid-quote>
-    <form><select data-cg2-category><option value="/es/collections/all">Todos</option>
-      <option value="/es/collections/termos">Termos</option></select></form>
+    <form data-cg2-filters method="get" action="/es/collections/all"></form>
     ${card}${dialog}
   </collection-grid-quote>`, { url: 'https://example.com/es/collections/all?preview_theme_id=99', runScripts: 'outside-only', virtualConsole });
   const { window } = dom;
@@ -49,7 +48,7 @@ test('catalog cards quote the full box, share quantity tiers, and save to the re
     const { document } = window;
     const find = (selector) => document.querySelector(selector);
     const label = (selector) => find(selector).textContent.replace(/\s+/g, ' ').trim();
-    const category = find('[data-cg2-category]');
+    const filters = find('[data-cg2-filters]');
     const modal = find('dialog');
     const input = find('[name="quantity"]');
     const cartLink = find('.cg2-cart-link');
@@ -72,10 +71,8 @@ test('catalog cards quote the full box, share quantity tiers, and save to the re
     assert.equal(label('[data-cg2-card-price]'), '$ 9.765,00');
     assert.equal(find('.cg2-secondary-image').getAttribute('src'), '/second.png');
     assert.equal(cartLink.href, 'https://example.com/es/cart?preview_theme_id=99');
-    category.value = '/es/collections/termos';
-    category.form.dispatchEvent(new window.Event('submit', { cancelable: true }));
-    assert.equal(category.form.action, 'https://example.com/es/collections/termos');
-    assert.equal(category.form.elements.preview_theme_id.value, '99');
+    assert.equal(filters.action, 'https://example.com/es/collections/all');
+    assert.equal(filters.elements.preview_theme_id.value, '99');
 
     const [add, box] = document.querySelectorAll('[data-cg2-open]');
     for (const button of [add, box]) {
@@ -115,5 +112,54 @@ test('catalog cards quote the full box, share quantity tiers, and save to the re
     assert.equal(window.compraboxQuotePricing.calculate(saved, saved.quantity, saved.exchangeRate).unitPrice, 1054000);
   } finally {
     window.close();
+  }
+});
+
+test('catalog renders only the four Search & Discovery filters in order on the current collection', async () => {
+  const liquid = new Liquid({ root: resolve(__dirname, '../snippets'), extname: '.liquid' });
+  liquid.registerFilter('inline_asset_content', () => '<svg></svg>');
+  liquid.registerFilter('t', (key) => key);
+  const template = read('sections/main-collection-product-grid2.liquid').split('{% schema %}')[0]
+    .replace(/{%-?\s*(?:style|endstyle|paginate [^%]+|endpaginate)\s*-?%}/g, '');
+  const facet = (param_name, label, value, active = false, type = 'list') => {
+    const option = { param_name, label, value, count: 1, active, url_to_remove: '/collections/termos' };
+    return { type, param_name, label, values: [option], active_values: active ? [option] : [] };
+  };
+  const availability = facet('filter.v.availability', 'En existencia', '1', false, 'boolean');
+  const nativeCategory = facet('filter.p.t.category', 'Termos', 'aa-1', true);
+  const customCategory = facet('filter.p.m.custom.categoria', 'Térmicos', 'termicos');
+  const capacity = facet('filter.p.m.custom.capacidad', '1000 ML', '1000 ML');
+  const material = facet('filter.p.m.custom.material', 'Acero', 'acero');
+  const price = {
+    type: 'price_range', label: 'Precio', range_max: 10000,
+    min_value: { param_name: 'filter.v.price.gte', value: 0 },
+    max_value: { param_name: 'filter.v.price.lte', value: null },
+    url_to_remove: '/collections/termos',
+  };
+  for (const category of [nativeCategory, customCategory]) {
+    const filters = [material, price, capacity, customCategory, availability];
+    if (category === nativeCategory) filters.push(nativeCategory);
+    const markup = await liquid.parseAndRender(template, {
+      section: { id: 'grid', settings: { category_metafield: 'custom.categoria', capacity_metafield: 'custom.capacidad' } },
+      collection: { url: '/collections/termos', default_sort_by: 'best-selling', products: [], filters },
+      routes: { cart_url: '/cart' },
+    });
+    const { window } = new JSDOM(markup);
+    try {
+      const { document } = window;
+      const form = document.querySelector('[data-cg2-filters]');
+      const groups = Array.from(form.querySelectorAll('details'));
+      assert.deepEqual(groups.map((group) => group.querySelector('summary').textContent.trim()), [
+        'Disponibilidad', 'Categoría', 'Capacidad', 'Precio',
+      ]);
+      assert.deepEqual(Array.from(form.querySelectorAll('input'), (input) => input.name), [
+        availability.param_name, category.param_name, capacity.param_name, 'filter.v.price.gte', 'filter.v.price.lte',
+      ]);
+      assert.deepEqual(groups.map((group) => group.open), [true, category === nativeCategory, false, true]);
+      assert.equal(form.getAttribute('action'), '/collections/termos');
+      assert.equal(document.querySelector('.cg2-filter-top a').getAttribute('href'), '/collections/termos?sort_by=best-selling');
+    } finally {
+      window.close();
+    }
   }
 });

@@ -18,18 +18,17 @@
       this.cards = new Map();
 
       const preview = new URLSearchParams(location.search).get('preview_theme_id');
-      const category = this.querySelector('[data-cg2-category]');
-      if (preview) this.cartLink.href = this.withPreview(this.cartLink.href, preview);
-      category.form.addEventListener('submit', () => {
-        if (category.value) category.form.action = category.value;
-        if (preview && !category.form.elements.namedItem('preview_theme_id')) {
+      if (preview) {
+        this.cartLink.href = this.withPreview(this.cartLink.href, preview);
+        const filterForm = this.querySelector('[data-cg2-filters]');
+        if (!filterForm.elements.namedItem('preview_theme_id')) {
           const input = document.createElement('input');
           input.type = 'hidden';
           input.name = 'preview_theme_id';
           input.value = preview;
-          category.form.append(input);
+          filterForm.append(input);
         }
-      }, { signal });
+      }
 
       this.querySelectorAll('.cg2-card').forEach((card) => {
         const item = JSON.parse(card.querySelector('[data-product-request-data]').dataset.productRequestData);

@@ -309,6 +309,11 @@
   margin-bottom: 0;
 }
 
+.product-card-wrapper .card:not(.card--horizontal) .card__heading,
+.collection-card-wrapper .card__heading {
+  font-size: var(--type-card-title);
+}
+
 .card--horizontal .card__heading,
 .card--horizontal .price__container .price-item,
 .card--horizontal__quick-add {

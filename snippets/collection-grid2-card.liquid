@@ -35,9 +35,9 @@
       <p class="cg2-price">Precio de venta: {{ variant.price | money_with_currency }}</p>
     {%- endif -%}
     <div class="cg2-card-actions">
-      <button type="button" class="cg2-card-button" data-cg2-open aria-haspopup="dialog" aria-controls="Grid2Quantity-{{ section.id }}" disabled>Agregar al carrito</button>
+      <button type="button" class="cg2-card-button cg2-card-button--add" data-cg2-open aria-haspopup="dialog" aria-controls="Grid2Quantity-{{ section.id }}" disabled>Agregar al carrito</button>
       {%- if box_units >= 3 -%}
-        <button type="button" class="cg2-card-button" data-cg2-open aria-label="Caja de {{ box_units }} unidades" aria-haspopup="dialog" aria-controls="Grid2Quantity-{{ section.id }}" disabled>X {{ box_units }}</button>
+        <button type="button" class="cg2-card-button cg2-card-button--box" data-cg2-open aria-label="Caja de {{ box_units }} unidades" aria-haspopup="dialog" aria-controls="Grid2Quantity-{{ section.id }}" disabled>X {{ box_units }}</button>
       {%- endif -%}
     </div>
   </div>

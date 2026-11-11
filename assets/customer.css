@@ -55,6 +55,11 @@
   margin: 2rem 0 0 0;
 }
 
+.customer .field input,
+.customer select {
+  font-size: var(--type-control);
+}
+
 .customer .field:first-of-type {
   margin-top: 0;
 }

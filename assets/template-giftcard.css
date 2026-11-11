@@ -87,7 +87,9 @@ h2,
 }
 
 .button {
-  font-family: inherit;
+  font-family: var(--font-body-family);
+  font-style: var(--font-body-style);
+  font-weight: var(--font-body-weight);
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -101,7 +103,7 @@ h2,
   color: rgb(var(--color-button-label));
   min-width: 12rem;
   height: auto;
-  font-size: 1.5rem;
+  font-size: var(--theme-button-font-size);
   letter-spacing: 0.1rem;
   line-height: calc(1 + 0.2 / var(--font-body-scale));
 }

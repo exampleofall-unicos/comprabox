@@ -240,7 +240,7 @@
         "collection": "all",
         "products_to_show": 4,
         "title": "Colección destacada",
-        "heading_size": "h1",
+        "heading_size": "h-section",
         "description": "",
         "show_description": false,
         "description_style": "body",
@@ -269,7 +269,7 @@
           "type": "eyebrow",
           "settings": {
             "eyebrow": "PARA MAYORISTAS",
-            "font_size_desktop": 13,
+            "font_size_desktop": 12,
             "font_size_mobile": 12,
             "text_color": ""
           }
@@ -278,8 +278,8 @@
           "type": "heading",
           "settings": {
             "heading": "Abastecé tu negocio con los mejores productos",
-            "font_size_desktop": 52,
-            "font_size_mobile": 40,
+            "font_size_desktop": 30,
+            "font_size_mobile": 26,
             "text_color": ""
           }
         },
@@ -400,7 +400,7 @@
           "settings": {
             "text": "PERSONALIZACIÓN",
             "font_size_desktop": 12,
-            "font_size_mobile": 11,
+            "font_size_mobile": 12,
             "text_color": "",
             "highlight_color_1": "#ff8000",
             "highlight_color_2": "#111b22",
@@ -411,8 +411,8 @@
           "type": "heading",
           "settings": {
             "heading": "Convertí un producto[br]en algo [color1]único[/color1]",
-            "font_size_desktop": 36,
-            "font_size_mobile": 30,
+            "font_size_desktop": 30,
+            "font_size_mobile": 26,
             "text_color": "",
             "highlight_color_1": "#ff8000",
             "highlight_color_2": "#111b22",
@@ -541,7 +541,7 @@
           "settings": {
             "text": "¿Por qué elegirnos?",
             "custom_size": true,
-            "size_desktop": 13,
+            "size_desktop": 12,
             "size_mobile": 12
           }
         },
@@ -549,8 +549,8 @@
           "type": "heading",
           "settings": {
             "heading": "Más que un proveedor, somos tu aliado",
-            "heading_size": "h1",
-            "custom_size": true,
+            "heading_size": "h-section",
+            "custom_size": false,
             "size_desktop": 28,
             "size_mobile": 24
           }

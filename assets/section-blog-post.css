@@ -73,6 +73,10 @@
   margin-bottom: 1rem;
 }
 
+.article-template header .caption-with-letter-spacing {
+  font-size: var(--type-caption);
+}
+
 .article-template__link {
   font-size: 1.8rem;
   display: flex;

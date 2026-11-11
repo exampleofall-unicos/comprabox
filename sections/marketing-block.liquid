@@ -43,15 +43,19 @@
     {%- endif %}
   }
   {%- for block in section.blocks -%}
+    {%- assign font_size_scale = 1 -%}
+    {%- if block.type == 'heading' -%}
+      {%- assign font_size_scale = 'var(--font-heading-scale)' -%}
+    {%- endif -%}
     #Marketing-{{ section.id }} #MarketingText-{{ block.id }} {
-      font-size: {{ block.settings.font_size_mobile }}px;
+      font-size: calc({{ font_size_scale }} * {{ block.settings.font_size_mobile | divided_by: 10.0 }}rem);
       {%- if block.settings.text_color != blank %}
         color: {{ block.settings.text_color }};
       {%- endif %}
     }
     @media screen and (min-width: 750px) {
       #Marketing-{{ section.id }} #MarketingText-{{ block.id }} {
-        font-size: {{ block.settings.font_size_desktop }}px;
+        font-size: calc({{ font_size_scale }} * {{ block.settings.font_size_desktop | divided_by: 10.0 }}rem);
       }
     }
   {%- endfor -%}

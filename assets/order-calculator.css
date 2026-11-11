@@ -23,9 +23,6 @@ order-calculator {
 
 .order-calculator__specs-title {
   margin: 0 0 2rem;
-  font-size: clamp(2rem, 2vw, 2.7rem);
-  line-height: 1.1;
-  font-weight: 700;
 }
 
 .order-calculator__specs-list {
@@ -47,7 +44,7 @@ order-calculator {
 
 .order-calculator__specs-label,
 .order-calculator__specs-value {
-  font-size: 1.45rem;
+  font-size: var(--type-label);
   line-height: 1.35;
 }
 
@@ -88,7 +85,7 @@ order-calculator {
 
 .order-calculator__specs-empty {
   margin: 1.2rem 0 0;
-  font-size: 1.35rem;
+  font-size: var(--type-metadata);
   opacity: 0.72;
 }
 
@@ -110,7 +107,7 @@ order-calculator {
 
 .order-calculator__eyebrow {
   margin: 0 0 0.3rem;
-  font-size: 1.1rem;
+  font-size: var(--type-caption);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   opacity: 0.68;
@@ -118,14 +115,11 @@ order-calculator {
 
 .order-calculator__title {
   margin: 0;
-  font-size: clamp(2rem, 2vw, 2.7rem);
-  line-height: 1.1;
-  font-weight: 700;
 }
 
 .order-calculator__subtitle {
   margin: 0.5rem 0 0;
-  font-size: 1.45rem;
+  font-size: var(--type-label);
   line-height: 1.45;
   opacity: 0.72;
 }
@@ -141,14 +135,14 @@ order-calculator {
 }
 
 .order-calculator__rate-label {
-  font-size: 1.05rem;
+  font-size: var(--type-caption);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   opacity: 0.68;
 }
 
 .order-calculator__rate-value {
-  font-size: 1.7rem;
+  font-size: var(--type-unit-price);
   line-height: 1.1;
 }
 
@@ -171,7 +165,7 @@ order-calculator {
 .order-calculator__table thead th {
   padding: 1.2rem 0.8rem;
   text-align: left;
-  font-size: 1.15rem;
+  font-size: var(--type-caption);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -214,7 +208,7 @@ order-calculator {
 
 .order-calculator__table tbody td {
   padding: 1.1rem 0.8rem;
-  font-size: 1.45rem;
+  font-size: var(--type-label);
   border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
 }
 
@@ -240,7 +234,7 @@ order-calculator {
 }
 
 .order-calculator__input-label {
-  font-size: 1.3rem;
+  font-size: var(--type-label);
   font-weight: 600;
 }
 
@@ -268,7 +262,8 @@ order-calculator {
   border: 0;
   border-right: 0;
   padding: 0 0.9rem;
-  font-size: 1.55rem;
+  font: inherit;
+  font-size: var(--type-control);
   background: transparent;
   color: inherit;
   box-shadow: none;
@@ -315,7 +310,7 @@ order-calculator {
 }
 
 .order-calculator__units {
-  font-size: 1.3rem;
+  font-size: var(--type-metadata);
   line-height: 1.2;
   font-weight: 500;
   opacity: 0.75;
@@ -336,14 +331,14 @@ order-calculator {
 }
 
 .order-calculator__savings-label {
-  font-size: 1.3rem;
+  font-size: var(--type-metadata);
   line-height: 1.2;
   font-weight: 500;
   opacity: 0.75;
 }
 
 .order-calculator__savings-value {
-  font-size: 1.3rem;
+  font-size: var(--type-metadata);
   line-height: 1.2;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
@@ -365,7 +360,7 @@ order-calculator {
 }
 
 .order-calculator__summary-label {
-  font-size: 1.4rem;
+  font-size: var(--type-label);
   line-height: 1.2;
   font-weight: 500;
   opacity: 0.75;
@@ -373,7 +368,7 @@ order-calculator {
 
 .order-calculator__summary-value {
   line-height: 1.1;
-  font-size: 1.4rem;
+  font-size: var(--type-label);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
 }
@@ -393,7 +388,7 @@ order-calculator {
 }
 
 .order-calculator__summary-total-usd {
-  font-size: 1.25rem;
+  font-size: var(--type-metadata);
   line-height: 1.2;
   font-weight: 600;
   opacity: 0.82;
@@ -402,7 +397,7 @@ order-calculator {
 }
 
 .order-calculator__summary-total-value {
-  font-size: 1.7rem;
+  font-size: var(--type-unit-price);
   line-height: 1.1;
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -428,7 +423,7 @@ order-calculator {
   margin: 1.6rem 0 0;
   padding-top: 1rem;
   border-top: 0.1rem solid rgba(var(--color-foreground), 0.1);
-  font-size: 1.35rem;
+  font-size: var(--type-metadata);
 }
 
 .order-calculator__warning code {
@@ -467,7 +462,12 @@ order-calculator {
   .order-calculator__table thead th,
   .order-calculator__table tbody td {
     padding: 1rem 0.5rem;
-    font-size: 1.2rem;
+    font-size: var(--type-caption);
+  }
+
+  .order-calculator__table thead th {
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   .order-calculator__table thead th:nth-child(2),
@@ -498,17 +498,5 @@ order-calculator {
 
   .order-calculator__stepper {
     width: 2.4rem;
-  }
-
-  .order-calculator__summary-value--unit {
-    font-size: 1.3rem;
-  }
-
-  .order-calculator__summary-total-usd {
-    font-size: 1.1rem;
-  }
-
-  .order-calculator__summary-total-value {
-    font-size: 1.7rem;
   }
 }

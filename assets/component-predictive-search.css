@@ -95,6 +95,7 @@ predictive-search[loading] .predictive-search {
   margin: 0 2rem;
   padding: 1.5rem 0 0.75rem;
   color: rgba(var(--color-foreground), 0.7);
+  font-size: var(--type-caption);
 }
 
 predictive-search .spinner {
@@ -166,11 +167,12 @@ predictive-search[loading] .predictive-search__results-groups-wrapper ~ .predict
 }
 
 .predictive-search__item-vendor {
-  font-size: 0.9rem;
+  font-size: var(--type-caption);
 }
 
 .predictive-search__item-heading {
   margin: 0;
+  font-size: var(--type-card-title);
 }
 
 .predictive-search__item-query-result *:not(mark) {
@@ -187,7 +189,7 @@ predictive-search[loading] .predictive-search__results-groups-wrapper ~ .predict
 
 .predictive-search__item .price {
   color: rgba(var(--color-foreground), 0.7);
-  font-size: 1.2rem;
+  font-size: var(--type-label);
 }
 
 .predictive-search__item-vendor + .predictive-search__item-heading,

@@ -23,12 +23,12 @@
 
 .quote-product__unit {
   margin: 0 0 1.6rem;
-  font-size: 1.8rem;
+  font-size: var(--type-unit-price);
 }
 
 .quote-product__total {
   margin: 0;
-  font-size: 2.6rem;
+  font-size: var(--type-quote-price);
   color: rgb(var(--color-foreground));
 }
 

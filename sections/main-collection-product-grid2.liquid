@@ -6,36 +6,31 @@
 {%- liquid
   assign form_id = 'CollectionGrid2Filters-' | append: section.id
   assign sort_by = collection.sort_by | default: collection.default_sort_by
-  assign priority_keys = 'capacity_metafield,category_metafield,material_metafield,colors_metafield' | split: ','
-  assign availability = collection.filters | where: 'param_name', 'filter.v.availability' | first
+  assign availability_filter = collection.filters | where: 'param_name', 'filter.v.availability' | first
+  assign category_filter = collection.filters | where: 'param_name', 'filter.p.t.category' | first
   assign category_param = section.settings.category_metafield | strip | prepend: 'filter.p.m.'
-  assign ordered_filters = collection.filters | slice: 0, 0
-  assign used_params = '|filter.v.availability|'
-  for key in priority_keys
-    assign field_path = section.settings[key] | strip
-    assign param = 'filter.p.m.' | append: field_path
-    assign token = param | prepend: '|' | append: '|'
-    unless used_params contains token
-      assign matches = collection.filters | where: 'param_name', param
-      assign ordered_filters = ordered_filters | concat: matches
-      assign used_params = used_params | append: param | append: '|'
-    endunless
-  endfor
-  for filter in collection.filters
-    assign token = filter.param_name | prepend: '|' | append: '|'
-    unless used_params contains token
-      assign matches = collection.filters | where: 'param_name', filter.param_name
-      assign ordered_filters = ordered_filters | concat: matches
-    endunless
-  endfor
+  assign capacity_param = section.settings.capacity_metafield | strip | prepend: 'filter.p.m.'
+  if category_filter == blank and category_param != capacity_param
+    assign category_filter = collection.filters | where: 'param_name', category_param | first
+  endif
+  assign capacity_filter = collection.filters | where: 'param_name', capacity_param | first
+  assign price_filter = collection.filters | where: 'type', 'price_range' | first
+  assign has_filters = false
+  if availability_filter or category_filter or capacity_filter or price_filter
+    assign has_filters = true
+  endif
+  assign show_sidebar = has_filters
+  if request.design_mode
+    assign show_sidebar = true
+  endif
 -%}
 {%- style -%}
   #CollectionGrid2-{{ section.id }} {
     --cg2-columns: {{ section.settings.columns_desktop }};
     --cg2-mobile-columns: {{ section.settings.columns_mobile }};
     --cg2-padding: {{ section.settings.padding }}px;
-    --cg2-heading: {{ section.settings.heading_size }}px;
-    --cg2-product-title: {{ section.settings.product_title_size }}px;
+    --cg2-heading: calc(var(--font-heading-scale) * {{ section.settings.heading_size | divided_by: 10.0 }}rem);
+    --cg2-product-title: calc(var(--font-heading-scale) * {{ section.settings.product_title_size | divided_by: 10.0 }}rem);
     --cg2-accent: {{ section.settings.accent_color }};
     --cg2-image-bg: {{ section.settings.image_background }};
     --cg2-ratio: {{ section.settings.image_ratio }};
@@ -43,43 +38,31 @@
 {%- endstyle -%}
 <collection-grid-quote id="CollectionGrid2-{{ section.id }}" class="cg2 color-{{ section.settings.color_scheme }}">
   {%- paginate collection.products by section.settings.products_per_page -%}
-    <div class="page-width cg2-layout">
-      <aside class="cg2-sidebar" aria-labelledby="FilterTitle-{{ section.id }}">
-        <div class="cg2-filter-top"><h2 id="FilterTitle-{{ section.id }}">Filtros</h2><a href="{{ routes.all_products_collection_url }}?sort_by={{ sort_by | url_encode }}">Limpiar filtros</a></div>
-        <form id="{{ form_id }}" method="get" action="{{ collection.url }}">
-          {%- if availability -%}{% render 'collection-grid2-filter', filter: availability %}{%- endif -%}
-          <details class="cg2-filter" open>
-            <summary>Categoría<span aria-hidden="true">⌄</span></summary>
-            <select class="cg2-category" aria-label="Categoría" data-cg2-category>
-              <option value="{{ routes.all_products_collection_url }}"{% if collection.handle == 'all' %} selected{% endif %}>Todas las colecciones</option>
-              {%- assign collection_batches = shop.collections_count | at_most: 1000 | divided_by: 50.0 | ceil -%}
-              {%- for batch in (1..collection_batches) -%}
-                {%- assign collection_offset = batch | minus: 1 | times: 50 -%}
-                {%- for entry in collections limit: 50 offset: collection_offset -%}
-                  {%- unless entry.handle == 'all' -%}
-                    <option value="{{ entry.url }}"{% if entry.handle == collection.handle %} selected{% endif %}>{{ entry.title | escape }}</option>
-                  {%- endunless -%}
-                {%- endfor -%}
-              {%- endfor -%}
-            </select>
-            {%- if shop.collections_count > 1000 -%}<a href="{{ routes.collections_url }}">Ver todas las colecciones</a>{%- endif -%}
-            <noscript><a href="{{ routes.collections_url }}">Ver todas las colecciones</a></noscript>
-          </details>
-          {%- for filter in ordered_filters -%}
-            {%- assign filter_label = filter.label -%}
-            {%- if filter.param_name == category_param and filter_label == 'Categoría' -%}
-              {%- assign filter_label = 'Categoría del producto' -%}
-            {%- endif -%}
-            {% render 'collection-grid2-filter', filter: filter, label: filter_label %}
-          {%- endfor -%}
+    <div class="page-width cg2-layout{% if show_sidebar %} cg2-layout--with-filters{% endif %}">
+      <aside class="cg2-sidebar" aria-labelledby="FilterTitle-{{ section.id }}"{% unless show_sidebar %} hidden{% endunless %}>
+        <div class="cg2-filter-top">
+          <h2 id="FilterTitle-{{ section.id }}">Filtros</h2>
+          {%- if has_filters -%}<a href="{{ collection.url }}?sort_by={{ sort_by | url_encode }}">Limpiar filtros</a>{%- endif -%}
+        </div>
+        <form id="{{ form_id }}" method="get" action="{{ collection.url }}" data-cg2-filters>
+          {%- if availability_filter -%}
+            {% render 'collection-grid2-filter', filter: availability_filter, label: 'Disponibilidad', initially_open: true %}
+          {%- endif -%}
+          {%- if category_filter -%}
+            {% render 'collection-grid2-filter', filter: category_filter, label: 'Categoría' %}
+          {%- endif -%}
+          {%- if capacity_filter -%}
+            {% render 'collection-grid2-filter', filter: capacity_filter, label: 'Capacidad' %}
+          {%- endif -%}
+          {%- if price_filter -%}
+            {% render 'collection-grid2-filter', filter: price_filter, label: 'Precio' %}
+          {%- endif -%}
           {%- if request.design_mode -%}
-            {%- assign capacity_param = section.settings.capacity_metafield | strip | prepend: 'filter.p.m.' -%}
-            {%- assign capacity_filter = collection.filters | where: 'param_name', capacity_param | first -%}
-            {%- if availability == blank or capacity_filter == blank -%}
-              <p>Activá Disponibilidad y el metacampo {{ section.settings.capacity_metafield | escape }} como filtros en Shopify Search &amp; Discovery.</p>
+            {%- if availability_filter == blank or category_filter == blank or capacity_filter == blank or price_filter == blank -%}
+              <p class="cg2-filter-note">Revisá que Disponibilidad, Categoría, Capacidad y Precio estén configurados en Shopify Search &amp; Discovery y disponibles para esta colección.</p>
             {%- endif -%}
           {%- endif -%}
-          <button class="button button--primary cg2-apply" type="submit">Aplicar filtros</button>
+          {%- if has_filters -%}<button class="button button--primary cg2-apply" type="submit">Aplicar filtros</button>{%- endif -%}
         </form>
       </aside>
       <div class="cg2-main">
@@ -110,7 +93,7 @@
           </ul>
           {%- if paginate.pages > 1 -%}{% render 'pagination', paginate: paginate, anchor: '' %}{%- endif -%}
         {%- else -%}
-          <div class="cg2-empty"><h3>No encontramos productos con estos filtros.</h3><a class="button button--secondary" href="{{ routes.all_products_collection_url }}">Limpiar filtros</a></div>
+          <div class="cg2-empty"><h3>No encontramos productos con estos filtros.</h3><a class="button button--secondary" href="{{ collection.url }}?sort_by={{ sort_by | url_encode }}">Limpiar filtros</a></div>
         {%- endif -%}
       </div>
     </div>
@@ -244,12 +227,12 @@
     },
     {
       "type": "paragraph",
-      "content": "Ingresá namespace.clave. Activá Disponibilidad y los filtros de metacampos en Shopify Search & Discovery. El selector Categoría abre las colecciones de la tienda. Para ver el catálogo completo, usá Todos los productos."
+      "content": "La columna usa los filtros Disponibilidad, Categoría, Capacidad y Precio de Shopify Search & Discovery. Para los metacampos, ingresá namespace.clave."
     },
     {
       "type": "text",
       "id": "category_metafield",
-      "label": "Categoría (filtro)",
+      "label": "Categoría (metacampo alternativo)",
       "default": "custom.categoria"
     },
     {
@@ -261,13 +244,13 @@
     {
       "type": "text",
       "id": "material_metafield",
-      "label": "Material (filtro)",
+      "label": "Material (ajuste anterior)",
       "default": "custom.material"
     },
     {
       "type": "text",
       "id": "colors_metafield",
-      "label": "Colores disponibles (filtro)",
+      "label": "Colores disponibles (ajuste anterior)",
       "default": "custom.colores_disponibles"
     },
     {

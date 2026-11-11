@@ -3,14 +3,14 @@
 .quote-layout--single { grid-template-columns: minmax(0, 1fr); max-width: 90rem; }
 .quote-layout--single.quote-layout--cart-preview { width: 100%; max-width: var(--page-width); margin-inline: auto; }
 .cart-preview-table { width: 100%; border-collapse: collapse; margin: 2rem 0; table-layout: fixed; }
-.cart-preview-table th { text-align: left; font-size: 1.2rem; letter-spacing: .08em; font-weight: 500; }
+.cart-preview-table th { text-align: left; font-size: var(--type-caption); letter-spacing: .08em; font-weight: 500; }
 .cart-preview-table :is(th, td) { padding: 1.4rem 1rem; border-bottom: 1px solid rgba(var(--color-foreground), .15); vertical-align: middle; overflow-wrap: anywhere; }
 .cart-preview-table th:first-child { width: 40%; }
 .cart-preview-table th:nth-child(2) { width: 22%; }
 .cart-preview-table th:nth-child(3) { width: 16%; }
 .cart-preview-table th:last-child { width: 22%; text-align: right; }
 .cart-preview-table td:last-child { text-align: right; }
-.cart-preview-options { display: block; margin-top: .5rem; font-size: 1.3rem; }
+.cart-preview-options { display: block; margin-top: .5rem; font-size: var(--type-metadata); }
 .cart-preview-cell-actions { display: flex; align-items: center; gap: .6rem; }
 .cart-preview-table td:last-child .cart-preview-cell-actions { justify-content: flex-end; }
 .quote-contact .preview-action { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 4.4rem; width: 4.4rem; height: 4.4rem; padding: 1rem; border: 0; border-radius: .4rem; background: transparent; color: var(--quote-accent); cursor: pointer; text-decoration: none; }
@@ -23,7 +23,7 @@
   .cart-preview-table tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border-bottom: 1px solid rgba(var(--color-foreground), .15); padding: 1rem 0; }
   .cart-preview-table td { display: block; border: 0; padding: .6rem 0; }
   .cart-preview-table td:nth-child(-n+2) { grid-column: 1 / -1; }
-  .cart-preview-table td::before { content: attr(data-label); display: block; font-size: 1.1rem; letter-spacing: .05em; font-weight: 500; margin-bottom: .4rem; text-transform: uppercase; }
+  .cart-preview-table td::before { content: attr(data-label); display: block; font-size: var(--type-caption); letter-spacing: .05em; font-weight: 500; margin-bottom: .4rem; text-transform: uppercase; }
 }
 .quote-panel, .quote-whatsapp { padding: clamp(2rem, 2.5vw, 3.2rem); border-radius: 8px; }
 .quote-panel { background: var(--quote-panel); border: 1px solid rgba(var(--color-foreground), .05); }

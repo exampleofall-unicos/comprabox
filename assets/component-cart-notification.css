@@ -135,6 +135,7 @@
 .cart-notification-product__name {
   margin-bottom: 0.5rem;
   margin-top: 0;
+  font-size: var(--type-card-title);
 }
 
 .cart-notification .cart-item__disclosure-tooltip {

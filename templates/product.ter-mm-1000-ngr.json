@@ -154,6 +154,7 @@
     },
     "order-calculator": {
       "type": "order-calculator",
+      "disabled": true,
       "settings": {
         "section_button_icon_image_position": "inherit",
         "section_button_icon_image_text_color": "",

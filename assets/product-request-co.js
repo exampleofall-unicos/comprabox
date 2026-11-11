@@ -3,6 +3,7 @@
   if (customElements.get('product-info-co')) return;
   const Base = customElements.get('product-info');
   const pricing = window.compraboxQuotePricing;
+  const requestStore = window.compraboxQuoteRequestStore;
   customElements.define('product-info-co', class extends Base {
     rate = pricing.fallbackRate;
 
@@ -26,13 +27,11 @@
       this.addEventListener('input', this.updateRequestQuantity);
       this.addEventListener('change', this.updateRequestQuantity);
       this.addEventListener('click', this.selectPreset);
-      const savedKey = `comprabox.cart-request.v1:${location.host}:products`;
-      try {
-        const saved = JSON.parse(localStorage.getItem(savedKey))?.find((item) => item.key === this.requestVariant?.key);
-        if (this.quantityInput && !this.quantityInput.hasAttribute('data-preserve-request-quantity') && Number.isSafeInteger(saved?.quantity)) {
-          this.quantityInput.value = Math.max(pricing.minimum, saved.quantity);
-        }
-      } catch (_) { /* Storage errors are reported when saving. */ }
+      const key = this.requestVariant?.key;
+      const saved = key && requestStore.read().find((item) => item?.key === key);
+      if (this.quantityInput && !this.quantityInput.hasAttribute('data-preserve-request-quantity') && Number.isSafeInteger(saved?.quantity)) {
+        this.quantityInput.value = Math.max(pricing.minimum, saved.quantity);
+      }
       this.quantityInput?.closest('quantity-input')?.validateQtyRules();
       this.refreshRequest();
     }
@@ -182,15 +181,7 @@
       if (this.variantUpdating || !event.target.reportValidity() || !quote) return;
       const status = this.querySelector('[data-product-request-status]');
       try {
-        const key = `comprabox.cart-request.v1:${location.host}:products`;
-        let items;
-        try { items = JSON.parse(localStorage.getItem(key)) || []; } catch (_) { items = []; }
-        if (!Array.isArray(items)) items = [];
-        const url = new URL(item.url, location.origin);
-        url.searchParams.set('view', 'co');
-        url.searchParams.set('variant', item.variantId);
-        const selection = { ...item, quantity: units, exchangeRate: this.rate, url: url.pathname + url.search };
-        localStorage.setItem(key, JSON.stringify([...items.filter((entry) => entry.key !== item.key), selection]));
+        requestStore.save(item, units, this.rate);
         status.textContent = `Se agregaron ${units} unidades al carrito.`;
         {
           const target = new URL(event.target.dataset.cartUrl, location.origin);

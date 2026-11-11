@@ -1,5 +1,5 @@
 <details class="cg2-filter" open>
-  <summary>{{ filter.label | escape }}<span aria-hidden="true">⌄</span></summary>
+  <summary>{{ label | default: filter.label | escape }}<span aria-hidden="true">⌄</span></summary>
   {%- case filter.type -%}
     {%- when 'list', 'boolean' -%}
       <ul role="list" class="cg2-filter-values">

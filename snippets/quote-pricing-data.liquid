@@ -1,6 +1,9 @@
 {%- liquid
-  assign base_usd = product.metafields.custom.precio_usd.value
-  if base_usd == blank and currency == 'USD'
+  assign usd_parts = usd_metafield | default: 'custom.precio_usd' | strip | split: '.'
+  assign box_parts = box_metafield | default: 'custom.unidades_por_caja' | strip | split: '.'
+  assign base_usd = product.metafields[usd_parts.first][usd_parts.last].value | default: product.metafields.custom.precio_usd.value
+  assign box_units = product.metafields[box_parts.first][box_parts.last].value | default: product.metafields.custom.unidades_por_caja.value
+  if currency == 'USD'
     assign base_usd = variant.price | divided_by: 100.0
   endif
 -%}
@@ -8,5 +11,5 @@
   "baseUsd": {{ base_usd | json }},
   "quarterUsd": {{ product.metafields.custom.cargo_1_4_bulto.value | json }},
   "halfUsd": {{ product.metafields.custom.cargo_1_2_bulto.value | json }},
-  "boxUnits": {{ product.metafields.custom.unidades_por_caja.value | json }}
+  "boxUnits": {{ box_units | json }}
 }

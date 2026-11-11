@@ -1,11 +1,16 @@
 {%- render 'section-button-icons', section: section -%}
 {{ 'section-collection-grid2.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'quote-pricing.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'quote-request-store.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'collection-grid2.js' | asset_url }}" defer="defer"></script>
 {%- liquid
   assign form_id = 'CollectionGrid2Filters-' | append: section.id
   assign sort_by = collection.sort_by | default: collection.default_sort_by
-  assign priority_keys = 'category_metafield,capacity_metafield,material_metafield,colors_metafield' | split: ','
+  assign priority_keys = 'capacity_metafield,category_metafield,material_metafield,colors_metafield' | split: ','
+  assign availability = collection.filters | where: 'param_name', 'filter.v.availability' | first
+  assign category_param = section.settings.category_metafield | strip | prepend: 'filter.p.m.'
   assign ordered_filters = collection.filters | slice: 0, 0
-  assign used_params = '|'
+  assign used_params = '|filter.v.availability|'
   for key in priority_keys
     assign field_path = section.settings[key] | strip
     assign param = 'filter.p.m.' | append: field_path
@@ -36,16 +41,43 @@
     --cg2-ratio: {{ section.settings.image_ratio }};
   }
 {%- endstyle -%}
-<div id="CollectionGrid2-{{ section.id }}" class="cg2 color-{{ section.settings.color_scheme }}">
+<collection-grid-quote id="CollectionGrid2-{{ section.id }}" class="cg2 color-{{ section.settings.color_scheme }}">
   {%- paginate collection.products by section.settings.products_per_page -%}
     <div class="page-width cg2-layout">
       <aside class="cg2-sidebar" aria-labelledby="FilterTitle-{{ section.id }}">
-        <div class="cg2-filter-top"><h2 id="FilterTitle-{{ section.id }}">Filtros</h2><a href="{{ collection.url }}?sort_by={{ sort_by | url_encode }}">Limpiar filtros</a></div>
+        <div class="cg2-filter-top"><h2 id="FilterTitle-{{ section.id }}">Filtros</h2><a href="{{ routes.all_products_collection_url }}?sort_by={{ sort_by | url_encode }}">Limpiar filtros</a></div>
         <form id="{{ form_id }}" method="get" action="{{ collection.url }}">
-          {%- for filter in ordered_filters -%}{% render 'collection-grid2-filter', filter: filter %}{%- endfor -%}
-          {%- if ordered_filters.size == 0 -%}
-            <p>No hay filtros disponibles para esta colección.</p>
-            {%- if request.design_mode -%}<p>Activá los filtros de metacampos en Shopify Search &amp; Discovery: Categoría, Capacidad, Material y Colores disponibles.</p>{%- endif -%}
+          {%- if availability -%}{% render 'collection-grid2-filter', filter: availability %}{%- endif -%}
+          <details class="cg2-filter" open>
+            <summary>Categoría<span aria-hidden="true">⌄</span></summary>
+            <select class="cg2-category" aria-label="Categoría" data-cg2-category>
+              <option value="{{ routes.all_products_collection_url }}"{% if collection.handle == 'all' %} selected{% endif %}>Todas las colecciones</option>
+              {%- assign collection_batches = shop.collections_count | at_most: 1000 | divided_by: 50.0 | ceil -%}
+              {%- for batch in (1..collection_batches) -%}
+                {%- assign collection_offset = batch | minus: 1 | times: 50 -%}
+                {%- for entry in collections limit: 50 offset: collection_offset -%}
+                  {%- unless entry.handle == 'all' -%}
+                    <option value="{{ entry.url }}"{% if entry.handle == collection.handle %} selected{% endif %}>{{ entry.title | escape }}</option>
+                  {%- endunless -%}
+                {%- endfor -%}
+              {%- endfor -%}
+            </select>
+            {%- if shop.collections_count > 1000 -%}<a href="{{ routes.collections_url }}">Ver todas las colecciones</a>{%- endif -%}
+            <noscript><a href="{{ routes.collections_url }}">Ver todas las colecciones</a></noscript>
+          </details>
+          {%- for filter in ordered_filters -%}
+            {%- assign filter_label = filter.label -%}
+            {%- if filter.param_name == category_param and filter_label == 'Categoría' -%}
+              {%- assign filter_label = 'Categoría del producto' -%}
+            {%- endif -%}
+            {% render 'collection-grid2-filter', filter: filter, label: filter_label %}
+          {%- endfor -%}
+          {%- if request.design_mode -%}
+            {%- assign capacity_param = section.settings.capacity_metafield | strip | prepend: 'filter.p.m.' -%}
+            {%- assign capacity_filter = collection.filters | where: 'param_name', capacity_param | first -%}
+            {%- if availability == blank or capacity_filter == blank -%}
+              <p>Activá Disponibilidad y el metacampo {{ section.settings.capacity_metafield | escape }} como filtros en Shopify Search &amp; Discovery.</p>
+            {%- endif -%}
           {%- endif -%}
           <button class="button button--primary cg2-apply" type="submit">Aplicar filtros</button>
         </form>
@@ -78,12 +110,13 @@
           </ul>
           {%- if paginate.pages > 1 -%}{% render 'pagination', paginate: paginate, anchor: '' %}{%- endif -%}
         {%- else -%}
-          <div class="cg2-empty"><h3>No encontramos productos con estos filtros.</h3><a class="button button--secondary" href="{{ collection.url }}">Limpiar filtros</a></div>
+          <div class="cg2-empty"><h3>No encontramos productos con estos filtros.</h3><a class="button button--secondary" href="{{ routes.all_products_collection_url }}">Limpiar filtros</a></div>
         {%- endif -%}
       </div>
     </div>
   {%- endpaginate -%}
-</div>
+  {% render 'collection-grid2-quantity', section_id: section.id %}
+</collection-grid-quote>
 {% schema %}
 {
   "name": "Grilla de productos 2",
@@ -211,7 +244,7 @@
     },
     {
       "type": "paragraph",
-      "content": "Ingresá namespace.clave. Los filtros deben estar activados en Shopify Search & Discovery y tener valores en los productos. Se priorizan categoría, capacidad, material y colores. Para mostrar toda la tienda, usá la colección Todos los productos."
+      "content": "Ingresá namespace.clave. Activá Disponibilidad y los filtros de metacampos en Shopify Search & Discovery. El selector Categoría abre las colecciones de la tienda. Para ver el catálogo completo, usá Todos los productos."
     },
     {
       "type": "text",

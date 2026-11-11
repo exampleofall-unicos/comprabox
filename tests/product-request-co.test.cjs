@@ -45,6 +45,7 @@ function browser({ stored, blocked = false, item = product, fetchRate } = {}) {
   window.eval(read('assets/global.js').split('class QuantityInput')[1].split('function debounce')[0].replace(/^/, 'class QuantityInput'));
   window.eval(read('assets/product-info.js'));
   window.eval(read('assets/quote-pricing.js'));
+  window.eval(read('assets/quote-request-store.js'));
   window.eval(read('assets/product-request-co.js'));
   const section = window.document.querySelector('product-info-co');
   section.navigateToPreview = (url) => { window.previewTarget = url; };

@@ -1,0 +1,32 @@
+<dialog class="cg2-quantity-dialog" id="Grid2Quantity-{{ section_id }}" aria-labelledby="Grid2QuantityTitle-{{ section_id }}" aria-describedby="Grid2QuantityProduct-{{ section_id }}">
+  <div class="cg2-quantity-heading">
+    <h2 id="Grid2QuantityTitle-{{ section_id }}">Elegir cantidad</h2>
+    <button type="button" class="cg2-close" data-cg2-close aria-label="Cerrar">
+      {{ 'icon-close.svg' | inline_asset_content }}
+    </button>
+  </div>
+  <form class="cg2-quantity-form" data-cg2-request>
+    <p id="Grid2QuantityProduct-{{ section_id }}" class="visually-hidden" data-cg2-product></p>
+    <p class="cg2-unit" data-cg2-unit aria-live="polite"></p>
+    <label for="Grid2Units-{{ section_id }}">Cantidad solicitada</label>
+    <div class="cg2-quantity-actions">
+      <quantity-input class="quantity">
+        <button type="button" class="quantity__button" name="minus" aria-label="Restar una unidad">
+          <span class="svg-wrapper">{{ 'icon-minus.svg' | inline_asset_content }}</span>
+        </button>
+        <input class="quantity__input" type="number" id="Grid2Units-{{ section_id }}" name="quantity" min="3" data-min="3" step="1" value="3" inputmode="numeric" required autofocus>
+        <button type="button" class="quantity__button" name="plus" aria-label="Sumar una unidad">
+          <span class="svg-wrapper">{{ 'icon-plus.svg' | inline_asset_content }}</span>
+        </button>
+      </quantity-input>
+      <button type="submit" class="cg2-submit" data-cg2-submit aria-label="Agregar al carrito" disabled>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M2 3h2l2.3 12a1 1 0 0 0 1 .8H19M5 7h7m8 2-1.5 3.5H6M17 2v6m-3-3h6"/>
+          <circle cx="8" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/>
+        </svg>
+      </button>
+    </div>
+    <a class="cg2-cart-link" href="{{ routes.cart_url }}">Ver carrito</a>
+    <p class="cg2-status" role="status" data-cg2-status></p>
+  </form>
+</dialog>

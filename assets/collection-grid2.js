@@ -21,7 +21,7 @@
       if (preview) {
         this.cartLink.href = this.withPreview(this.cartLink.href, preview);
         const filterForm = this.querySelector('[data-cg2-filters]');
-        if (!filterForm.elements.namedItem('preview_theme_id')) {
+        if (filterForm && !filterForm.elements.namedItem('preview_theme_id')) {
           const input = document.createElement('input');
           input.type = 'hidden';
           input.name = 'preview_theme_id';

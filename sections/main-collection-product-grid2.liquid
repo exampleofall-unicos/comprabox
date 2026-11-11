@@ -1,8 +1,5 @@
 {%- render 'section-button-icons', section: section -%}
-{{ 'section-collection-grid2.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'quote-pricing.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'quote-request-store.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'collection-grid2.js' | asset_url }}" defer="defer"></script>
+{%- render 'collection-grid2-assets' -%}
 {%- liquid
   assign form_id = 'CollectionGrid2Filters-' | append: section.id
   assign sort_by = collection.sort_by | default: collection.default_sort_by

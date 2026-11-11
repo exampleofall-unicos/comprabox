@@ -8,10 +8,11 @@ const { JSDOM, VirtualConsole } = dependencies('jsdom');
 const { Liquid } = dependencies('liquidjs');
 const read = (path) => readFileSync(resolve(__dirname, '..', path), 'utf8');
 
-test('catalog cards quote the full box, share quantity tiers, and save to the request cart', async () => {
+async function verifyQuoteCards({ featured = false } = {}) {
+  const routes = { cart_url: '/es/cart' };
   const liquid = new Liquid({
     root: resolve(__dirname, '../snippets'), extname: '.liquid',
-    globals: { cart: { currency: { iso_code: 'USD' } } },
+    globals: { cart: { currency: { iso_code: 'USD' } }, routes },
   });
   liquid.registerFilter('money_with_currency', (cents) => `USD ${cents / 100}`);
   liquid.registerFilter('metafield_text', (field) => field.value);
@@ -21,6 +22,7 @@ test('catalog cards quote the full box, share quantity tiers, and save to the re
     return `<img src="${url}" class="${className}">`;
   });
   liquid.registerFilter('inline_asset_content', () => '<svg></svg>');
+  liquid.registerFilter('asset_url', (name) => `/assets/${name}`);
 
   const variant = { id: '123', title: 'Negro', sku: 'TER-NGR', price: 630 };
   const images = [{ url: '/first.png' }, { url: '/second.png' }];
@@ -32,17 +34,35 @@ test('catalog cards quote the full box, share quantity tiers, and save to the re
       precio_usd: { value: 10 }, cargo_1_4_bulto: { value: 1.2 }, cargo_1_2_bulto: { value: 0.5 },
     } },
   };
-  const card = await liquid.renderFile('collection-grid2-card', {
-    product,
-    section: { id: 'grid', settings: { box_metafield: 'custom.unidades_por_caja', capacity_metafield: 'custom.capacidad' } },
-  });
-  const dialog = await liquid.renderFile('collection-grid2-quantity', { section_id: 'grid', routes: { cart_url: '/es/cart' } });
+  let markup;
+  if (featured) {
+    const template = read('sections/featured-collection.liquid').split('{% schema %}')[0]
+      .replace(/{%-?\s*style\s*-?%}/g, '<style>')
+      .replace(/{%-?\s*endstyle\s*-?%}/g, '</style>')
+      .replace(/{%-?\s*(?:paginate [^%]+|endpaginate)\s*-?%}/g, '');
+    markup = await liquid.parseAndRender(template, {
+      routes,
+      section: { id: 'featured', settings: {
+        collection: { url: '/es/collections/all', title: 'Catálogo', all_products_count: 3, products: [product, product] },
+        products_to_show: 2, columns_desktop: 2, columns_mobile: '1', swipe_on_mobile: true,
+        quick_add: 'bulk', show_view_all: true,
+      } },
+    });
+  } else {
+    const card = await liquid.renderFile('collection-grid2-card', {
+      product,
+      section: { id: 'grid', settings: { box_metafield: 'custom.unidades_por_caja', capacity_metafield: 'custom.capacidad' } },
+    });
+    const dialog = await liquid.renderFile('collection-grid2-quantity', { section_id: 'grid', routes });
+    markup = `<collection-grid-quote>
+      <form data-cg2-filters method="get" action="/es/collections/all"></form>
+      ${card}${dialog}
+    </collection-grid-quote>`;
+  }
   const virtualConsole = new VirtualConsole();
   virtualConsole.on('jsdomError', (error) => { throw error; });
-  const dom = new JSDOM(`<collection-grid-quote>
-    <form data-cg2-filters method="get" action="/es/collections/all"></form>
-    ${card}${dialog}
-  </collection-grid-quote>`, { url: 'https://example.com/es/collections/all?preview_theme_id=99', runScripts: 'outside-only', virtualConsole });
+  const url = featured ? 'https://example.com/?preview_theme_id=99' : 'https://example.com/es/collections/all?preview_theme_id=99';
+  const dom = new JSDOM(markup, { url, runScripts: 'outside-only', virtualConsole });
   const { window } = dom;
   try {
     const { document } = window;
@@ -71,13 +91,25 @@ test('catalog cards quote the full box, share quantity tiers, and save to the re
     assert.equal(label('[data-cg2-card-price]'), '$ 9.765,00');
     assert.equal(find('.cg2-secondary-image').getAttribute('src'), '/second.png');
     assert.equal(cartLink.href, 'https://example.com/es/cart?preview_theme_id=99');
-    assert.equal(filters.action, 'https://example.com/es/collections/all');
-    assert.equal(filters.elements.preview_theme_id.value, '99');
+    if (featured) {
+      assert.equal(filters, null);
+      assert.equal(document.querySelectorAll('slider-component .cg2-card').length, 2);
+      assert.ok(find('slider-component .slider--tablet'));
+      assert.ok(find('slider-component .featured-collection__track[data-slider-fit]'));
+      assert.equal(find('slider-component .grid--peek'), null);
+      assert.equal(find('.collection__view-all a').getAttribute('href'), '/es/collections/all');
+      assert.ok(find('script[src="/assets/collection-grid2.js"]'));
+      assert.equal(find('script[src="/assets/quick-add-bulk.js"]'), null);
+    } else {
+      assert.equal(filters.action, 'https://example.com/es/collections/all');
+      assert.equal(filters.elements.preview_theme_id.value, '99');
+    }
 
     const [add, box] = document.querySelectorAll('[data-cg2-open]');
     for (const button of [add, box]) {
       button.click();
       assert.equal(modal.open, true);
+      assert.equal(button.getAttribute('aria-controls'), modal.id);
       assert.equal(input.value, '35');
       assert.equal(label('[data-cg2-unit]'), 'Desde $ 9.765,00');
       find('[data-cg2-close]').click();
@@ -110,6 +142,62 @@ test('catalog cards quote the full box, share quantity tiers, and save to the re
     assert.equal(saved.exchangeRate, 1550);
     assert.equal(saved.url, '/products/termo?view=co&variant=123');
     assert.equal(window.compraboxQuotePricing.calculate(saved, saved.quantity, saved.exchangeRate).unitPrice, 1054000);
+  } finally {
+    window.close();
+  }
+}
+
+test('catalog cards quote the full box, share quantity tiers, and save to the request cart', () => verifyQuoteCards());
+test('featured collection uses catalog cards, keeps its carousel, and saves to the request cart', () =>
+  verifyQuoteCards({ featured: true }));
+
+test('fitted carousel counts complete columns and reaches the last product', () => {
+  const slides = Array.from({ length: 8 }, (_, index) => `<li id="Slide-featured-${index}"></li>`).join('');
+  const { window } = new JSDOM(`<slider-component>
+    <ul id="Slider-featured" data-slider-fit>${slides}</ul>
+    <button name="previous"></button>
+    <span class="slider-counter--current"></span>
+    <span class="slider-counter--total"></span>
+    <button name="next"></button>
+  </slider-component>`, { runScripts: 'outside-only' });
+  try {
+    const { document } = window;
+    const component = document.querySelector('slider-component');
+    const track = document.querySelector('ul');
+    const previous = component.querySelector('[name="previous"]');
+    const next = component.querySelector('[name="next"]');
+    let slideWidth = 167;
+    let viewportWidth = 704;
+    const gap = 12;
+    Object.defineProperty(track, 'clientWidth', { get: () => viewportWidth });
+    track.querySelectorAll('li').forEach((slide, index) => {
+      Object.defineProperty(slide, 'clientWidth', { get: () => slideWidth });
+      Object.defineProperty(slide, 'offsetLeft', { get: () => index * (slideWidth + gap) });
+    });
+    track.scrollTo = ({ left }) => {
+      track.scrollLeft = left;
+      track.dispatchEvent(new window.Event('scroll'));
+    };
+    window.ResizeObserver = class { observe() {} };
+    const source = read('assets/global.js').split('class SliderComponent')[1].split('class SlideshowComponent')[0];
+    window.eval(`class SliderComponent${source}`);
+
+    assert.equal(component.slidesPerPage, 4);
+    assert.equal(component.totalPages, 5);
+    assert.equal(previous.disabled, true);
+    for (let index = 0; index < 4; index += 1) next.click();
+    assert.equal(component.currentPage, 5);
+    assert.equal(next.disabled, true);
+    previous.click();
+    assert.equal(component.currentPage, 4);
+    assert.equal(next.disabled, false);
+
+    viewportWidth = 354;
+    slideWidth = 171;
+    track.scrollLeft = 0;
+    component.initPages();
+    assert.equal(component.slidesPerPage, 2);
+    assert.equal(component.totalPages, 7);
   } finally {
     window.close();
   }

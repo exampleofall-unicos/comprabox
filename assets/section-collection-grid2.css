@@ -1,4 +1,11 @@
-.cg2 { display: block; padding-block: var(--cg2-padding); }
+.cg2 {
+  --cg2-product-title: var(--type-card-title);
+  --cg2-accent: #ff8000;
+  --cg2-image-bg: #f7f7f7;
+  --cg2-ratio: 1;
+  display: block;
+  padding-block: var(--cg2-padding, 0px);
+}
 .cg2-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
 .cg2-sidebar {
   align-self: start;

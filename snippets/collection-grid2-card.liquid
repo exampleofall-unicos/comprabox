@@ -1,6 +1,6 @@
 {%- liquid
-  assign capacity_parts = section.settings.capacity_metafield | strip | split: '.'
-  assign box_parts = section.settings.box_metafield | strip | split: '.'
+  assign capacity_parts = capacity_metafield | default: section.settings.capacity_metafield | strip | split: '.'
+  assign box_parts = section.settings.box_metafield | default: 'custom.unidades_por_caja' | strip | split: '.'
   assign capacity = product.metafields[capacity_parts.first][capacity_parts.last]
   assign box_units = product.metafields[box_parts.first][box_parts.last].value | default: product.metafields.custom.unidades_por_caja.value | plus: 0
   assign variant = product.selected_or_first_available_variant

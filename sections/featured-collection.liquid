@@ -1,28 +1,38 @@
 {%- render 'section-button-icons', section: section -%}
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
-
+{%- liquid
+  assign use_quote_cards = false
+  if section.settings.card_layout != 'dawn' and section.settings.collection.products.size > 0
+    assign use_quote_cards = true
+  endif
+-%}
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
 {{ 'template-collection.css' | asset_url | stylesheet_tag }}
 
-{% if section.settings.image_shape == 'blob' %}
-  {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
-{%- endif -%}
+{%- if use_quote_cards -%}
+  {%- render 'collection-grid2-assets' -%}
+{%- else -%}
+  {{ 'component-card.css' | asset_url | stylesheet_tag }}
+  {{ 'component-price.css' | asset_url | stylesheet_tag }}
 
-{%- unless section.settings.quick_add == 'none' -%}
-  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
-  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
-{%- endunless -%}
+  {%- if section.settings.image_shape == 'blob' -%}
+    {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
+  {%- endif -%}
 
-{%- if section.settings.quick_add == 'standard' -%}
-  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
-{%- endif -%}
+  {%- unless section.settings.quick_add == 'none' -%}
+    {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+  {%- endunless -%}
 
-{%- if section.settings.quick_add == 'bulk' -%}
-  <script src="{{ 'quick-add-bulk.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
+  {%- if section.settings.quick_add == 'standard' -%}
+    <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+  {%- endif -%}
+
+  {%- if section.settings.quick_add == 'bulk' -%}
+    <script src="{{ 'quick-add-bulk.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
+  {%- endif -%}
 {%- endif -%}
 
 {%- style -%}
@@ -31,10 +41,65 @@
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
 
+  #collection-{{ section.id }} slider-component.featured-collection__slider {
+    --featured-gutter: 1.5rem;
+    --featured-columns: {{ section.settings.columns_mobile }};
+    --featured-gap: var(--grid-mobile-horizontal-spacing);
+    width: calc(100% - 2 * var(--featured-gutter));
+    max-width: calc(var(--page-width) - 2 * var(--featured-gutter));
+    margin-inline: auto;
+    padding: 0;
+  }
+
+  #collection-{{ section.id }}.collection--full-width .featured-collection__slider {
+    max-width: none;
+  }
+
+  #collection-{{ section.id }} .featured-collection__track {
+    justify-content: center;
+    scroll-padding: 0;
+  }
+
+  #collection-{{ section.id }} .featured-collection__track > .grid__item {
+    flex: 0 0 calc((100% - (var(--featured-columns) - 1) * var(--featured-gap)) / var(--featured-columns));
+    min-width: 0;
+    max-width: none;
+    margin-inline: 0;
+    scroll-margin: 0;
+  }
+
+  #collection-{{ section.id }} .featured-collection__track::after {
+    content: none;
+  }
+
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+
+    #collection-{{ section.id }} slider-component.featured-collection__slider {
+      --featured-gap: var(--grid-desktop-horizontal-spacing);
+    }
+
+    #collection-{{ section.id }}:not(.collection--full-width) .featured-collection__slider {
+      --featured-gutter: 5rem;
+    }
+  }
+
+  @media screen and (max-width: 989px) {
+    #collection-{{ section.id }} .featured-collection__track.slider--tablet {
+      justify-content: flex-start;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    #collection-{{ section.id }} slider-component.featured-collection__slider {
+      --featured-columns: {{ section.settings.columns_desktop }};
+    }
+
+    #collection-{{ section.id }} .featured-collection__track.slider--desktop {
+      justify-content: flex-start;
     }
   }
 {%- endstyle -%}
@@ -69,7 +134,7 @@
   class="color-{{ section.settings.color_scheme }} isolate gradient"
 >
   <div
-    class="collection{% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %} section-{{ section.id }}-padding{% if section.settings.full_width %} collection--full-width{% endif %}"
+    class="collection{% if use_quote_cards == false and section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %} section-{{ section.id }}-padding{% if section.settings.full_width %} collection--full-width{% endif %}"
     id="collection-{{ section.id }}"
     data-id="{{ section.id }}"
   >
@@ -93,11 +158,15 @@
       {%- endif -%}
     </div>
 
-    <slider-component class="slider-mobile-gutter{% if section.settings.full_width %} slider-component-full-width{% endif %}{% if show_mobile_slider == false %} page-width{% endif %}{% if show_desktop_slider == false and section.settings.full_width == false %} page-width-desktop{% endif %}{% if show_desktop_slider %} slider-component-desktop{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+    {%- if use_quote_cards -%}
+      <collection-grid-quote class="cg2">
+    {%- endif -%}
+    <slider-component class="featured-collection__slider{% if show_desktop_slider %} slider-component-desktop{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
       <ul
         id="Slider-{{ section.id }}"
         data-id="{{ section.id }}"
-        class="grid product-grid contains-card contains-card--product{% if settings.card_style == 'standard' %} contains-card--standard{% endif %} grid--{{ section.settings.columns_desktop }}-col-desktop{% if section.settings.collection == blank %} grid--2-col-tablet-down{% else %} grid--{{ section.settings.columns_mobile }}-col-tablet-down{% endif %}{% if show_mobile_slider or show_desktop_slider %} slider{% if show_desktop_slider %} slider--desktop{% endif %}{% if show_mobile_slider %} slider--tablet grid--peek{% endif %}{% endif %}"
+        class="grid product-grid featured-collection__track{% unless use_quote_cards %} contains-card contains-card--product{% if settings.card_style == 'standard' %} contains-card--standard{% endif %}{% endunless %}{% if show_mobile_slider or show_desktop_slider %} slider{% if show_desktop_slider %} slider--desktop{% endif %}{% if show_mobile_slider %} slider--tablet{% endif %}{% endif %}"
+        data-slider-fit
         role="list"
         aria-label="{{ 'general.slider.name' | t }}"
       >
@@ -118,19 +187,25 @@
                   style="--animation-order: {{ forloop.index }};"
                 {% endif %}
               >
-                {% render 'card-product',
-                  card_product: product,
-                  media_aspect_ratio: section.settings.image_ratio,
-                  image_shape: section.settings.image_shape,
-                  lazy_load: lazy_load,
-                  show_secondary_image: section.settings.show_secondary_image,
-                  show_vendor: section.settings.show_vendor,
-                  show_rating: section.settings.show_rating,
-                  skip_styles: skip_card_product_styles,
-                  section_id: section.id,
-                  quick_add: section.settings.quick_add,
-                  product_view_context: 'collection'
-                %}
+                {%- if use_quote_cards -%}
+                  {%- assign eager = false -%}
+                  {%- if lazy_load == false -%}{%- assign eager = true -%}{%- endif -%}
+                  {% render 'collection-grid2-card', product: product, section: section, capacity_metafield: 'custom.capacidad', eager: eager %}
+                {%- else -%}
+                  {% render 'card-product',
+                    card_product: product,
+                    media_aspect_ratio: section.settings.image_ratio,
+                    image_shape: section.settings.image_shape,
+                    lazy_load: lazy_load,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    show_vendor: section.settings.show_vendor,
+                    show_rating: section.settings.show_rating,
+                    skip_styles: skip_card_product_styles,
+                    section_id: section.id,
+                    quick_add: section.settings.quick_add,
+                    product_view_context: 'collection'
+                  %}
+                {%- endif -%}
               </li>
               {%- assign skip_card_product_styles = true -%}
             {%- endfor -%}
@@ -198,6 +273,10 @@
         </div>
       {%- endif -%}
     </slider-component>
+    {%- if use_quote_cards -%}
+        {% render 'collection-grid2-quantity', section_id: section.id %}
+      </collection-grid-quote>
+    {%- endif -%}
 
     {%- if section.settings.show_view_all and more_in_collection -%}
       <div class="center collection__view-all{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
@@ -210,7 +289,7 @@
         </a>
       </div>
     {%- endif -%}
-    {% if section.settings.image_shape == 'arch' %}
+    {% if use_quote_cards == false and section.settings.image_shape == 'arch' %}
       {{ 'mask-arch.svg' | inline_asset_content }}
     {%- endif -%}
   </div>
@@ -376,6 +455,17 @@
     {
       "type": "header",
       "content": "t:sections.featured-collection.settings.header.content"
+    },
+    {
+      "type": "select",
+      "id": "card_layout",
+      "label": "Estilo de tarjeta",
+      "default": "catalog",
+      "info": "Catálogo usa el diseño y el selector de cotización de Comprabox. Dawn usa los ajustes de tarjeta y compra rápida de esta sección.",
+      "options": [
+        { "value": "catalog", "label": "Catálogo Comprabox" },
+        { "value": "dawn", "label": "Dawn" }
+      ]
     },
     {
       "type": "select",
